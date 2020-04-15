@@ -1,0 +1,104 @@
+---
+- name: Destroy MockFog2 Infrastructure
+  hosts: localhost
+
+  tasks:
+    - name: Get VPC Id
+      ec2_vpc_net_info:
+        region: "{{ ec2_region }}"
+        filters:
+          "tag:Name": "vpc:mockfog2:vpc"
+      register: network
+
+    - name: Get Instance Ids
+      ec2_instance_info:
+        region: "{{ ec2_region }}"
+        filters:
+          vpc-id: "{{ network.vpcs[0].vpc_id }}"
+      register: ec2
+
+    - name: Terminate Nodes
+      ec2:
+        region: "{{ ec2_region }}"
+        state: absent
+        wait: yes
+        instance_ids: "{{ item.instance_id }}"
+      with_items: "{{ ec2.instances }}"
+      register: instance_destruction
+      async: 300
+      poll: 0
+
+    - name: Wait for EC2 instance destruction to finish
+      async_status:
+        jid: "{{ item.ansible_job_id }}"
+      register: instance_destruction_jobs
+      until: instance_destruction_jobs.finished
+      delay: 5
+      retries: 60
+      with_items: "{{ instance_destruction.results }}"
+
+    - name: Get ENIs
+      ec2_eni_info:
+        region: "{{ ec2_region }}"
+        filters:
+          vpc-id: "{{ network.vpcs[0].vpc_id }}"
+      register: enis
+
+    - name: Destroy ENIs
+      ec2_eni:
+        region: "{{ ec2_region }}"
+        force_detach: yes
+        eni_id: "{{ item.id }}"
+      with_items: "{{ enis.network_interfaces }}"
+
+    - name: Destroy Subnets
+      ec2_vpc_subnet:
+        region: "{{ ec2_region }}"
+        state: absent
+        vpc_id: "{{ network.vpcs[0].vpc_id }}"
+        cidr: "{{ item }}"
+      with_items:
+        - 10.0.1.0/24
+        - 10.0.2.0/24
+
+    - name: Destroy Internet Gateway
+      ec2_vpc_igw:
+        region: "{{ ec2_region }}"
+        state: absent
+        vpc_id: "{{ network.vpcs[0].vpc_id }}"
+
+    - name: Destroy Route Table
+      ec2_vpc_route_table:
+          region: "{{ ec2_region }}"
+          tags:
+            Name: vpc:mockfog2:routing-table
+          state: absent
+          vpc_id: "{{ network.vpcs[0].vpc_id }}"
+
+    - name: Get Security Groups
+      ec2_group_info:
+        region: "{{ ec2_region }}"
+        filters:
+          vpc-id: "{{ network.vpcs[0].vpc_id }}"
+      register: sgs
+
+    - name: Destroy Security Group
+      ec2_group:
+        region: "{{ ec2_region }}"
+        state: absent
+        group_id: "{{ item.group_id }}"
+      with_items: "{{ sgs.security_groups }}"
+      when: item.group_name != "default"
+
+    - name: Destroy VPC
+      ec2_vpc_net:
+        cidr_block: 10.0.0.0/16
+        name: vpc:mockfog2:vpc
+        region: "{{ ec2_region }}"
+        state: absent
+
+    - name: Delete Keypair on AWS
+      ec2_key:
+        name: "{{ ssh_key_name }}"
+        region: "{{ ec2_region }}"
+        state: absent

@@ -50,7 +50,7 @@ You should:
  - Run `mockfog2 bootstrap`
 
 This:
-- Creates a var file that contains all information needed by `playbooks/02_bootstrap.yml`, stores at `run/vars/bootstrap.yml`
+- Creates var files for the destroy and bootstrap playbooks, stores at `run/vars/bootstrap.yml` and `run/vars/destroy.yml`
 - Bootstraps the infrastructure on AWS
     - Setup a VPC
     - Setup a management subnet (access to internet, only ssh)
