@@ -1,2 +1,4 @@
 .DS_Store
 run/
+package-lock.json
+node_modules/*

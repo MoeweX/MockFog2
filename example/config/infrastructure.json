@@ -1,4 +1,8 @@
 {
+    "aws": {
+        "ec2_region": "eu-central-1",
+        "ssh_key_name": "mockfog.pem"
+    },
     "machines": [
         {
             "machine_name": "cloud", // machine_name is also used to set the "Name" tag on EC2

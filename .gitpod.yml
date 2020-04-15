@@ -1,0 +1,5 @@
+tasks:
+  - init: npm install
+  - init: pip3 install -r requirements.txt
+image:
+  file: .gitpod.Dockerfile

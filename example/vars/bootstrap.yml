@@ -1,0 +1,11 @@
+---
+ec2_region: eu-central-1
+machines:
+- machine_name: cloud
+  type: t3.nano
+  image: ami-0aa9794817db273c1
+  internal_ip: 10.0.2.35
+- machine_name: edge
+  type: t3.nano
+  image: ami-0aa9794817db273c1
+  internal_ip: 10.0.2.74

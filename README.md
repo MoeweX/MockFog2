@@ -1,3 +1,5 @@
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/MoeweX/MockFog2) 
+
 # MockFog2
 
 TODO: what is MockFog?
@@ -14,6 +16,12 @@ MockFog2 is configured by the three configuration files found in the config dire
 - containers.json: defines docker containers + application specific configurations
 - deployment.json defines how containers are deployed on the infrastructure
 To remove comments from the JSON files, use https://www.npmjs.com/package/strip-json-comments.
+
+## Environment Setup
+- Run `npm install` in root directory
+- Run `pip3 install -r requirements.txt`in root directory
+- Create configurations in `run/config` directory
+- Place keyfile with matching name in root directory
 
 ## Phases
 

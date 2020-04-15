@@ -1,0 +1,25 @@
+{
+  "name": "mockfog2",
+  "version": "1.0.0",
+  "description": "MockFog2",
+  "main": "app.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MoeweX/MockFog2.git"
+  },
+  "author": "Jonathan Hasenburg",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/MoeweX/MockFog2/issues"
+  },
+  "homepage": "https://github.com/MoeweX/MockFog2#readme",
+  "dependencies": {
+    "strip-json-comments": "^3.1.0"
+  }
+}
