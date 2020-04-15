@@ -1,0 +1,25 @@
+{
+    "machines": [
+        {
+            "machine_name": "cloud", // machine_name is also used to set the "Name" tag on EC2
+            "type": "t3.nano",
+            "image": "ami-xxxxxxx"
+        },
+        {
+            "machine_name": "edge",
+            "type": "t3.nano",
+            "image": "ami-xxxxxxx"
+        }
+    ],
+    /*
+        Every machine must have at least one connection to another machine.
+        The latency between two machines is the sum of all delays on the shortest path.
+    */
+    "connections": [
+        {
+            "from": "cloud",
+            "to": "edge",
+            "delay": "10" // in ms, set on each machine so roundtrip will be 20ms
+        }
+    ]
+}

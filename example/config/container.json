@@ -1,0 +1,22 @@
+[
+    {
+        "container_name": "ping_app",
+        "docker_image": "hasenburg/ping-app:1.0", // passed to "image" of ansible docker_container module
+        "container_dirname": "/app",
+        "include_into_results": true, // if true, the "container_dirname" will be included when collecting results
+        "local_dirname": "files/ping_app/", // where to look for the files specified below
+        // these files and directories will be copied to "container_dirname"
+        "files": [
+            "config.json.template", "input_csvs" // .template files will be pre-processed and renamed before being copied
+        ],
+        "env": {
+            "CONFIG": "/app/config.json"
+            "INPUT_PATH": "/app/input_csvs"
+            "OUTPUT_PATH": "/app/results"
+        },
+        // passed to "command" of ansible docker_container module
+        "command": [
+            "--config", "/app/config.json", "--input", "/app/input_csvs", "--output", "/app/results" // when the image has an entrypoint, these will be appended
+        ]
+    }
+]
