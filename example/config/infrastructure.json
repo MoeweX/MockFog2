@@ -1,7 +1,7 @@
 {
     "aws": {
         "ec2_region": "eu-central-1",
-        "ssh_key_name": "mockfog.pem"
+        "ssh_key_name": "mockfog"
     },
     "machines": [
         {

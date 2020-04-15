@@ -81,6 +81,27 @@
             gateway_id: "{{ igw.gateway_id }}"
       register: routing_table
 
+    - name: Create SSH Key
+      ec2_key:
+        name: "{{ ssh_key_name }}"
+        region: "{{ ec2_region }}"
+      register: key
+
+    - name: Write SSH Key to File
+      local_action:
+        module: copy
+        dest: "{{ playbook_dir }}/../run/{{ ssh_key_name }}.pem"
+        content: "{{ key.key.private_key }}"
+        mode: "400"
+      when: key.changed == True
+
+    - name: Get Facts about Machines
+      ec2_instance_info:
+        region: "{{ ec2_region }}"
+        filters:
+          vpc-id: "{{ network.vpc.id }}"
+      register: ec2
+
     - name: Create Machine Instances
       ec2:
         region: "{{ ec2_region }}"
@@ -98,6 +119,7 @@
       register: instance_creation
       async: 60
       poll: 0
+      when: ec2.instances|length == 0
 
     - name: Wait for EC2 instance creation to finish
       async_status:
@@ -107,13 +129,14 @@
       delay: 2
       retries: 30
       with_items: "{{ instance_creation.results }}"
+      when: ec2.instances|length == 0
 
-    - name: Get Facts about Machines
+    - name: Update Facts about Machines
       ec2_instance_info:
         region: "{{ ec2_region }}"
         filters:
           vpc-id: "{{ network.vpc.id }}"
-      register: ec2
+      register: ec2 # overwrites old ec2 variable
 
     - name: Attach Internal Interfaces
       ec2_eni:
@@ -134,3 +157,10 @@
         eni_id: "{{ item.interface.id }}"
         delete_on_termination: true
       with_items: "{{ enis.results }}"
+
+    - name: Write Machine Facts to File
+      local_action:
+        module: copy
+        dest: "{{ playbook_dir }}/../run/machine_meta.json"
+        content: "{{ ec2 }}"
+        mode: "400"

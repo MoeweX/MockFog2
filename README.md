@@ -21,7 +21,7 @@ To remove comments from the JSON files, use https://www.npmjs.com/package/strip-
 - Run `npm install` in root directory
 - Run `pip3 install -r requirements.txt`in root directory
 - Create configurations in `run/config` directory
-- Place keyfile with matching name in root directory
+- Place keyfile with matching name in `run` directory
 
 ## Phases
 
@@ -56,7 +56,7 @@ This:
     - Setup a management subnet (access to internet, only ssh)
     - Setup an internal subnet (access to all other machines, all traffic)
     - Start EC2 instances that are part of this VPC
-- Pulls machine meta data: machine_name, external_ip, internal_ip (affected by delay), stores at `run/machine_meta.txt`
+- Pulls machine facts and writes them to `run/machine_meta.json`
 
 ### 03 Host Preparation
 You should:
