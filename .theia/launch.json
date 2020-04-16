@@ -6,8 +6,8 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Bootstrap",
-      "program": "${workspaceFolder}/phases/02_bootstrap.js"
+      "name": "App",
+      "program": "${workspaceFolder}/app.js"
     }
   ]
 }

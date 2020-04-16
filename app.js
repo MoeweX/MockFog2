@@ -1,7 +1,19 @@
-let bootstrap = require("./phases/02_bootstrap.js")
+let Bootstrap = require("./phases/02_bootstrap.js")
 
 console.log("Hello World!")
 
-bootstrap()
+const bootstrap = new Bootstrap()
 
-console.log("Bootstrapping completed")
+bootstrap.on("log", function(data) {
+    console.log(data)
+})
+
+bootstrap.on("playlog", function(data) {
+    console.log("play: " + data)
+})
+
+bootstrap.on("done", function(data) {
+    console.log("done, exit code is: " + data)
+})
+
+bootstrap.start()

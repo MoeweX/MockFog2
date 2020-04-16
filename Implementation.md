@@ -10,8 +10,9 @@ Tagging
 - The management subnet is used for internet access and private/public dns ip -> mapped to eth0
 - The private subnet has its own private ip (only accessible by machines in same subnet) -> mapped to eth1
 
-Check/TODO:
-- node script should not block while doing things, turn it into an event emitter
+TODO/Check
+- attaching two enis leads to failed playbook
+- can var files be created if vars folder is missing?
 
 ## Destroy Playbook
 

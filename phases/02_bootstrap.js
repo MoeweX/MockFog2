@@ -1,43 +1,76 @@
-const fs = require("fs");
+const EventEmitter = require("events")
+const fs = require("fs").promises;
 const stripJson = require("strip-json-comments");
 const spawn = require("child_process").spawn;
 
-function bootstrap() {
-    console.log("Starting bootstrapping of infrastructure")
-
+async function bootstrap(emitter) {
     // read in infrastructure.json
     try {
         var path = __dirname + "/../run/config/infrastructure.json"
-        var content = fs.readFileSync(path, "utf-8")
+        var content = await fs.readFile(path, "utf-8")
     } catch(error) {
         if (error.code === "ENOENT") {
-            console.log(`No file found at ${path}`)
+            emitter.emit("log", `No file found at ${path}`)
+            emitter.emit("done", 1)
             return
         }
-        console.log(error)
+        emitter.emit("log", error)
+        emitter.emit("done", 1)
         return
     }
 
     // convert to object
     const cleanedJson = stripJson(content)
     const infra = JSON.parse(cleanedJson)
-    console.log(`Infrastructure definition: ${JSON.stringify(infra)}`)
+    emitter.emit("log", `Infrastructure definition: ${JSON.stringify(infra)}`)
 
     // create var file
     let ymlString = getYml(infra.aws, infra.machines)
     try {
         path = __dirname + "/../run/vars/02_bootstrap.yml"
-        fs.writeFileSync(path, ymlString)
+        await fs.writeFile(path, ymlString)
     } catch(error) {
-        console.log(error)
+        emitter.emit("log", error)
+        emitter.emit("done", 1)
         return
     }
-    console.log(`Boostrap playbook vars:\n${ymlString}`)
+    emitter.emit("log", `Boostrap playbook vars:\n${ymlString}`)
 
-    // start playbook
-    console.log("Starting playbook")
-    runPlaybook()
-    console.log("Playbook finished")
+    // start and run playbook
+    emitter.emit("log", "Starting playbook")
+    const playbookPath = __dirname + "/../playbooks/02_bootstrap.yml"
+    const varPath = __dirname + "/../run/vars/02_bootstrap.yml"
+
+    try { 
+        await fs.access(playbookPath)
+    } catch(error) {
+        emitter.emit("log", `Playbook could not be started as ${playbookPath} does not exist`)
+        emitter.emit("done", 1)
+        return
+    }
+
+    try {
+        await fs.access(varPath)
+    }  catch(error) {
+        emitter.emit("log", `Playbook could not be started as ${varPath} does not exist`)
+        emitter.emit("done", 1)
+        return
+    }
+
+    const playbook = spawn("ansible-playbook", 
+        ["--ssh-common-args=\"-o StrictHostKeyChecking=no\"", playbookPath, `--extra-vars=@${varPath}`]);
+
+    playbook.stdout.on("data", data => {
+        emitter.emit("playlog", `${data}`);
+    });
+
+    playbook.on('error', (error) => {
+        emitter.emit("log", `${error.message}`);
+    });
+
+    playbook.on("close", code => {
+        emitter.emit("done", code)
+    });
 }
 
 function getYml(aws, machines) {
@@ -55,41 +88,29 @@ machines:`
     return ymlString + "\n"
 }
 
-function runPlaybook() {
-    const playbookPath = __dirname + "/../playbooks/02_bootstrap.yml"
-    const varPath = __dirname + "/../run/vars/02_bootstrap.yml"
+/**
+ * Offers three kinds of events:
+ *  - log: bootstrapping function whishes to log something
+ *  - playlog: playbook logs something
+ *  - done: bootstrapping is finished, codes see below
+ * 
+ * Codes
+ * *0* -- OK or no hosts matches
+ * *1* -- Error
+ * *2* -- One or more hosts failed
+ * *3* -- One or more hosts were unreachable
+ * *4* -- Parser error
+ * *5* -- Bad or incomplete options
+ * *99* -- User interrupted execution
+ * *250* -- Unexpected error
+ */
+module.exports = class Bootstrap extends EventEmitter {
 
-    if (!fs.existsSync(playbookPath)) {
-        console.log(`Playbook could not be started as ${playbookPath} does not exist`)
-        return
+    constructor() {
+        super();
+        this.start = function() {
+            bootstrap(this)
+        }
     }
 
-    if (!fs.existsSync(varPath)) {
-        console.log(`Playbook could not be started as ${varPath} does not exist`)
-        return
-    }
-
-    const playbook = spawn("ansible-playbook", 
-        ["--ssh-common-args=\"-o StrictHostKeyChecking=no\"", playbookPath, `--extra-vars=@${varPath}`]);
-
-    playbook.stdout.on("data", data => {
-        console.log(`${data}`);
-    });
-
-    playbook.stderr.on("data", data => {
-        console.log(`${data}`);
-    });
-
-    playbook.on('error', (error) => {
-        console.log(`error: ${error.message}`);
-    });
-
-    playbook.on("close", code => {
-        console.log(`Playbook finished, exited with code ${code}`);
-    });
 }
-
-module.exports = bootstrap
-
-// uncomment to make executeable
-// bootstrap()
