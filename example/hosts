@@ -11,10 +11,10 @@ cloud
 edge
 
 [cloud]
-ec2-18-184-184-95.eu-central-1.compute.amazonaws.com machine_name=cloud internal_ip=10.0.1.73
+ec2-18-184-184-95.eu-central-1.compute.amazonaws.com machine_name=cloud internal_ip=10.0.1.73 management_ip=
 
 [edge]
-ec2-11-173-147-92.eu-central-1.compute.amazonaws.com machine_name=edge internal_ip=10.0.1.82
+ec2-11-173-147-92.eu-central-1.compute.amazonaws.com machine_name=edge internal_ip=10.0.1.82 management_ip=
 
 # ---------------------------------------
 # Hosts by container_names

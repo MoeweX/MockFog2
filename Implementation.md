@@ -11,12 +11,8 @@ Tagging
 - The private subnet has its own private ip (only accessible by machines in same subnet) -> mapped to eth1
 
 Check/TODO:
-- It might not be required to set a private ip address when attaching the eni (there is a private ip count field in the examples)
 - node script that creatse the necessary var files and starts playbooks
 
 ## Destroy Playbook
 
-- Destroy all resources related to the MockFog2 ENI, also deletes the key on AWS (but the local private key)
-
-Check/TODO:
-- End destroy play when vpc not defined
+- Destroy all resources related to the MockFog2 VPC, also deletes the key on AWS (but the local private key)

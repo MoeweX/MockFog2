@@ -10,6 +10,11 @@
           "tag:Name": "vpc:mockfog2:vpc"
       register: network
 
+    - name: Check VPC is Available
+      meta: end_host
+      when:
+      - network.vpcs|length == 0
+
     - name: Get Instance Ids
       ec2_instance_info:
         region: "{{ ec2_region }}"

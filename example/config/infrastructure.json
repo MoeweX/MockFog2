@@ -7,12 +7,12 @@
         {
             "machine_name": "cloud", // machine_name is also used to set the "Name" tag on EC2
             "type": "t3.nano",
-            "image": "ami-xxxxxxx"
+            "image": "ami-0aa9794817db273c1"
         },
         {
             "machine_name": "edge",
             "type": "t3.nano",
-            "image": "ami-xxxxxxx"
+            "image": "ami-0aa9794817db273c1"
         }
     ],
     /*
