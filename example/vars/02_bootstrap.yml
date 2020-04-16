@@ -1,5 +1,6 @@
 ---
 ec2_region: eu-central-1
+ssh_key_name: ec2:mockfog2:ssh-key
 machines:
 - machine_name: cloud
   type: t3.nano
