@@ -63,7 +63,10 @@ async function bootstrap(emitter) {
     // forward playbook events
     playbook.stdout.on("data", data => { emitter.emit("playlog", `${data}`); });
     playbook.on('error', (err) => { emitter.emit("log", `${err.message}`); });
-    playbook.on("close", code => { emitter.emit("done", code) });
+    playbook.on("close", code => { 
+        emitter._process = undefined // so that it can be run again
+        emitter.emit("done", code) 
+    });
 
     return playbook
 }
@@ -91,14 +94,14 @@ machines:`
  *  - done: bootstrapping is finished, codes see below
  * 
  * Codes
- * *0* -- OK or no hosts matches
- * *1* -- Error
- * *2* -- One or more hosts failed
- * *3* -- One or more hosts were unreachable
- * *4* -- Parser error
- * *5* -- Bad or incomplete options
- * *99* -- User interrupted execution
- * *250* -- Unexpected error
+ *  *0* -- OK or no hosts matches
+ *  *1* -- Error
+ *  *2* -- One or more hosts failed
+ *  *3* -- One or more hosts were unreachable
+ *  *4* -- Parser error
+ *  *5* -- Bad or incomplete options
+ *  *99* -- User interrupted execution
+ *  *250* -- Unexpected error
  */
 module.exports = class Bootstrap extends EventEmitter {
 
@@ -106,19 +109,27 @@ module.exports = class Bootstrap extends EventEmitter {
         super();
 
         /**
-         * Start the bootstrapping
+         * Start bootstrapping the infrastructure.
+         * Does nothing if bootstrapping is already in process.
          */
         this.start = function () {
-            this._process = bootstrap(this)
+            if (!this._process) {
+                this._process = bootstrap(this)
+            } else {
+                this.emit("log", `Bootstrapping already in process`)
+            }
         }
 
         /**
-         * Stop the bootstrapping
+         * Stop and interrupt the bootstrapping process.
+         * Does nothing if not bootstrapping is in process.
          */
         this.stop = function () {
             if (this._process) {
-                // TODO ensure that not called after process has completed
-                this._process.then(p => { p.kill() })
+                this._process.then(p => { p.kill("SIGINT") })
+                this._process = undefined
+            } else {
+                this.emit("log", `Bootstrapping is currently not in process`)
             }
         }
     }
