@@ -11,7 +11,7 @@ Tagging
 - The private subnet has its own private ip (only accessible by machines in same subnet) -> mapped to eth1
 
 TODO/Check
-- attaching two enis leads to failed playbook
+- attaching enis again leads to failed playbook
 - can var files be created if vars folder is missing?
 
 ## Destroy Playbook

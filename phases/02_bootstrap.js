@@ -8,7 +8,7 @@ async function bootstrap(emitter) {
     try {
         var path = __dirname + "/../run/config/infrastructure.json"
         var content = await fs.readFile(path, "utf-8")
-    } catch(error) {
+    } catch (error) {
         if (error.code === "ENOENT") {
             emitter.emit("log", `No file found at ${path}`)
             emitter.emit("done", 1)
@@ -29,7 +29,7 @@ async function bootstrap(emitter) {
     try {
         path = __dirname + "/../run/vars/02_bootstrap.yml"
         await fs.writeFile(path, ymlString)
-    } catch(error) {
+    } catch (error) {
         emitter.emit("log", error)
         emitter.emit("done", 1)
         return
@@ -41,9 +41,9 @@ async function bootstrap(emitter) {
     const playbookPath = __dirname + "/../playbooks/02_bootstrap.yml"
     const varPath = __dirname + "/../run/vars/02_bootstrap.yml"
 
-    try { 
+    try {
         await fs.access(playbookPath)
-    } catch(error) {
+    } catch (error) {
         emitter.emit("log", `Playbook could not be started as ${playbookPath} does not exist`)
         emitter.emit("done", 1)
         return
@@ -51,26 +51,21 @@ async function bootstrap(emitter) {
 
     try {
         await fs.access(varPath)
-    }  catch(error) {
+    } catch (error) {
         emitter.emit("log", `Playbook could not be started as ${varPath} does not exist`)
         emitter.emit("done", 1)
         return
     }
 
-    const playbook = spawn("ansible-playbook", 
+    const playbook = spawn("ansible-playbook",
         ["--ssh-common-args=\"-o StrictHostKeyChecking=no\"", playbookPath, `--extra-vars=@${varPath}`]);
 
-    playbook.stdout.on("data", data => {
-        emitter.emit("playlog", `${data}`);
-    });
+    // forward playbook events
+    playbook.stdout.on("data", data => { emitter.emit("playlog", `${data}`); });
+    playbook.on('error', (err) => { emitter.emit("log", `${err.message}`); });
+    playbook.on("close", code => { emitter.emit("done", code) });
 
-    playbook.on('error', (error) => {
-        emitter.emit("log", `${error.message}`);
-    });
-
-    playbook.on("close", code => {
-        emitter.emit("done", code)
-    });
+    return playbook
 }
 
 function getYml(aws, machines) {
@@ -83,7 +78,8 @@ machines:`
         ymlString = ymlString + `
 - machine_name: ${machine.machine_name}
   type: ${machine.type}
-  image: ${machine.image}`});
+  image: ${machine.image}`
+    });
 
     return ymlString + "\n"
 }
@@ -108,8 +104,22 @@ module.exports = class Bootstrap extends EventEmitter {
 
     constructor() {
         super();
-        this.start = function() {
-            bootstrap(this)
+
+        /**
+         * Start the bootstrapping
+         */
+        this.start = function () {
+            this._process = bootstrap(this)
+        }
+
+        /**
+         * Stop the bootstrapping
+         */
+        this.stop = function () {
+            if (this._process) {
+                // TODO ensure that not called after process has completed
+                this._process.then(p => { p.kill() })
+            }
         }
     }
 
