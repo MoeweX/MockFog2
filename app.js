@@ -1,10 +1,12 @@
-const Bootstrap = require("./phases/02_bootstrap.js")
 const fs = require("fs")
 
-console.log("Hello World!")
+const conf = require("./lib/config.js")
+const Bootstrap = require("./lib/phases/02_bootstrap.js")
+
+console.log("MockFog2 is setup.")
 
 const bootstrap = new Bootstrap()
-const bootstrapLog = "./run/logs/bootstrap-playlog.log"
+const bootstrapLog = conf.runLogDir + "bootstrap-playlog.log"
 
 fs.unlink(bootstrapLog, function(err) {
     // err can be ignored, if it did not exist -> fine
@@ -18,10 +20,9 @@ fs.unlink(bootstrapLog, function(err) {
     })
 
     bootstrap.on("done", function(data) {
-        console.log("Done, exit code is: " + data)
+        console.log("Bootstrapping done, exit code is: " + data)
     })
 
     bootstrap.start()
 
 })
-

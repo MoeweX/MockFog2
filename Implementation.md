@@ -4,6 +4,9 @@ Tagging
 - Tags have this structure: <service>:mockfog:<purpose>, e.g., ec2:mockfog:machine_name
 - The value of ec2:mockfog:machine_name is also assigned to „Name“ for easier display in the console
 
+Reading config files is done on server start -> problems crash the server
+Problems of particular phases should not crash the server -> these must be reported
+
 ## Bootstrap
 
 - Creates two subnets, one management and a private one.
