@@ -1,0 +1,171 @@
+---
+
+- name: Boostrap MockFog2 Infrastructure
+  hosts: localhost
+
+  tasks:
+    - name: Create VPC
+      ec2_vpc_net:
+        cidr_block: 10.0.0.0/16
+        name: vpc:mockfog2:vpc
+        region: "{{ ec2_region }}"
+        state: present
+      register: network
+
+    - name: Create Management Subnet
+      ec2_vpc_subnet:
+        state: present
+        vpc_id: "{{ network.vpc.id }}"
+        region: "{{ ec2_region }}"
+        map_public: yes
+        cidr: 10.0.1.0/24
+        tags:
+          Name: vpc:mockfog2:management-subnet
+      register: management_subnet
+
+    - name: Create Internal Subnet
+      ec2_vpc_subnet:
+        state: present
+        vpc_id: "{{ network.vpc.id }}"
+        region: "{{ ec2_region }}"
+        cidr: 10.0.2.0/24
+        tags:
+          Name: vpc:mockfog2:internal-subnet
+      register: internal_subnet
+
+    - name: Create Internet Gateway for VPC
+      ec2_vpc_igw:
+        vpc_id: "{{ network.vpc.id }}"
+        region: "{{ ec2_region }}"
+        tags:
+          Name: vpc:mockfog2:igw
+        state: present
+      register: igw
+
+    - name: Create Security Group for Public Connections (ssh-only)
+      ec2_group:
+        name: ec2:mockfog2:public-security-group
+        description: Incoming SSH only
+        vpc_id: "{{ network.vpc.id }}"
+        region: "{{ ec2_region }}"
+        rules:
+          - proto: tcp
+            ports:
+              - 22
+            cidr_ip: 0.0.0.0/0
+            rule_desc: Allow inbound SSH
+      register: public_security_group
+
+    - name: Create Security Group for Testbed-internal Connections (no restrictions)
+      ec2_group:
+        name: ec2:mockfog2:internal-security-group
+        description: No restrictions
+        vpc_id: "{{ network.vpc.id }}"
+        region: "{{ ec2_region }}"
+        rules:
+          - proto: all
+            cidr_ip: 0.0.0.0/0
+            rule_desc: Allow all traffic
+      register: internal_security_group
+
+    - name: Create Routing Table for Management Network (i.e. providing route to IGW)
+      ec2_vpc_route_table:
+        vpc_id: "{{ network.vpc.id }}"
+        region: "{{ ec2_region }}"
+        tags:
+          Name: vpc:mockfog2:routing-table
+        subnets:
+          - "{{ management_subnet.subnet.id }}"
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{ igw.gateway_id }}"
+      register: routing_table
+
+    - name: Create SSH Key
+      ec2_key:
+        name: "{{ ssh_key_name }}"
+        region: "{{ ec2_region }}"
+      register: key
+
+    - name: Write SSH Key to File
+      local_action:
+        module: copy
+        dest: "{{ playbook_dir }}/../run/{{ ssh_key_name }}.pem"
+        content: "{{ key.key.private_key }}"
+        mode: "400"
+      when: key.changed == True
+
+    - name: Get Facts about Machines
+      ec2_instance_info:
+        region: "{{ ec2_region }}"
+        filters:
+          vpc-id: "{{ network.vpc.id }}"
+      register: ec2
+
+    - name: Create Machine Instances
+      ec2:
+        region: "{{ ec2_region }}"
+        key_name: "{{ ssh_key_name }}"
+        image: "{{ item.image }}"
+        assign_public_ip: yes
+        group_id: "{{ public_security_group.group_id }}"
+        instance_type: "{{ item.type }}"
+        wait: yes
+        vpc_subnet_id: "{{ management_subnet.subnet.id }}"
+        instance_tags:
+          Name: "{{ item.machine_name }}"
+      with_items: "{{ machines }}"
+      register: instance_creation
+      async: 60
+      poll: 0
+      when: ec2.instances|length == 0
+
+    - name: Wait for EC2 instance creation to finish
+      async_status:
+        jid: "{{ item.ansible_job_id }}"
+      register: instance_creation_jobs
+      until: instance_creation_jobs.finished
+      delay: 2
+      retries: 30
+      with_items: "{{ instance_creation.results }}"
+      when: ec2.instances|length == 0
+
+    - name: Update Facts about Machines 1
+      ec2_instance_info:
+        region: "{{ ec2_region }}"
+        filters:
+          vpc-id: "{{ network.vpc.id }}"
+      register: ec2 # overwrites old ec2 variable
+
+    - name: Attach Internal Interfaces
+      ec2_eni:
+        region: "{{ ec2_region }}"
+        security_groups: "{{ internal_security_group.group_id }}"
+        state: present
+        attached: True
+        device_index: 1
+        subnet_id: "{{ internal_subnet.subnet.id }}"
+        instance_id: "{{ item.instance_id }}"
+      with_items: "{{ ec2.instances }}"
+      register: enis
+
+    - name: Set delete_on_termination on ENIs
+      ec2_eni:
+        region: "{{ ec2_region }}"
+        eni_id: "{{ item.interface.id }}"
+        delete_on_termination: true
+      with_items: "{{ enis.results }}"
+
+    - name: Update Facts about Machines 2
+      ec2_instance_info:
+        region: "{{ ec2_region }}"
+        filters:
+          vpc-id: "{{ network.vpc.id }}"
+      register: ec2 # overwrites old ec2 variable
+
+    - name: Write Machine Facts to File
+      local_action:
+        module: copy
+        dest: "{{ playbook_dir }}/../run/machine_meta.json"
+        content: "{{ ec2 }}"
+        mode: "400"
