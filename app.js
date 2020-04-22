@@ -1,6 +1,7 @@
 const fs = require("fs")
 
 const conf = require("./lib/config.js")
+const infrastructure = require("./lib/data/infrastructure")
 
 // so that everything is setup
 require("./lib/phases/02_bootstrap.js")
@@ -46,4 +47,5 @@ function doDestroy() {
     })
 }
 
-doDestroy()
+// doBootstrap()
+// doDestroy()

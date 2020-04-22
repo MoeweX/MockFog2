@@ -8,6 +8,12 @@
       "request": "launch",
       "name": "App",
       "program": "${workspaceFolder}/app.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Infrastructure",
+      "program": "${workspaceFolder}/lib/data/infrastructure/index.js"
     }
   ]
 }

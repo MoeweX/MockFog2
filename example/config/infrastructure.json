@@ -23,7 +23,7 @@
         {
             "from": "cloud",
             "to": "edge",
-            "delay": "10" // in ms, set on each machine so roundtrip will be 20ms
+            "delay": 10 // in ms, set on each machine so roundtrip will be 20ms
         }
     ]
 }

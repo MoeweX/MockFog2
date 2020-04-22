@@ -93,7 +93,6 @@
         dest: "{{ playbook_dir }}/../run/{{ ssh_key_name }}.pem"
         content: "{{ key.key.private_key }}"
         mode: "400"
-      when: key.changed == True
 
     - name: Get Facts about Machines
       ec2_instance_info:

@@ -20,3 +20,7 @@ TODO/Check
 ## Destroy Playbook
 
 - Destroy all resources related to the MockFog2 VPC, also deletes the key on AWS (but the local private key)
+
+## Network
+
+- Use https://tcconfig.readthedocs.io/en/latest/index.html -> we need a node wrapper
