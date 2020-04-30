@@ -5,7 +5,7 @@ const infrastructure = require("./lib/data/infrastructure")
 
 function doBootstrap() {
     console.log("Bootstrapping infrastructure")
-    const bootstrap = require("./lib/phases/02_bootstrap.js")
+    const bootstrap = require("./lib/phases/02_bootstrap.js").playbook
     const bootstrapLog = conf.runLogDir + "bootstrap-playlog.log"
     fs.unlink(bootstrapLog, function(err) {
         // err can be ignored, if it did not exist -> fine
@@ -28,9 +28,28 @@ function doHosts() {
     writeHosts()
 }
 
+function doAgent() {
+    console.log("Deploying agent")
+    const agent = require("./lib/phases/04_agent.js").playbook
+    const agentLog = conf.runLogDir + "agent-playlog.log"
+    fs.unlink(agentLog, function(err) {
+        // err can be ignored, if it did not exist -> fine
+
+        agent.on("playlog", function(data) {
+            fs.appendFile(agentLog, data, { "flag": "a+" }, (err) => { if (err) throw err})
+        })
+
+        agent.on("done", function(data) {
+            console.log("Destroy done, exit code is: " + data)
+        })
+
+        agent.start()
+    })
+}
+
 function doDestroy() {
     console.log("Destroying infrastructure")
-    const destroy = require("./lib/phases/07_destroy.js")
+    const destroy = require("./lib/phases/07_destroy.js").playbook
     const destroyLog = conf.runLogDir + "destroy-playlog.log"
     fs.unlink(destroyLog, function(err) {
         // err can be ignored, if it did not exist -> fine
@@ -62,7 +81,10 @@ switch (myArgs[0]) {
     case "hosts":
         doHosts()
         break
-    case "destory":
+    case "agent":
+        doAgent()
+        break
+    case "destroy":
         doDestroy()
         break
     case "clean":
