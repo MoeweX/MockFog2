@@ -95,7 +95,14 @@ TODO
 
 ### 07 Destroy
 You should:
-- Run `./destroy.sh`
+- Run `mockfog2 destroy`
 
 This:
 - Destroys the VPC and all EC2 instances that have been part of the VPC
+
+### 08 Clean
+You should:
+- Run `mockfog2 clean`
+
+This:
+- Deletes all not-hidden files in the `./run` directory that are not placed in `./run/config`.
