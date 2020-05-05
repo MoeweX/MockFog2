@@ -40,7 +40,7 @@ function doAgent() {
         })
 
         agent.on("done", function(data) {
-            console.log("Destroy done, exit code is: " + data)
+            console.log("Agent done, exit code is: " + data)
         })
 
         agent.start()
