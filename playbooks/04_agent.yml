@@ -14,6 +14,7 @@
           - iproute-tc
           - python3
           - python3-pip
+          - rsync
 
       # to allow non-root usage to use tcconfig for easier manual debugging
     - name: Allow TC Usage
@@ -34,13 +35,15 @@
         src: "{{ playbook_dir }}/../run/machines/{{ hostvars[inventory_hostname].machine_name }}/tcconfig.json"
         dest: "/home/ec2-user/tcconfig.json"
 
+    - name: Reset tcconfig
+      shell: tcdel eth0 eth1 --all
+      ignore_errors: yes # as rc is also 1 when no rules existed
+
     - name: Apply tcconfig
       shell: tcset /home/ec2-user/tcconfig.json --import-setting
 
-    TODO use synchronize
-
     - name: Copy Agent
-      copy:
+      synchronize:
         src: "{{ playbook_dir }}/../agent"
         dest: "/home/ec2-user/"
 

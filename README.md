@@ -30,7 +30,7 @@ In general, one should consecutively run through the phases described below.
 The `mockfog2` [binary](https://medium.com/netscape/a-guide-to-create-a-nodejs-command-line-package-c2166ad0452e) ensures that prior phases have been completed before running the next phase.
 
 Before you begin, you have to:
-- Setup MockFog2 (python, aws config, etc.)
+- Setup MockFog2 (python, node, aws config, rsync etc.)
 - Create/update configurations in `run/config` directory, json comments will be automatically removed with [strip-json-comments](https://www.npmjs.com/package/strip-json-comments).
 - Prepare all files necessary for docker containers as defined in container.json
 
