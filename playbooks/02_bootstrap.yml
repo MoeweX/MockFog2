@@ -54,6 +54,11 @@
               - 22
             cidr_ip: 0.0.0.0/0
             rule_desc: Allow inbound SSH
+          - proto: tcp
+            ports:
+              - "{{ agent_port }}"
+            cidr_ip: 0.0.0.0/0
+            rule_desc: Allow agent traffic
       register: public_security_group
 
     - name: Create Security Group for Testbed-internal Connections (no restrictions)
