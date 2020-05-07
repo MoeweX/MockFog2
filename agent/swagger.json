@@ -1,0 +1,126 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is the swagger file for the MockFog2 agent. You can find out more about MockFog2 by visiting our GitHub [repository](https://github.com/MoeweX/MockFog2).",
+    "version": "1.0.0",
+    "title": "MockFog2",
+    "contact": {
+      "email": "hasenburg@tu-berlin.de"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "basePath": "/v1",
+  "tags": [
+    {
+      "name": "network",
+      "description": "Network manipulation operations"
+    },
+    {
+      "name": "status",
+      "description": "Status of the node agent"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/network/tcconfig": {
+      "put": {
+        "tags": [
+          "network"
+        ],
+        "summary": "Update the network configuration",
+        "description": "Internally, this updates the network by appliying a tcconfig json file as produced by [tcshow](https://tcconfig.readthedocs.io/en/latest/pages/usage/tcshow/index.html)",
+        "operationId": "updateNetworkConfig",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "A tcconfig json as produced by the tcshow command.",
+            "schema": {
+              "$ref": "#/definitions/tcconfig"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "tcconfig update applied"
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "tcconfig": {
+      "type": "object",
+      "properties": {
+        "eth0": {
+          "type": "object",
+          "properties": {
+            "outgoing": {
+              "type": "object"
+            },
+            "incoming": {
+              "type": "object"
+            }
+          }
+        },
+        "eth1": {
+          "type": "object",
+          "properties": {
+            "outgoing": {
+              "type": "object",
+              "additionalProperties": true,
+              "example": {
+                "dst-network=10.0.2.33/32, protocol=ip": {
+                  "filter_id": "800::800",
+                  "delay": "10.0ms"
+                },
+                "dst-network=10.0.2.76/32, protocol=ip": {
+                  "filter_id": "800::801",
+                  "delay": "12.0ms"
+                }
+              }
+            },
+            "incoming": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Unexpected server error"
+        },
+        "error": {
+            "type": "object"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about MockFog2",
+    "url": "https://github.com/MoeweX/MockFog2"
+  }
+}
