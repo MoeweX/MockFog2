@@ -18,11 +18,11 @@ MockFog2 is configured by the three configuration files found in the config dire
 - deployment.json defines how containers are deployed on the infrastructure
 To remove comments from the JSON files, use https://www.npmjs.com/package/strip-json-comments.
 
-## Environment Setup
-- Run `npm install` in root directory
-- Run `pip3 install -r requirements.txt`in root directory
-- Create configurations in `run/config` directory
-- Place keyfile with matching name in `run` directory
+## Environment Setup using Gitpod
+- Open the repository or an individual issue/PR in [Gitpod](https://www.gitpod.io/docs/getting-started/)
+- Set the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables in your [Gitpod settings](https://www.gitpod.io/docs/environment-variables/)
+- Copy and customize the infrastructure.jsonc file from the `examples/config` directory to the `run/config` directory
+- You can now use MockFog2, bootstrap your infrastructure by running `node app.js bootstrap`
 
 ## Phases
 
