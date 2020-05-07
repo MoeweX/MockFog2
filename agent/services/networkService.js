@@ -4,6 +4,13 @@ const spawn = require('await-spawn')
 let currentConfigJson = "{}"
 let _process
 
+/**
+ * 
+ * Updates the current tcconfig of the agent.
+ * Returns true if succesfully updated, false if an update is already in progress, and error in case of errors.
+ * 
+ * @param {string} newConfig - a valid tcconfig in JSON format
+ */
 async function updateTCConfig(newConfig) {
     // only update if update process is not running
     if (_process) {
@@ -12,17 +19,18 @@ async function updateTCConfig(newConfig) {
 
     json = JSON.stringify(newConfig)
 
-    await fs.writeFile("tcconfig.json", json, "utf8")
-    currentConfigJson = json
+    await fs.writeFile("tmptcconfig.json", json, "utf8")
 
     // start run tcconfig update process
     try {
-        _process = spawn("tcset", ["tcconfig.json", "--import-setting"])
+        _process = spawn("tcset", ["tmptcconfig.json", "--import-setting"])
         await _process
     } catch(error) {
-        console.log(error)
-        return false
+        return error
     }
+
+    // only update currentConfigJson when no errors during update process
+    currentConfigJson = json
 
     return true
 }
