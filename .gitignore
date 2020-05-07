@@ -3,4 +3,4 @@ run/
 package-lock.json
 node_modules/*
 agent/node_modules/*
-agent/tcconfig.json
+agent/tmptcconfig.json

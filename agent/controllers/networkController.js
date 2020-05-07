@@ -9,21 +9,31 @@ module.exports = function(app) {
      */
     app.put("/v1/network/tcconfig", jsonParser, function(req, res) {
         
-        console.log("Received request")
-
         networkService.updateTCConfig(req.body)
             .then(result => {
                 if (result === true) {
                     console.log("Updated tcconfig")
                     res.sendStatus(200)
                 } else if (result == false) {
-                    console.log("Update of tcconfig is already in progress")
+                    console.log("Update of network is already in progress")
                     res.status(500).send({"message": "Update already in progress"})
                 } else {
-                    console.log("Unexpected error " + result)
-                    res.status(500).send({"message": "Could not update tcconfig", "error": result})
+                    if (result.errno === "ENOENT") {
+                        console.log("Update failed as tcconfig is not installed")
+                        res.status(500).send({"message": "Could not update network as tcconfig is not installed", "error": result})
+                    } else {
+                        console.log("Unexpected error " + result)
+                        res.status(500).send({"message": "Could not update network, there was an unexpected error", "error": result})
+                    }
                 }
             })
+    });
+
+    /**
+     * Replies with a tcconfig JSON as produced by the tcshow command, or an empty object if none was set yet.
+     */
+    app.get("/v1/network/tcconfig", function(req, res) {
+        res.status(200).send(networkService.tcconfig())
     });
 
 }
