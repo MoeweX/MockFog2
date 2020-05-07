@@ -1,11 +1,8 @@
 {
-  "name": "mockfog2",
+  "name": "mockfog2-agent",
   "version": "1.0.0",
-  "description": "MockFog2",
+  "description": "MockFog2 Agent",
   "main": "app.js",
-  "directories": {
-    "example": "example"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,7 +17,9 @@
   },
   "homepage": "https://github.com/MoeweX/MockFog2#readme",
   "dependencies": {
-    "node-dijkstra": "^2.5.0",
-    "strip-json-comments": "^3.1.0"
+    "await-spawn": "^3.0.0",
+    "body-parser": "^1.19.0",
+    "ejs": "^3.1.2",
+    "express": "^4.17.1"
   }
 }

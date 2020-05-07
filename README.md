@@ -10,6 +10,7 @@ Key differences to MockFogLight
 - Does not use ec2 inventory
 - Uses node and npm to manage phases
 - Network characteristics can be changed at runtime and on a per-container level
+- No pre-requitits for ami, just needs to be Amazon Linux 2
 
 MockFog2 is configured by the three configuration files found in the config directory:
 - infrastructure.json: defines machines and dependencies
@@ -29,7 +30,7 @@ In general, one should consecutively run through the phases described below.
 The `mockfog2` [binary](https://medium.com/netscape/a-guide-to-create-a-nodejs-command-line-package-c2166ad0452e) ensures that prior phases have been completed before running the next phase.
 
 Before you begin, you have to:
-- Setup MockFog2 (python, aws config, etc.)
+- Setup MockFog2 (python, node, aws config, rsync etc.)
 - Create/update configurations in `run/config` directory, json comments will be automatically removed with [strip-json-comments](https://www.npmjs.com/package/strip-json-comments).
 - Prepare all files necessary for docker containers as defined in container.json
 
@@ -66,19 +67,17 @@ This:
 - Uses the configurations and machine meta data to prepare the ansible inventory that makes machines accessible by their machine_name and by container_name
 - Stores at `run/hosts`
 
-### 04 Network
+### 04 Agent
 You should:
-- Run `mockfog2 network`
+- Run `mockfog2 agent`
 
-This (Option 1):
-- Generates one network delays file per machine and stores them at `run/<machine_name>/delays.txt`
-- Generates one network configuration file per machine and stores them at `run/<machine_name>/configure_network.sh`
-- Copies and executes these files on the individual machines (can be done by [looping over hosts](https://stackoverflow.com/questions/33316586/how-to-loop-over-hostnames-or-ips-in-ansible))
+This:
+- Installs pre-requisits
+- Generates one tcconfig file per machine and stores them at `run/<machine_name>/tcconfig.json`
+- Copies the tcconfig settings to each remote and applies them using `tcset`
+- Copies the node agent to each remote and starts it
 
-This (Option 2):
-- Generates one network delays file per machine and stores them at `run/<machine_name>/delays.txt`
-- Starts docker-tc on all machines (https://github.com/lukaszlach/docker-tc#http-api)
-- Sends a post request to each demon to set initial network configuration
+The node agent offers a REST-API that can be used to apply subsequent changes to the network.
 
 ### 05 Application
 You should:
@@ -95,7 +94,14 @@ TODO
 
 ### 07 Destroy
 You should:
-- Run `./destroy.sh`
+- Run `mockfog2 destroy`
 
 This:
 - Destroys the VPC and all EC2 instances that have been part of the VPC
+
+### 08 Clean
+You should:
+- Run `mockfog2 clean`
+
+This:
+- Deletes all not-hidden files in the `./run` directory that are not placed in `./run/config`.

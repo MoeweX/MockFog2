@@ -1,0 +1,69 @@
+---
+
+- name: Install Agent and Configure Initial Network
+  hosts: machines
+
+  tasks:
+    - name: Install Yum Packages
+      yum:
+        name: "{{ packages }}"
+        state: present
+      become: yes
+      vars:
+        packages:
+          - iproute-tc
+          - python3
+          - python3-pip
+          - rsync
+
+      # to allow non-root usage to use tcconfig for easier manual debugging
+    - name: Allow TC Usage
+      shell: setcap cap_net_admin+ep /usr/sbin/tc
+      become: yes
+
+    - name: Install Node
+      script: scripts/install_node.sh
+      args:
+        creates: ~/.nvm/nvm.sh
+
+    - name: Install TCConfig
+      shell: pip3 install "tcconfig==0.25.2"
+      become: yes
+
+    - name: Copy tcconfig.json
+      copy:
+        src: "{{ playbook_dir }}/../run/machines/{{ hostvars[inventory_hostname].machine_name }}/tcconfig.json"
+        dest: "/home/ec2-user/tcconfig.json"
+
+    - name: Reset tcconfig
+      shell: tcdel eth1 --all
+      ignore_errors: yes # as rc is also 1 when no rules existed
+
+    - name: Apply tcconfig
+      shell: tcset /home/ec2-user/tcconfig.json --import-setting
+
+    - name: Copy Agent
+      synchronize:
+        src: "{{ playbook_dir }}/../agent"
+        dest: "/home/ec2-user/"
+
+    - name: Install Agent
+      npm:
+        path: "/home/ec2-user/agent"
+        state: latest
+
+    - name: Kill Active Screen Sessions
+      shell: pkill screen
+      ignore_errors: yes
+
+    - name: Wipe Dead Screen Sessions
+      shell: screen -wipe
+      ignore_errors: yes
+
+    - name: Start Agent Screen
+      shell: screen -d -m -L -S agent node app.js
+      args:
+        chdir: agent/
+      environment:
+        AGENT_PORT: "{{ agent_port }}"
+

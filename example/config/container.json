@@ -10,8 +10,8 @@
             "config.json.template", "input_csvs" // .template files will be pre-processed and renamed before being copied
         ],
         "env": {
-            "CONFIG": "/app/config.json"
-            "INPUT_PATH": "/app/input_csvs"
+            "CONFIG": "/app/config.json",
+            "INPUT_PATH": "/app/input_csvs",
             "OUTPUT_PATH": "/app/results"
         },
         // passed to "command" of ansible docker_container module

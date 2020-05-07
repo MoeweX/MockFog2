@@ -33,7 +33,7 @@
       async: 300
       poll: 0
 
-    - name: Wait for EC2 instance destruction to finish
+    - name: Wait for EC2 Instance Termination to Finish
       async_status:
         jid: "{{ item.ansible_job_id }}"
       register: instance_destruction_jobs

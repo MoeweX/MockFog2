@@ -54,6 +54,11 @@
               - 22
             cidr_ip: 0.0.0.0/0
             rule_desc: Allow inbound SSH
+          - proto: tcp
+            ports:
+              - "{{ agent_port }}"
+            cidr_ip: 0.0.0.0/0
+            rule_desc: Allow agent traffic
       register: public_security_group
 
     - name: Create Security Group for Testbed-internal Connections (no restrictions)
@@ -93,7 +98,6 @@
         dest: "{{ playbook_dir }}/../run/{{ ssh_key_name }}.pem"
         content: "{{ key.key.private_key }}"
         mode: "400"
-      when: key.changed == True
 
     - name: Get Facts about Machines
       ec2_instance_info:

@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<script src="https://code.jquery.com/jquery-1.11.3.min.js" ></script>
+	</head>
+	<body>
+		<h1>Test Interface for MockFog2 Agent</h1>
+        <textarea id="tcconfig" name="tcconfig" rows="10" cols="30">Paste TCConfig here.</textarea>
+        <button id="submit">Submit</button>
+        <h2>Current TCConfig:</h2>
+        <span><%= tcconfig %></span>
+		<script>
+            $('#submit').click(function(e) {
+                e.preventDefault();
+
+                var tcconfig = $('#tcconfig').val();
+
+                $.ajax({
+                    type: "PUT",
+                    url: "/network/tcconfig",
+                    data: tcconfig,
+                    contentType: "application/json",
+                    success: function (data, status, xhr) {
+                        console.log("load")
+                        window.location.reload()
+                    }
+                });
+            });
+		</script>
+	</body>
+</html>

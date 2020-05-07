@@ -1,7 +1,8 @@
 {
     "aws": {
         "ec2_region": "eu-central-1",
-        "ssh_key_name": "ec2:mockfog2:ssh-key"
+        "ssh_key_name": "ec2:mockfog2:ssh-key",
+        "agent_port": 3100
     },
     "machines": [
         {
@@ -10,7 +11,12 @@
             "image": "ami-0aa9794817db273c1"
         },
         {
-            "machine_name": "edge",
+            "machine_name": "edge1",
+            "type": "t3.nano",
+            "image": "ami-0aa9794817db273c1"
+        },
+        {
+            "machine_name": "edge2",
             "type": "t3.nano",
             "image": "ami-0aa9794817db273c1"
         }
@@ -22,8 +28,13 @@
     "connections": [
         {
             "from": "cloud",
-            "to": "edge",
-            "delay": "10" // in ms, set on each machine so roundtrip will be 20ms
+            "to": "edge1",
+            "delay": 10 // in ms, set on each machine so roundtrip will be 20ms
+        },
+        {
+            "from": "edge1",
+            "to": "edge2",
+            "delay": 2
         }
     ]
 }
