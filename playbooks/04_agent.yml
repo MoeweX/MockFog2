@@ -52,15 +52,18 @@
         path: "/home/ec2-user/agent"
         state: latest
 
-    - name: Set AGENT_PORT ENV
-      shell: export AGENT_PORT="{{ agent_port }}"
+    - name: Kill Active Screen Sessions
+      shell: pkill screen
+      ignore_errors: yes
 
-    - name: Get Screen Sessions
-      shell: screen -ls
-      register: screen_output
-      failed_when: "screen_output.rc == 2"
+    - name: Wipe Dead Screen Sessions
+      shell: screen -wipe
+      ignore_errors: yes
 
     - name: Start Agent Screen
-      shell: screen -d -m -S agent node agent/app.js
-      when: screen_output.stdout.find('agent') == -1
+      shell: screen -d -m -L -S agent node app.js
+      args:
+        chdir: agent/
+      environment:
+        AGENT_PORT: "{{ agent_port }}"
 
