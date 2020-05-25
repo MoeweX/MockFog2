@@ -1,5 +1,6 @@
 const fs = require("fs").promises;
 const spawn = require('await-spawn')
+const logger = require("./logService.js")("networkService")
 
 let currentConfigJson = "{}"
 let _process
@@ -25,12 +26,13 @@ async function updateTCConfig(newConfig) {
     try {
         _process = spawn("tcset", ["tmptcconfig.json", "--import-setting", "--overwrite"])
         await _process
+        logger.debug("TCSet completed without errors")
     } catch(error) {
-        const errorOutput = error.stderr.toString()
-        if (errorOutput.includes("no qdisc to delete for the incoming device")) {
-            // this error is expected
+        if (error.stderr && error.stderr.toString().includes("no qdisc to delete for the incoming device")) {
+            logger.debug("TCSet completed with expected error " + error.stderr.toString())
         } else {
             _process = undefined
+            logger.error(error)
             return error
         }
     }
@@ -62,6 +64,8 @@ function getOtherHostIPs(json) {
     } catch(error) {
         console.log("Unable to parse host ips" + error)
     }
+
+    logger.verbose("The communication to the following hosts is currently delayed " + ips)
         
     return ips
 }

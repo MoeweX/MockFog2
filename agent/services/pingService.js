@@ -1,4 +1,5 @@
 var ping = require('ping')
+const logger = require("./logService.js")("pingService")
 
 let timer
 const ping_history = []
@@ -6,9 +7,11 @@ const ping_history = []
 function startPinging(interval, hosts) {
 
     if (timer) {
+        logger.debug("Clearing ping timer")
         clearInterval(timer)
     }
 
+    logger.info("Started ping to " + hosts)
     timer = setInterval(function() {
         pingHosts(hosts).then(function(res) {
             ping_history.push(res)
@@ -30,6 +33,8 @@ async function pingHosts(hosts) {
         res = await ping.promise.probe(host, {
             extra: ["-c", "3"]
         })
+
+        logger.verbose(res)
 
         pings.push({
             "host": host,
