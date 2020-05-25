@@ -1,0 +1,19 @@
+{
+	"eth0": {
+		"outgoing": {},
+		"incoming": {}
+	},
+	"eth1": {
+		"outgoing": {
+			"dst-network=10.0.2.47/32, protocol=ip": {
+				"filler_id": "800:800",
+				"delay": 12
+			},
+			"dst-network=10.0.2.17/32, protocol=ip": {
+				"filler_id": "800:801",
+				"delay": 2
+			}
+		},
+		"incoming": {}
+	}
+}

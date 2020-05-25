@@ -83,6 +83,46 @@
                     }
                 }
             }
+        },
+        "/ping/all": {
+            "get": {
+                "tags": [
+                    "ping"
+                ],
+                "summary": "Get the complete ping history to all hosts configured with tcconfig",
+                "operationId": "getPingHistory",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The complete ping history",
+                        "schema": {
+                            "$ref": "#/definitions/ping_history"
+                        }
+                    }
+                }
+            }
+        },
+        "/ping/last": {
+            "get": {
+                "tags": [
+                    "ping"
+                ],
+                "summary": "Get the last ping",
+                "operationId": "getLastPing",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The last ping",
+                        "schema": {
+                            "$ref": "#/definitions/ping_single"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -120,6 +160,29 @@
                         "incoming": {
                             "type": "object"
                         }
+                    }
+                }
+            }
+        },
+        "ping_history": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/ping_single"
+            }
+        },
+        "ping_single": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "host": {
+                        "type": "string"
+                    },
+                    "ping": {
+                        "type": "string"
+                    },
+                    "time": {
+                        "type": "integer"
                     }
                 }
             }

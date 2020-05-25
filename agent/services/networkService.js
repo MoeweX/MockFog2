@@ -23,15 +23,22 @@ async function updateTCConfig(newConfig) {
 
     // start run tcconfig update process
     try {
-        _process = spawn("tcset", ["tmptcconfig.json", "--import-setting"])
+        _process = spawn("tcset", ["tmptcconfig.json", "--import-setting", "--overwrite"])
         await _process
     } catch(error) {
-        return error
+        const errorOutput = error.stderr.toString()
+        if (errorOutput.includes("no qdisc to delete for the incoming device")) {
+            // this error is expected
+        } else {
+            _process = undefined
+            return error
+        }
     }
 
     // only update currentConfigJson when no errors during update process
     currentConfigJson = json
 
+    _process = undefined
     return true
 }
 
@@ -39,7 +46,28 @@ function getTCConfigJson() {
     return currentConfigJson
 }
 
+/**
+ * Extracts all hosts to which an outgoing filter is applied.
+ * 
+ * @param {string} json - the tcconfig json from which the information is extracted
+ */
+function getOtherHostIPs(json) {
+    const config = JSON.parse(json)
+    ips = []
+
+    try {
+        for (host in config["eth1"]["outgoing"]) {
+            ips.push(host.toString().replace("dst-network=", "").split("/")[0])
+        }
+    } catch(error) {
+        console.log("Unable to parse host ips" + error)
+    }
+        
+    return ips
+}
+
 module.exports = {
     tcconfig: getTCConfigJson,
+    otherHostIps: function() { return getOtherHostIPs(currentConfigJson) },
     updateTCConfig: updateTCConfig
 }

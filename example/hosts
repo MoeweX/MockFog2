@@ -7,14 +7,18 @@ ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 # ---------------------------------------
 
 [machines:children]
+edge2
 cloud
-edge
+edge1
+
+[edge2]
+ec2-3-121-211-211.eu-central-1.compute.amazonaws.com machine_name=edge2
 
 [cloud]
-ec2-18-184-184-95.eu-central-1.compute.amazonaws.com machine_name=cloud internal_ip=10.0.1.73 management_ip=
+ec2-3-127-131-84.eu-central-1.compute.amazonaws.com machine_name=cloud
 
-[edge]
-ec2-11-173-147-92.eu-central-1.compute.amazonaws.com machine_name=edge internal_ip=10.0.1.82 management_ip=
+[edge1]
+ec2-18-156-33-176.eu-central-1.compute.amazonaws.com machine_name=edge1
 
 # ---------------------------------------
 # Hosts by container_names
@@ -25,4 +29,5 @@ ping_app
 
 [ping_app]
 cloud
-edge
+edge1
+edge2
