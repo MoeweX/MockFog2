@@ -1,7 +1,7 @@
 {
   "name": "mockfog2-agent",
   "version": "1.0.0",
-  "description": "MockFog2 Agent",
+  "description": "MockFog2 Node Agent",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +11,7 @@
     "url": "git+https://github.com/MoeweX/MockFog2.git"
   },
   "author": "Jonathan Hasenburg",
-  "license": "GPL-3.0",
+  "license": "Apache V2",
   "bugs": {
     "url": "https://github.com/MoeweX/MockFog2/issues"
   },

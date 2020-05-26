@@ -2,6 +2,6 @@
 run/
 package-lock.json
 node_modules/*
-agent/node_modules/*
-agent/tmptcconfig.json
-logs/*
+node-agent/node_modules/*
+node-agent/tmptcconfig.json
+*.log
