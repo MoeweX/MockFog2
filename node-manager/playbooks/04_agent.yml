@@ -44,12 +44,12 @@
 
     - name: Copy Agent
       synchronize:
-        src: "{{ playbook_dir }}/../agent"
+        src: "{{ playbook_dir }}/../../node-agent"
         dest: "/home/ec2-user/"
 
     - name: Install Agent
       npm:
-        path: "/home/ec2-user/agent"
+        path: "/home/ec2-user/node-agent"
         state: latest
 
     - name: Kill Active Screen Sessions
@@ -63,7 +63,7 @@
     - name: Start Agent Screen
       shell: screen -d -m -L -S agent node app.js
       args:
-        chdir: agent/
+        chdir: node-agent/
       environment:
         AGENT_PORT: "{{ agent_port }}"
 

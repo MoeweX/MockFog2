@@ -1,6 +1,6 @@
 tasks:
-  - init: npm install
-  - init: pip3 install -r requirements.txt
-  - init: (cd agent; npm install)
+  - init: (cd node-manager; npm install)
+  - init: (cd node-manager; pip3 install -r requirements.txt)
+  - init: (cd node-agent; npm install)
 image:
   file: .gitpod.Dockerfile

@@ -1,11 +1,8 @@
 {
-  "name": "mockfog2",
+  "name": "mockfog2-manager",
   "version": "1.0.0",
-  "description": "MockFog2",
+  "description": "MockFog2 Node Manager",
   "main": "app.js",
-  "directories": {
-    "example": "example"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,7 +11,7 @@
     "url": "git+https://github.com/MoeweX/MockFog2.git"
   },
   "author": "Jonathan Hasenburg",
-  "license": "GPL-3.0",
+  "license": "Apache V2",
   "bugs": {
     "url": "https://github.com/MoeweX/MockFog2/issues"
   },
@@ -22,6 +19,7 @@
   "dependencies": {
     "node-dijkstra": "^2.5.0",
     "ping": "^0.2.3",
+    "rimraf": "^3.0.2",
     "strip-json-comments": "^3.1.0",
     "winston": "^3.2.1"
   }

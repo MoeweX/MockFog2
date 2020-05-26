@@ -1,7 +1,7 @@
 .DS_Store
-run/
 package-lock.json
-node_modules/*
+node-manager/run/
+node-manager/node_modules/*
 node-agent/node_modules/*
 node-agent/tmptcconfig.json
 *.log

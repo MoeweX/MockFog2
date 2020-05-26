@@ -5,11 +5,11 @@
 	},
 	"eth1": {
 		"outgoing": {
-			"dst-network=10.0.2.47/32, protocol=ip": {
+			"dst-network=10.0.2.229/32, protocol=ip": {
 				"filler_id": "800:800",
-				"delay": 10
+				"delay": 12
 			},
-			"dst-network=10.0.2.109/32, protocol=ip": {
+			"dst-network=10.0.2.173/32, protocol=ip": {
 				"filler_id": "800:801",
 				"delay": 2
 			}
