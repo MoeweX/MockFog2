@@ -29,6 +29,19 @@ Jonathan Hasenburg, Martin Grambow, Elias Grünewald, Sascha Huk, David Bermbach
 
 A full list of our [publications](https://www.mcc.tu-berlin.de/menue/forschung/publikationen/parameter/en/) and [prototypes](https://www.mcc.tu-berlin.de/menue/forschung/prototypes/parameter/en/) is available on our group website.
 
-## Instructions
+## Project Overview
 
 This project extends and builds upon prior versions of MockFog.
+There are two major components:
+
+### Node Manager
+TODO
+
+### Node Agent
+TODO
+
+## Environment Setup using Gitpod
+- Open the repository or an individual issue/PR in [Gitpod](https://www.gitpod.io/docs/getting-started/)
+- Set the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables in your [Gitpod settings](https://www.gitpod.io/docs/environment-variables/)
+- Copy and customize the infrastructure.jsonc file from the `node-manager/run-examples/config` directory to the `node-manager/run/config` directory
+- You can now use MockFog2, bootstrap your infrastructure by running `node app.js bootstrap`
