@@ -12,6 +12,14 @@ Fog computing is an emerging computing paradigm that uses processing and storage
 
 MockFog2 is a tool that can be used to emulate such infrastructures in the cloud. Developers can freely design emulated fog infrastructures and configure (or manipulate during runtime) performance characteristics. Furthermore, MockFog2 can manage to be evaluated applications and run pre-defined evaluation workloads.
 
+Key differences to MockFogLight
+- Definition solely based on config files, no source code changes necessary to start an application
+- All application components are deployed with docker
+- Does not use ec2 inventory
+- Uses node and npm to manage phases
+- Network characteristics can be changed at runtime and on a per-container level
+- No pre-requitits for ami, just needs to be Amazon Linux 2
+
 If you use this software in a publication, please cite it as:
 
 ### Text
