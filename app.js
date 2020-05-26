@@ -3,19 +3,22 @@ const fs = require("fs")
 const conf = require("./lib/config.js")
 const infrastructure = require("./lib/data/infrastructure")
 
+const logger = require("./lib/services/logService.js")("main")
+
 function doBootstrap() {
-    console.log("Bootstrapping infrastructure")
+    logger.info("Bootstrapping infrastructure")
     const bootstrap = require("./lib/phases/02_bootstrap.js").playbook
     const bootstrapLog = conf.runLogDir + "bootstrap-playlog.log"
     fs.unlink(bootstrapLog, function(err) {
         // err can be ignored, if it did not exist -> fine
 
         bootstrap.on("playlog", function(data) {
+            logger.verbose(data)
             fs.appendFile(bootstrapLog, data, { "flag": "a+" }, (err) => { if (err) throw err})
         })
 
         bootstrap.on("done", function(data) {
-            console.log("Bootstrap done, exit code is: " + data)
+            logger.info("Bootstrap done, exit code is: " + data)
         })
 
         bootstrap.start()
@@ -23,24 +26,25 @@ function doBootstrap() {
 }
 
 function doHosts() {
-    console.log("Preparing hosts file")
+    logger.info("Preparing hosts file")
     const writeHosts = require("./lib/phases/03_hosts.js")
     writeHosts()
 }
 
 function doAgent() {
-    console.log("Deploying agent")
+    logger.info("Deploying agent")
     const agent = require("./lib/phases/04_agent.js").playbook
     const agentLog = conf.runLogDir + "agent-playlog.log"
     fs.unlink(agentLog, function(err) {
         // err can be ignored, if it did not exist -> fine
 
         agent.on("playlog", function(data) {
+            logger.verbose(data)
             fs.appendFile(agentLog, data, { "flag": "a+" }, (err) => { if (err) throw err})
         })
 
         agent.on("done", function(data) {
-            console.log("Agent done, exit code is: " + data)
+            logger.info("Agent done, exit code is: " + data)
         })
 
         agent.start()
@@ -48,18 +52,19 @@ function doAgent() {
 }
 
 function doDestroy() {
-    console.log("Destroying infrastructure")
+    logger.info("Destroying infrastructure")
     const destroy = require("./lib/phases/07_destroy.js").playbook
     const destroyLog = conf.runLogDir + "destroy-playlog.log"
     fs.unlink(destroyLog, function(err) {
         // err can be ignored, if it did not exist -> fine
 
         destroy.on("playlog", function(data) {
+            logger.verbose(data)
             fs.appendFile(destroyLog, data, { "flag": "a+" }, (err) => { if (err) throw err})
         })
 
         destroy.on("done", function(data) {
-            console.log("Destroy done, exit code is: " + data)
+            logger.info("Destroy done, exit code is: " + data)
         })
 
         destroy.start()
@@ -67,7 +72,7 @@ function doDestroy() {
 }
 
 function doClean() {
-    console.log("Cleaning up")
+    logger.info("Cleaning up")
     const clean = require("./lib/phases/08_clean.js")
     clean()
 }
@@ -91,5 +96,5 @@ switch (myArgs[0]) {
         doClean()
         break
     default:
-        console.log("Please tell me what to do...")
+        logger.info("Please tell me what to do...")
 }
