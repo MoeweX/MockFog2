@@ -44,7 +44,7 @@ The Node Manager is controlled through a node.js CLI application.
 The Node Agent is capable of manipulating the network properties of its machine at runtime.
 For this purpose, it offers a REST interface; this interface is fully documented with swagger.
 
-## Environment Setup using Gitpod
+## Quickstart using Gitpod
 - Open the repository or an individual issue/PR in [Gitpod](https://www.gitpod.io/docs/getting-started/)
 - Set the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables in your [Gitpod settings](https://www.gitpod.io/docs/environment-variables/)
 - Copy and customize the infrastructure.jsonc file from the `node-manager/run-examples/config` directory to the `node-manager/run/config` directory
