@@ -3,11 +3,11 @@ var path = require('path');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
-const logger = require("./services/logService.js")("main")
-const networkService = require("./services/networkService.js")
+const logger = require("./lib/services/logService.js")("main")
+const networkService = require("./lib/services/networkService.js")
 
-const networkController = require("./controllers/networkController.js")
-const pingController = require("./controllers/pingController.js")
+const networkController = require("./lib/controllers/networkController.js")
+const pingController = require("./lib/controllers/pingController.js")
 
 const app = express()
 const port = process.env.AGENT_PORT || 3000

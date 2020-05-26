@@ -1,11 +1,8 @@
 {
-  "name": "mockfog2",
+  "name": "mockfog2-agent",
   "version": "1.0.0",
-  "description": "MockFog2",
+  "description": "MockFog2 Node Agent",
   "main": "app.js",
-  "directories": {
-    "example": "example"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,15 +11,18 @@
     "url": "git+https://github.com/MoeweX/MockFog2.git"
   },
   "author": "Jonathan Hasenburg",
-  "license": "GPL-3.0",
+  "license": "Apache V2",
   "bugs": {
     "url": "https://github.com/MoeweX/MockFog2/issues"
   },
   "homepage": "https://github.com/MoeweX/MockFog2#readme",
   "dependencies": {
-    "node-dijkstra": "^2.5.0",
+    "await-spawn": "^3.0.0",
+    "body-parser": "^1.19.0",
+    "ejs": "^3.1.2",
+    "express": "^4.17.1",
     "ping": "^0.2.3",
-    "strip-json-comments": "^3.1.0",
+    "swagger-ui-express": "^4.1.4",
     "winston": "^3.2.1"
   }
 }
