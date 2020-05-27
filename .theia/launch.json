@@ -3,12 +3,19 @@
     // Hover to view descriptions of existing attributes.
     "version": "0.2.0",
     "configurations": [
+
         {
             "type": "node",
             "request": "launch",
             "name": "App",
             "program": "${workspaceFolder}/node-manager/app.js",
             "cwd": "${workspaceFolder}/node-manager"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Bootstrap",
+            "program": "${workspaceFolder}/node-manager/lib/stages/01_infrastructure/01_bootstrap.js",
         },
         {
             "type": "node",
