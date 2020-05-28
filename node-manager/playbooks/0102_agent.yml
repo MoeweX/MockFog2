@@ -1,6 +1,6 @@
 ---
 
-- name: Install Agent and Configure Initial Network
+- name: Install Node-Agent
   hosts: machines
 
   tasks:
@@ -29,18 +29,6 @@
     - name: Install TCConfig
       shell: pip3 install "tcconfig==0.25.2"
       become: yes
-
-    - name: Copy tcconfig.json
-      copy:
-        src: "{{ playbook_dir }}/../run/machines/{{ hostvars[inventory_hostname].machine_name }}/tcconfig.json"
-        dest: "/home/ec2-user/tcconfig.json"
-
-    - name: Reset tcconfig
-      shell: tcdel eth1 --all
-      ignore_errors: yes # as rc is also 1 when no rules existed
-
-    - name: Apply tcconfig
-      shell: tcset /home/ec2-user/tcconfig.json --import-setting
 
     - name: Copy Agent
       synchronize:

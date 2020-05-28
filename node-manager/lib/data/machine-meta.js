@@ -36,6 +36,17 @@ function getInternalIP(machine_name, instances) {
     }
 }
 
+/**
+ * Returns the public ip address of the management communication network.
+ * 
+ * @param {String} machine_name 
+ * @param {Object} instances the machine meta json instances object
+ */
+function getPublicIP(machine_name, instances) {
+    const instance = getInstance(machine_name, instances)
+    return instance.public_dns_name
+}
+
 //*************************************
 // Hosts file helper
 //*************************************
@@ -64,6 +75,9 @@ module.exports = function(fileLocation) {
         machineMeta: machineMeta,
         getInternalIP: function(machine_name) {
             return getInternalIP(machine_name, machineMeta.instances)
+        },
+        getPublicIP: function(machine_name) {
+            return getPublicIP(machine_name, machineMeta.instances)
         },
         hostsDataObject: getHostsDataObject(machineMeta)
     }
