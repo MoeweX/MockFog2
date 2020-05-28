@@ -51,7 +51,7 @@ The Node Manager is responsible for setting up required virtual machines in the 
 Setting up the infrastructure does also involve manipulating networking delays between machines.
 The Node Manager is controlled through a node.js CLI application.
 
-#### [Node Agent](node-manager/README.md)
+#### [Node Agent](node-agent/README.md)
 The Node Agent is capable of manipulating the network properties of its machine at runtime.
 For this purpose, it offers a REST interface; this interface is fully documented with swagger.
 
