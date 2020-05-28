@@ -6,8 +6,8 @@ const conf = require("../config.js")
 /**
  * Returns the instance object that has a name tag which is equal to the given machine_name.
  * Returns undefined if no such instance exists.
- * 
- * @param {Object} machine_name 
+ *
+ * @param {Object} machine_name
  * @param {Object} instances the machine meta json instances object
  */
 function getInstance(machine_name, instances) {
@@ -21,8 +21,8 @@ function getInstance(machine_name, instances) {
 /**
  * Returns the private ip address of the internal communication network.
  * These IPs are part of the 10.0.2.0/24 subnet.
- * 
- * @param {String} machine_name 
+ *
+ * @param {String} machine_name
  * @param {Object} instances the machine meta json instances object
  */
 function getInternalIP(machine_name, instances) {
@@ -38,8 +38,8 @@ function getInternalIP(machine_name, instances) {
 
 /**
  * Returns the public ip address of the management communication network.
- * 
- * @param {String} machine_name 
+ *
+ * @param {String} machine_name
  * @param {Object} instances the machine meta json instances object
  */
 function getPublicIP(machine_name, instances) {
@@ -53,7 +53,7 @@ function getPublicIP(machine_name, instances) {
 
 /**
  * Returns a helper object needed to create the ansible hosts file.
- * 
+ *
  * @param {Object} machineMeta the machine meta json object
  */
 function getHostsDataObject(machineMeta) {
@@ -65,7 +65,7 @@ function getHostsDataObject(machineMeta) {
 
 module.exports = function(fileLocation) {
     if (!fileLocation) {
-        fileLocation = conf.runDir + "machine_meta.json"
+        fileLocation = conf.runDir + "machine_meta.jsonc"
     }
 
     const machineMetaJson = fs.readFileSync(fileLocation, "utf-8")

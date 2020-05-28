@@ -170,6 +170,6 @@
     - name: Write Machine Facts to File
       local_action:
         module: copy
-        dest: "{{ playbook_dir }}/../run/machine_meta.json"
+        dest: "{{ playbook_dir }}/../run/machine_meta.jsonc"
         content: "{{ ec2 }}"
         mode: "400"

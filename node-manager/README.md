@@ -26,11 +26,11 @@ Start this phase by running `node app.js bootstrap`, this:
 - Creates a var file for the bootstrap playbook at `run/vars/`
 - Bootstraps the infrastructure on AWS
     - Setup a VPC
-    - Setup a management subnet (access to internet, only ssh)
-    - Setup an internal subnet (access to all other machines, all traffic)
+    - Setup a management subnet (access to internet, only ssh and node agent) -> mapped to eth0
+    - Setup an internal subnet (access to all other machines, all traffic) -> mapped to eth1
     - Start EC2 instances that are part of this VPC
 - Pulls ssh key and writes it to `run/<configured name>.pem`.
-- Pulls machine facts and writes them to `run/machine_meta.json`
+- Pulls machine facts and writes them to `run/machine_meta.jsonc`
 - Uses the configurations and machine facts data to prepare the ansible inventory that makes machines accessible by their machine_name and by container_name and writes it to `run/hosts`
 
 ![](../misc/Stage1-02_Agent.png)

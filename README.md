@@ -2,7 +2,7 @@
 
 # MockFog2
 
-This project is part of MockFog which includes the following subprojects:
+This project is part of [MockFog](https://moewex.github.io/publication/2019-mockfog/2019-mockfog.pdf) which includes the following subprojects:
 * [MockFog2](https://github.com/MoeweX/MockFog2/) New and more powerful version of MockFog (under active development)
 * [MockFog-Meta (archived)](https://github.com/OpenFogStack/MockFog-Meta) Meta repository of the original MockFog prototype
 * [MockFogLight (archived)](https://github.com/OpenFogStack/MockFogLight) A lightweight version of MockFog without a visual interface
@@ -48,10 +48,10 @@ The Node Agent is capable of manipulating the network properties of its machine 
 For this purpose, it offers a REST interface; this interface is fully documented with swagger.
 
 ## Quickstart using Gitpod
-- Open the repository or an individual issue/PR in [Gitpod](https://www.gitpod.io/docs/getting-started/)
+- Open the repository or an individual issue/PR in [Gitpod](https://gitpod.io/#https://github.com/MoeweX/MockFog2)
 - Set the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables in your [Gitpod settings](https://www.gitpod.io/docs/environment-variables/)
 - Copy and customize the infrastructure.jsonc file from the `node-manager/run-examples/config` directory to the `node-manager/run/config` directory
-- You can now use MockFog2, bootstrap your infrastructure by running `node app.js bootstrap`
+- You can now use MockFog2, change directory to `node-manager` and bootstrap your infrastructure by running `node app.js bootstrap`
 
 ## Roadmap
 
