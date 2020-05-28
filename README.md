@@ -4,8 +4,8 @@
 
 This project is part of MockFog which includes the following subprojects:
 * [MockFog2](https://github.com/MoeweX/MockFog2/) New and more powerful version of MockFog (under active development)
-* [MockFog-Meta](https://github.com/OpenFogStack/MockFog-Meta) Meta repository of the original MockFog prototype
-* [MockFogLight](https://github.com/OpenFogStack/MockFogLight) A lightweight version of MockFog without a visual interface
+* [MockFog-Meta (archived)](https://github.com/OpenFogStack/MockFog-Meta) Meta repository of the original MockFog prototype
+* [MockFogLight (archived)](https://github.com/OpenFogStack/MockFogLight) A lightweight version of MockFog without a visual interface
 
 Fog computing is an emerging computing paradigm that uses processing and storage capabilities located at the edge, in the cloud, and possibly in between. Testing or running experiments in the Fog, however, is hard since runtime infrastructures will typically be in use or may not exist, yet.
 
