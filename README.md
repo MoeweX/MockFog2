@@ -1,20 +1,17 @@
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/MoeweX/MockFog2) 
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/MoeweX/MockFog2)
 
 # MockFog2
 
 This project is part of MockFog which includes the following subprojects:
 * [MockFog2](https://github.com/MoeweX/MockFog2/) New and more powerful version of MockFog (under active development)
-* [MockFog-Meta](https://github.com/OpenFogStack/MockFog-Meta) Meta repository with a presentation and a demo video
-* [MockFog-IaC](https://github.com/OpenFogStack/MockFog-IaC) MockFog Infrastructure as Code artifacts
-* [MockFog-NodeManager](https://github.com/OpenFogStack/MockFog-NodeManager) MockFog Node Manager
-* [MockFog-Agent](https://github.com/OpenFogStack/MockFog-Agent) MockFog Agent
+* [MockFog-Meta](https://github.com/OpenFogStack/MockFog-Meta) Meta repository of the original MockFog prototype
 * [MockFogLight](https://github.com/OpenFogStack/MockFogLight) A lightweight version of MockFog without a visual interface
 
 Fog computing is an emerging computing paradigm that uses processing and storage capabilities located at the edge, in the cloud, and possibly in between. Testing fog applications, however, is hard since runtime infrastructures will typically be in use or may not exist, yet.
 
 MockFog2 is a tool that can be used to emulate such infrastructures in the cloud. Developers can freely design emulated fog infrastructures and configure (or manipulate during runtime) performance characteristics. Furthermore, MockFog2 can manage to be evaluated applications and run pre-defined evaluation workloads.
 
-Key differences to MockFogLight
+Key differences to MockFog and MockFogLight
 - Definition solely based on config files, no source code changes necessary to start an application
 - All application components are deployed with docker
 - Does not use ec2 inventory
@@ -43,14 +40,18 @@ A full list of our [publications](https://www.mcc.tu-berlin.de/menue/forschung/p
 ## Project Overview
 
 This project extends and builds upon prior versions of MockFog.
-There are two major components:
+Depending on the current stage, MockFog2 makes it possible to emulate a fog computing infrastructure, manage the lifecycle of a fog application, and orchestrate experiments with that application:
 
-#### Node Manager
+![](misc/Stages.png)
+
+MockFog2 has two major components.
+
+#### [Node Manager](node-manager/README.md)
 The Node Manager is responsible for setting up required virtual machines in the Cloud and installing the node agent.
 Setting up the infrastructure does also involve manipulating networking delays between machines.
 The Node Manager is controlled through a node.js CLI application.
 
-#### Node Agent
+#### [Node Agent](node-manager/README.md)
 The Node Agent is capable of manipulating the network properties of its machine at runtime.
 For this purpose, it offers a REST interface; this interface is fully documented with swagger.
 
@@ -65,13 +66,13 @@ For this purpose, it offers a REST interface; this interface is fully documented
 For more information on the roadmap and related issues, see the [project overview](https://github.com/MoeweX/MockFog2/projects).
 
 #### Version 1 (current version)
-Supports the management of the infrastructure. Code is properly documented and node agent offers basic functionalities. The node manager can be controlled via cli.
+Supports the management of the infrastructure (all functionality of stage 1). Code is properly documented and node agent offers basic functionalities. The node manager can be controlled via cli.
 
 #### Version 2
-Supports the management of the application. This includes application roll-out, startup, shutdown, and the collection of results.
+Supports the management of the application (all functionality of stage 2). This includes application roll-out, startup, shutdown, and the collection of results.
 
 #### Version 3
-Supports the orchestration of the infrastructure. For that, the node manager runs through pre-defined network manipulations and distributes them to the affected node agents at the appropriate time.
+Supports the orchestration of the infrastructure (all functionality of stage 3). For that, the node manager runs through pre-defined network manipulations and distributes them to the affected node agents at the appropriate time.
 
 #### Version 4
 Supports advanced functionality to improve the user experience and infrastructure manipulation capabilities.

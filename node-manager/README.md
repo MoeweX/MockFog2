@@ -6,63 +6,58 @@ The Node Manager is configured by the three configuration files found in the con
 - deployment.json defines how containers are deployed on the infrastructure (not supported, yet)
 To remove comments from the JSON files, use https://www.npmjs.com/package/strip-json-comments.
 
+Before you begin using the node manager, you have to create/update configurations in `run/config` directory, json comments will be automatically removed with [strip-json-comments](https://www.npmjs.com/package/strip-json-comments).
 The node manager uses ansible playbooks under the hood for all infrastructure/provisioning related tasks.
 
-## Phases
+## Stages and Phases
 
-In general, one should consecutively run through the phases described below.
-Each phase generates files needed for execution based on priorly generated files (also see run-example directory).
+Depending on the current stage, MockFog2 makes it possible to emulate a fog computing infrastructure, manage the lifecycle of a fog application, and orchestrate experiments with that application:
 
-Before you begin, you have to create/update configurations in `run/config` directory, json comments will be automatically removed with [strip-json-comments](https://www.npmjs.com/package/strip-json-comments).
+![](../misc/Stages.png)
 
-More phases will be added in later versions of MockFog2.
+Each stage comprises multiple phases that should, in general, be run consecutively.
+At the moment, the easiest way of running a phase is through the command line.
 
-### 02 Bootstrap
-You should:
- - Run `node app.js bootstrap`
+### Stage 1
 
-This:
-- Creates a var file for the bootstrap playbook, stores at `run/vars/bootstrap.yml`
+![](../misc/Stage1-01_Bootstrap.png)
+
+Start this phase by running `node app.js bootstrap`, this:
+- Creates a var file for the bootstrap playbook at `run/vars/`
 - Bootstraps the infrastructure on AWS
     - Setup a VPC
     - Setup a management subnet (access to internet, only ssh)
     - Setup an internal subnet (access to all other machines, all traffic)
     - Start EC2 instances that are part of this VPC
-- Pulls ssh key and writes it to `./<configured name>`.
+- Pulls ssh key and writes it to `run/<configured name>.pem`.
 - Pulls machine facts and writes them to `run/machine_meta.json`
+- Uses the configurations and machine facts data to prepare the ansible inventory that makes machines accessible by their machine_name and by container_name and writes it to `run/hosts`
 
-### 03 Hosts
-You should:
-- Run `node app.js host`
+![](../misc/Stage1-02_Agent.png)
 
-This:
-- Uses the configurations and machine meta data to prepare the ansible inventory that makes machines accessible by their machine_name and by container_name
-- Stores at `run/hosts`
-
-### 04 Agent
-You should:
-- Run `node app.js agent`
-
-This:
-- Creates a var file for the agent playbook, stores at `run/vars/agent.yml`
+Start this phase by running `node app.js agent`, this:
+- Creates a var file for the agent playbook at `run/vars/`
 - Installs pre-requisits on EC2 instances
-- Generates one tcconfig file per machine and stores them at `run/<machine_name>/tcconfig.json`
-- Copies the tcconfig settings to each remote and applies them using `tcset`
 - Copies the node agent to each remote and starts it
 
 The node agent offers a REST-API that can be used to apply subsequent changes to the network.
 
-### 07 Destroy
-You should:
-- Run `node app.js destroy`
+![](../misc/Stage1-03_Manipulate.png)
 
-This:
-- Creates a var file for the destroy playbook, stores at `run/vars/destroy.yml`
+Start this phase by running `node app.js manipulate`, this:
+- Generates one tcconfig file per machine and stores them at `run/<machine_name>/tcconfig.json`
+- Uses HTTP Put request to supply the corresponding tcconfig to each agent
+
+![](../misc/Stage1-04_Destroy.png)
+
+Start this phase by running `node app.js destroy`, this:
+- Creates a var file for the destroy playbook, stores at `run/vars/`
 - Destroys the VPC and all EC2 instances that have been part of the VPC
+- Deletes all local files in the `run` directory that are not located in `./run/config`.
 
-### 08 Clean
-You should:
-- Run `node app.js clean`
+## Actions per Phase
 
-This:
-- Deletes all files in the `run`directory that are not located in `./run/config`.
+Internally, each phase can comprise up to five standardized actions.
+These actions are executed by the node manager and do not require user intervention.
+
+![](../misc/Actions.png)
