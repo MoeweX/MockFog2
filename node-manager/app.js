@@ -3,32 +3,14 @@ const fs = require("fs")
 const conf = require("./lib/config.js")
 const infrastructure = require("./lib/data/infrastructure")
 
+const Bootstrap = require("./lib/stages/01_infrastructure/01_bootstrap.js")
+const Destroy = require("./lib/stages/01_infrastructure/04_destroy.js")
+
 const logger = require("./lib/services/logService.js")("main")
 
-function doBootstrap() {
-    logger.info("Bootstrapping infrastructure")
-    const bootstrap = require("./lib/phases/02_bootstrap.js").playbook
-    const bootstrapLog = conf.runLogDir + "bootstrap-playlog.log"
-    fs.unlink(bootstrapLog, function(err) {
-        // err can be ignored, if it did not exist -> fine
-
-        bootstrap.on("playlog", function(data) {
-            logger.verbose(data)
-            fs.appendFile(bootstrapLog, data, { "flag": "a+" }, (err) => { if (err) throw err})
-        })
-
-        bootstrap.on("done", function(data) {
-            logger.info("Bootstrap done, exit code is: " + data)
-        })
-
-        bootstrap.start()
-    })
-}
-
-function doHosts() {
-    logger.info("Preparing hosts file")
-    const writeHosts = require("./lib/phases/03_hosts.js")
-    writeHosts()
+const phases = {
+    "bootstrap": new Bootstrap("Bootstrap"),
+    "destroy": new Destroy("Destroy")
 }
 
 function doAgent() {
@@ -51,26 +33,6 @@ function doAgent() {
     })
 }
 
-function doDestroy() {
-    logger.info("Destroying infrastructure")
-    const destroy = require("./lib/phases/07_destroy.js").playbook
-    const destroyLog = conf.runLogDir + "destroy-playlog.log"
-    fs.unlink(destroyLog, function(err) {
-        // err can be ignored, if it did not exist -> fine
-
-        destroy.on("playlog", function(data) {
-            logger.verbose(data)
-            fs.appendFile(destroyLog, data, { "flag": "a+" }, (err) => { if (err) throw err})
-        })
-
-        destroy.on("done", function(data) {
-            logger.info("Destroy done, exit code is: " + data)
-        })
-
-        destroy.start()
-    })
-}
-
 function doClean() {
     logger.info("Cleaning up")
     const clean = require("./lib/phases/08_clean.js")
@@ -79,22 +41,17 @@ function doClean() {
 
 var myArgs = process.argv.slice(2);
 
-switch (myArgs[0]) {
-    case "bootstrap":
-        doBootstrap()
-        break
-    case "hosts":
-        doHosts()
-        break
-    case "agent":
-        doAgent()
-        break
-    case "destroy":
-        doDestroy()
-        break
-    case "clean":
-        doClean()
-        break
-    default:
-        logger.info("Please tell me what to do...")
+if (myArgs[0] in phases) {
+    var phase = phases[myArgs[0]]
+} else {
+    logger.info("Please tell me what to do...")
+    process.exit(1)
 }
+
+(async () => {
+    await phase.parseInput()
+    await phase.runPrePlaybookTasks()
+    await phase.executePlaybook()
+    await phase.runPostPlaybookTasks()
+    await phase.cleanUp()
+})();

@@ -3,7 +3,6 @@
     // Hover to view descriptions of existing attributes.
     "version": "0.2.0",
     "configurations": [
-
         {
             "type": "node",
             "request": "launch",
@@ -14,8 +13,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Bootstrap",
-            "program": "${workspaceFolder}/node-manager/lib/stages/01_infrastructure/01_bootstrap.js",
+            "name": "Single Phase",
+            "program": "${workspaceFolder}/node-manager/lib/stages/01_infrastructure/04_destroy.js",
         },
         {
             "type": "node",
@@ -30,13 +29,6 @@
             "name": "Agent",
             "program": "${workspaceFolder}/node-agent/app.js",
             "cwd": "${workspaceFolder}/node-agent"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Clean",
-            "program": "${workspaceFolder}/node-manager/lib/phases/08_clean.js",
-            "cwd": "${workspaceFolder}/node-manager/lib/phases/"
         }
     ]
 }
