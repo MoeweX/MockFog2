@@ -1,4 +1,5 @@
-const fsp = require("fs")
+const fs = require("fs")
+const fsp = fs.promises
 
 const infrastructure = require("../../data/infrastructure.js")
 const machineMeta = require("../../data/machine-meta.js")
@@ -36,7 +37,7 @@ class Child extends Phase {
     async runPostPlaybookTasks(actionFunction) {
         // write hosts file
         await fsp.writeFile(this.hostsPath, multiFileFunctions.getHosts(this.infra, machineMeta()))
-        logger.info("Hosts file written to " + hostsPath)
+        this.logger.info("Hosts file written to " + hostsPath)
     }
 
 }

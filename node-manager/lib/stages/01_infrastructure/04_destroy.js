@@ -3,6 +3,7 @@ const fsp = fs.promises
 const rimraf = require("rimraf");
 
 const infrastructure = require("../../data/infrastructure.js")
+
 const common = require("../common.js")
 const Phase = require("../phase.js")
 
@@ -24,7 +25,7 @@ class Child extends Phase {
 
     async runPrePlaybookTasks() {
         // write var file
-        await fsp.writeFile(this.varPath, this.infra.awsYML + this.infra.machinesYML)
+        await fsp.writeFile(this.varPath, this.infra.awsYML)
         this.logger.info("Destroy playbook vars written to " + this.varPath)
 
         // create playbook object
