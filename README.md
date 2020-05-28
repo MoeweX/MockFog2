@@ -7,7 +7,7 @@ This project is part of MockFog which includes the following subprojects:
 * [MockFog-Meta](https://github.com/OpenFogStack/MockFog-Meta) Meta repository of the original MockFog prototype
 * [MockFogLight](https://github.com/OpenFogStack/MockFogLight) A lightweight version of MockFog without a visual interface
 
-Fog computing is an emerging computing paradigm that uses processing and storage capabilities located at the edge, in the cloud, and possibly in between. Testing fog applications, however, is hard since runtime infrastructures will typically be in use or may not exist, yet.
+Fog computing is an emerging computing paradigm that uses processing and storage capabilities located at the edge, in the cloud, and possibly in between. Testing or running experiments in the Fog, however, is hard since runtime infrastructures will typically be in use or may not exist, yet.
 
 MockFog2 is a tool that can be used to emulate such infrastructures in the cloud. Developers can freely design emulated fog infrastructures and configure (or manipulate during runtime) performance characteristics. Furthermore, MockFog2 can manage to be evaluated applications and run pre-defined evaluation workloads.
 
