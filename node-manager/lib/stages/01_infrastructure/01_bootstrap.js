@@ -37,7 +37,7 @@ class Child extends Phase {
     async runPostPlaybookTasks(actionFunction) {
         // write hosts file
         await fsp.writeFile(this.hostsPath, multiFileFunctions.getHosts(this.infra, machineMeta()))
-        this.logger.info("Hosts file written to " + hostsPath)
+        this.logger.info("Hosts file written to " + this.hostsPath)
     }
 
 }
