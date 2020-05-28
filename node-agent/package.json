@@ -1,6 +1,6 @@
 {
   "name": "mockfog2-agent",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "MockFog2 Node Agent",
   "main": "app.js",
   "scripts": {
