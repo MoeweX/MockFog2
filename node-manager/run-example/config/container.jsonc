@@ -1,0 +1,45 @@
+[
+    {
+        "container_name": "camera",
+        "docker_image": "pfandzelter/camera", // passed to "image" of ansible docker_container module
+        "container_dirname": "/camera",
+        "local_dirname": "run/containers/camera", // all files in this directory are synced with container_dirname
+        "env": {
+            "CFD_IP": "{{ internal_ip(edge1) }}", // internal_ip(machine_name) is a magic function
+            "CFD_PORT": 8008
+        },
+        "ports": [], // passed to "ports" of ansible docker_container module
+        "command": [ // passed to "command" of ansible docker_container module
+            // when the image has an entrypoint, these will be appended, e.g., to supply flags:
+            //"--output", "/camera/results"
+        ]
+    },
+    {
+        "container_name": "cfd",
+        "docker_image": "pfandzelter/cfd",
+        "container_dirname": "/cfd",
+        "local_dirname": "run/containers/cfd",
+        "env": {
+            "CFD_PORT": 8008,
+            "CNTRL_IP": "{{ internal_ip(cloud) }}",
+            "CNTRL_PORT": 8004
+        },
+        "ports": [
+            "8008:8008"
+        ],
+        "command": []
+    },
+    {
+        "container_name": "cntrl",
+        "docker_image": "pfandzelter/cntrl",
+        "container_dirname": "/cntrl",
+        "local_dirname": "run/containers/cntrl",
+        "env": {
+            "CNTRL_PORT": 8004
+        },
+        "ports": [
+            "8004:8004"
+        ],
+        "command": []
+    }
+]

@@ -1,6 +1,0 @@
-[
-    {
-        "container_name": "ping_app",
-        "machine_names": ["edge", "cloud"] // the same machine can only be once in each list
-    }
-]

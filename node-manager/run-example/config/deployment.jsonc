@@ -1,0 +1,16 @@
+[
+    {
+        "container_name": "camera",
+        "machine_names": ["edge2"] // the same machine can only be once in each list
+    },
+    [
+    {
+        "container_name": "cfd",
+        "machine_names": ["edge1"]
+    },
+    [
+    {
+        "container_name": "cntrl",
+        "machine_names": ["cloud"]
+    }
+]

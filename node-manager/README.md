@@ -1,9 +1,9 @@
 # MockFog2 Node Manager
 
 The Node Manager is configured by the three configuration files found in the config directory:
-- infrastructure.json: defines machines and dependencies
-- containers.json: defines docker containers + application specific configurations (not supported, yet)
-- deployment.json defines how containers are deployed on the infrastructure (not supported, yet)
+- infrastructure.jsonc: defines machines and dependencies
+- containers.jsonc: defines docker containers + application specific configurations (not supported, yet)
+- deployment.jsonc defines how containers are deployed on the infrastructure (not supported, yet)
 To remove comments from the JSON files, use https://www.npmjs.com/package/strip-json-comments.
 
 Before you begin using the node manager, you have to create/update configurations in `run/config` directory, json comments will be automatically removed with [strip-json-comments](https://www.npmjs.com/package/strip-json-comments).

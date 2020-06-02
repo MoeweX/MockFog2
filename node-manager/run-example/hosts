@@ -25,9 +25,30 @@ ec2-18-156-33-176.eu-central-1.compute.amazonaws.com machine_name=edge1
 # ---------------------------------------
 
 [container:children]
-ping_app
+camera
+cfd
+cntrl
 
-[ping_app]
-cloud
-edge1
+[camera]
 edge2
+
+[camera:vars]
+container_name=camera
+docker_image=pfandzelter/camera
+container_dirname=/camera
+
+[cfd]
+edge1
+
+[cfd:vars]
+container_name=cfd
+docker_image=pfandzelter/cfd
+container_dirname=/cfd
+
+[cntrl]
+cloud
+
+[camera:vars]
+container_name=cntrl
+docker_image=pfandzelter/cntrl
+container_dirname=/cntrl
