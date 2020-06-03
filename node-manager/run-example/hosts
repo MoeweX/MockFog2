@@ -7,18 +7,18 @@ ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 # ---------------------------------------
 
 [machines:children]
+edge1
 edge2
 cloud
-edge1
-
-[edge2]
-ec2-3-121-211-211.eu-central-1.compute.amazonaws.com machine_name=edge2
-
-[cloud]
-ec2-3-127-131-84.eu-central-1.compute.amazonaws.com machine_name=cloud
 
 [edge1]
-ec2-18-156-33-176.eu-central-1.compute.amazonaws.com machine_name=edge1
+ec2-52-59-224-203.eu-central-1.compute.amazonaws.com machine_name=edge1
+
+[edge2]
+ec2-35-159-18-33.eu-central-1.compute.amazonaws.com machine_name=edge2
+
+[cloud]
+ec2-18-194-118-115.eu-central-1.compute.amazonaws.com machine_name=cloud
 
 # ---------------------------------------
 # Hosts by container_names
@@ -30,25 +30,10 @@ cfd
 cntrl
 
 [camera]
-edge2
-
-[camera:vars]
-container_name=camera
-docker_image=pfandzelter/camera
-container_dirname=/camera
+ec2-35-159-18-33.eu-central-1.compute.amazonaws.com machine_name=edge2
 
 [cfd]
-edge1
-
-[cfd:vars]
-container_name=cfd
-docker_image=pfandzelter/cfd
-container_dirname=/cfd
+ec2-52-59-224-203.eu-central-1.compute.amazonaws.com machine_name=edge1
 
 [cntrl]
-cloud
-
-[camera:vars]
-container_name=cntrl
-docker_image=pfandzelter/cntrl
-container_dirname=/cntrl
+ec2-18-194-118-115.eu-central-1.compute.amazonaws.com machine_name=cloud

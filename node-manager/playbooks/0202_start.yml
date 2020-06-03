@@ -1,45 +1,10 @@
-THIS IS WORK IN PROGRESS
 ---
 
 - name: Start Containers on machines
   hosts: all # this can be overwritten with the --limit option when starting the playbook
   tasks:
-    - name: Delete old folders
-      file:
-        path: "{{ item }}"
-        state: absent
-      with_items:
-        - "{{ folder }}"
 
-    - name: Install Docker SDK
-      pip:
-        name: docker
-
-    - name: Start Docker service
-      service:
-        name: docker
-        state: started
-
-    - name: Create ping application folder
-      file:
-        path: "{{ folder }}"
-        state: directory
-
-    - name: Write ping config
-      template:
-        src: env_file.env.j2
-        dest: "{{ folder }}/env_file.env"
-
-    - name: Kill all running docker containers
-      shell: docker rm --force $(docker ps -aq) || true
-
-    - name: Pull ping images
-      docker_image:
-        name: willfarrell/ping
-        source: pull
-        force_source: yes
-
-    - name: Start ping application containers
+    - name: Start Containers
       docker_container:
         name: "{{ container_name }}"
         image: "{{ docker_image }}"
