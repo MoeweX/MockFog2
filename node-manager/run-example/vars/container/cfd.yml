@@ -2,4 +2,4 @@
 container_name: cfd
 docker_image: pfandzelter/cfd
 container_dirname: /cfd
-local_dirname: run/appdata/cfd
+local_dirname: appdata/cfd

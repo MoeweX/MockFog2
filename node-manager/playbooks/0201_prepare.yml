@@ -12,7 +12,7 @@
 
     - name: Synchronize Local Directory
       synchronize:
-        src: "{{ playbook_dir }}/../{{ local_dirname }}/"
+        src: "{{ playbook_dir }}/../run/{{ local_dirname }}/"
         dest: "{{ container_dirname }}"
       become: yes
 

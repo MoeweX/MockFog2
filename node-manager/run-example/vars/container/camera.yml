@@ -2,4 +2,4 @@
 container_name: camera
 docker_image: pfandzelter/camera
 container_dirname: /camera
-local_dirname: run/appdata/camera
+local_dirname: appdata/camera

@@ -14,7 +14,7 @@
             "type": "node",
             "request": "launch",
             "name": "Single Phase",
-            "program": "${workspaceFolder}/node-manager/lib/stages/01_infrastructure/01_bootstrap.js",
+            "program": "${workspaceFolder}/node-manager/lib/stages/02_application/01_prepare.js",
         },
         {
             "type": "node",
