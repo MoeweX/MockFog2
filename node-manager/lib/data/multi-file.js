@@ -45,15 +45,46 @@ function getTCConfigs(infrastructure, machineMeta) {
 }
 
 /**
+ * 
+ * Returns a string that comprises all container names in seperate lines.
+ * 
+ * @param {Object} container the object return by the container.js module function
+ */
+function getContainerChildren(container) {
+    return container.containerNames.join("\n")
+}
+
+/**
+ * 
+ * Returns information on each container in the following form:
+ *  [camera]
+ *  ec2-35-159-18-33.eu-central-1.compute.amazonaws.com machine_name=edge2
+ * 
+ * @param {Object} container the object return by the container.js module function
+ * @param {Object} deployment the object return by the deployment.js module function
+ * @param {Object} machineMeta the object returned by the machine-meta.js module function
+ */
+function getHostContainerDetails(container, deployment, machineMeta) {
+    let result = ""
+    for (const cn of container.containerNames) {
+        result = result + `\n[${cn}]\n`
+        for (const mn of deployment.getMachineNames(cn)) {
+            result = result + `${machineMeta.getPublicIP(mn)} machine_name=${mn}\n`
+        }
+    }
+    return result
+}
+
+/**
  * Returns an ansible hosts file that contains all machines being part of the infrastructure.
  * Machines are addressable by their machine_name and by container_name
  * 
- * TODO add container name addressing capability
  * 
- * @param {Object} infrastructure the object returned by the infrastructure.js module function TODO remove infrastructure if not needed
  * @param {Object} machineMeta the object returned by the machine-meta.js module function
+ * @param {Object} container the object return by the container.js module function
+ * @param {Object} deployment the object return by the deployment.js module function
  */
-function getHosts(infrastructure, machineMeta) {
+function getHosts(machineMeta, container, deployment) {
 
     const hostsDataObject = machineMeta.hostsDataObject
 
@@ -72,7 +103,12 @@ ${hostsDataObject["machineGroups"]}
 
 # ---------------------------------------
 # Hosts by container_names
-# ---------------------------------------`
+# ---------------------------------------
+
+[container:children]
+${getContainerChildren(container)}
+${getHostContainerDetails(container, deployment, machineMeta)}
+`
 }
 
 module.exports = {

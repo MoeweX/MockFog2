@@ -3,6 +3,8 @@ const fsp = fs.promises
 
 const infrastructure = require("../../data/infrastructure.js")
 const machineMeta = require("../../data/machine-meta.js")
+const container = require("../../data/container.js")
+const deployment = require("../../data/deployment.js")
 const multiFileFunctions = require("../../data/multi-file.js")
 
 const common = require("../common.js")
@@ -23,6 +25,8 @@ class Child extends Phase {
 
     async parseInput() {
         this.infra = infrastructure()
+        this.container = container()
+        this.deployment = deployment()
     }
 
     async runPrePlaybookTasks() {
@@ -36,7 +40,7 @@ class Child extends Phase {
 
     async runPostPlaybookTasks(actionFunction) {
         // write hosts file
-        await fsp.writeFile(this.hostsPath, multiFileFunctions.getHosts(this.infra, machineMeta()))
+        await fsp.writeFile(this.hostsPath, multiFileFunctions.getHosts(machineMeta(), this.container, this.deployment))
         this.logger.info("Hosts file written to " + this.hostsPath)
     }
 
