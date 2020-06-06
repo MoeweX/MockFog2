@@ -1,9 +1,8 @@
 ---
 
-- name: Start Containers on machines
+- name: Start Containers on Machines
   hosts: all # this can be overwritten with the --limit option when starting the playbook
   tasks:
-
     - name: Start Containers
       docker_container:
         name: "{{ container_name }}"

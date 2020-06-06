@@ -14,8 +14,8 @@ class Child extends Phase {
     constructor(phaseName) {
         super(phaseName)
 
-        this.varPath = conf.runPlaybookVarDir + "0201_prepare.yml"
-        this.playbookPath = conf.playbookDir + "0201_prepare.yml"
+        this.varPath = conf.runPlaybookVarDir + "0202_start.yml"
+        this.playbookPath = conf.playbookDir + "0202_start.yml"
     }
 
     async parseInput() {
@@ -24,18 +24,15 @@ class Child extends Phase {
     }
 
     async runPrePlaybookTasks() {
-        // create local directory of each container
-        createLocalDirs(this.container)
-
-        // create env file for each container
-        await createEnvFiles(this.container, this.logger)
-
-        // write var file for each container
-        const containerVarPaths = await createContainerVarFiles(this.container, this.logger)
+        // get path to var file of each container
+        let containerVarPaths = []
+        for (const c of this.container.containers) {
+            containerVarPaths.push(conf.runContainerVarDir + c["container_name"] + ".yml")
+        }
 
         // write general var file
         await fsp.writeFile(this.varPath, this.infra.awsYML)
-        this.logger.info("General Prepare playbook vars written to " + this.varPath)
+        this.logger.info("Start playbook vars written to " + this.varPath)
 
         // create playbook object for each container
         this.playbooks = this.preparePlaybooks(containerVarPaths)
@@ -49,7 +46,7 @@ class Child extends Phase {
             const thisObject = {
                 playbookPath: this.playbookPath,
                 varPath: this.varPath,
-                playbookLogPath: conf.runLogDir + `0201_prepare-playlog-${container_name}.log`,
+                playbookLogPath: conf.runLogDir + `0202_start-playlog-${container_name}.log`,
                 runPlaybookVarDir: this.varPath,
                 phaseName: this.phaseName + "-" + container_name,
                 logger: this.logger,
@@ -73,39 +70,11 @@ class Child extends Phase {
 
 }
 
-function createLocalDirs(container) {
-    for (const c of container.containers) {
-        const dir = conf.runDir + c["local_dirname"]
-        conf.checkFolderExists(dir)
-    }
-}
-
-async function createEnvFiles(container, logger) {
-    for (const c of container.containers) {
-        const envFileString = container.getEnvFileString(c["container_name"])
-        const filepath = conf.runDir + c["local_dirname"] + "/env_file.env"
-        await fsp.writeFile(filepath, envFileString)
-        logger.info("Created environment file for container " + c["container_name"] + " written to " + filepath)
-    }
-}
-
-async function createContainerVarFiles(container, logger) {
-    let varPaths = []
-    for (const c of container.containers) {
-        const varYmlString = container.getContainerVarYml(c["container_name"])
-        const filepath = conf.runContainerVarDir + c["container_name"] + ".yml"
-        await fsp.writeFile(filepath, varYmlString)
-        logger.info("Prepare playbook vars for container " + c["container_name"] + " written to " + filepath)
-        varPaths.push(filepath)
-    }
-    return varPaths
-}
-
 module.exports = Child
 
 if (require.main === module) {
     (async () => {
-        const child = new Child("Prepare")
+        const child = new Child("Start")
 
         await child.parseInput()
         await child.runPrePlaybookTasks()

@@ -32,6 +32,3 @@
         name: "{{ docker_image }}"
         source: pull
         force_source: yes
-
-    - name: Kill all Running Docker Containers
-      shell: docker rm --force $(docker ps -aq) || true

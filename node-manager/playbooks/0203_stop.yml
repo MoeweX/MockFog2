@@ -1,0 +1,7 @@
+---
+
+- name: Stop Containers on Machines
+  hosts: all # this can be overwritten with the --limit option when starting the playbook
+  tasks:
+    - name: Kill all Running Docker Containers
+      shell: docker rm --force $(docker ps -aq) || true
