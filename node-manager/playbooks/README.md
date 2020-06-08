@@ -2,7 +2,7 @@
 
 This document lists required files that need to be available for the playbook of each phase.
 For each of the files, a list to an example is needed. To understand how these files are created, please study the phases' [javascript code](../lib/stages/) directly.
-It also provides example commands with which, if all data is available in the required places, each playbook can be run with ansible directly.
+Below, we also provide example commands with which, if all data is available in the required places, each playbook can be run with ansible directly.
 Each of the example commands assumes to be executed in the `node-manager` directory; mentioned example files are also assumed to be placed, here.
 
 It is possible to step through ansible tasks with `--step` and to start at a define task with `--start-at-task`, e.g., `--start-at-task="Create SSH Key"`.
@@ -23,7 +23,7 @@ ansible-playbook --ssh-common-args="-o StrictHostKeyChecking=no" playbooks/0101_
 Requires:
 - [./run/vars/0102_agent.yml](../run-example/vars/0102_agent.yml)
 - `./run/ec2:mockfog2:ssh-key.pem` (key name depends on configuration)
-- [./run/hosts](../run-example/config/hosts)
+- [./run/hosts](../run-example/hosts)
 
 ```bash
 ansible-playbook --ssh-common-args="-o StrictHostKeyChecking=no" playbooks/0102_agent.yml -i "run/hosts" --key-file="run/ec2:mockfog2:ssh-key.pem" --extra-vars="@run/vars/0102_agent.yml"
@@ -49,7 +49,7 @@ ansible-playbook --ssh-common-args="-o StrictHostKeyChecking=no" playbooks/0104_
 Requires:
 - [./run/vars/0201_prepare.yml](../run-example/vars/0201_prepare.yml)
 - `./run/ec2:mockfog2:ssh-key.pem` (key name depends on configuration)
-- [./run/hosts](../run-example/config/hosts)
+- [./run/hosts](../run-example/hosts)
 - container specific vars, e.g., [./run/vars/container/camera.yml](../run-example/vars/container/camera.yml)
 - container specific environment file, e.g., [./run/appdata/camera/env_file.env](./run-example/appdata/camera/env_file.env) (storage location depends on configuration)
 
@@ -63,7 +63,7 @@ ansible-playbook --ssh-common-args="-o StrictHostKeyChecking=no" playbooks/0201_
 Requires:
 - [./run/vars/0202_start.yml](../run-example/vars/0202_start.yml)
 - `./run/ec2:mockfog2:ssh-key.pem` (key name depends on configuration)
-- [./run/hosts](../run-example/config/hosts)
+- [./run/hosts](../run-example/hosts)
 - container specific vars, e.g., [./run/vars/container/camera.yml](../run-example/vars/container/camera.yml)
 
 ```bash
@@ -87,7 +87,7 @@ ansible-playbook --ssh-common-args="-o StrictHostKeyChecking=no" playbooks/0203_
 Requires:
 - [./run/vars/0204_collect.yml](../run-example/vars/0204_collect.yml)
 - `./run/ec2:mockfog2:ssh-key.pem` (key name depends on configuration)
-- [./run/hosts](../run-example/config/hosts)
+- [./run/hosts](../run-example/hosts)
 - container specific vars, e.g., [./run/vars/container/camera.yml](../run-example/vars/container/camera.yml)
 - folder to store results, e.g., `./run/appdata/camera/` (storage location depends on configuration)
 

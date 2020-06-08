@@ -53,6 +53,8 @@ For this purpose, it offers a REST interface; this interface is fully documented
 - Copy and customize the infrastructure.jsonc file from the `node-manager/run-examples/config` directory to the `node-manager/run/config` directory
 - You can now use MockFog2, change directory to `node-manager` and bootstrap your infrastructure by running `node app.js bootstrap`
 
+If you do not want to use Gitpod, run the tasks from the [.gitpod.yml](./.gitpod.yml) file manually before doing the above.
+
 ## Roadmap
 
 For more information on the roadmap and related issues, see the [project overview](https://github.com/MoeweX/MockFog2/projects).
