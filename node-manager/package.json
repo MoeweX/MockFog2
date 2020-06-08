@@ -1,6 +1,6 @@
 {
   "name": "mockfog2-manager",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "MockFog2 Node Manager",
   "main": "app.js",
   "scripts": {

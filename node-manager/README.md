@@ -4,12 +4,13 @@ The Node Manager is configured by the three configuration files found in the con
 - [infrastructure.jsonc](./run-example/config/infrastructure.jsonc): defines machines and dependencies
 - [containers.jsonc](./run-example/config/containers.jsonc): defines docker containers + application specific configurations
 - [deployment.jsonc](./run-example/config/deployment.jsonc) defines how containers are deployed on the infrastructure
+
 The linked [example configurations](./run-example/config) will result in the deployment of the three application components of the path A1 from the [Zero2Fog](https://github.com/pfandzelter/zero2fog) example application.
 To remove comments from the JSON files, use https://www.npmjs.com/package/strip-json-comments.
 
 Before you begin using the node manager, you have to create/update configurations in `run/config` directory, json comments will be automatically removed with [strip-json-comments](https://www.npmjs.com/package/strip-json-comments).
 A good starting point is to copy the configuration files from `run-example/config`.
-The node manager uses ansible playbooks under the hood for all infrastructure/provisioning related tasks.
+The node manager uses ansible playbooks under the hood for all infrastructure/provisioning related tasks. It is possible to run these [playbooks](./playbooks/) standalone.
 
 ## Stages and Phases
 
