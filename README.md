@@ -36,11 +36,11 @@ Depending on the current stage, MockFog2 makes it possible to emulate a fog comp
 
 ![](misc/Stages.png)
 
-MockFog2 has two major components.
+MockFog2 has two major components. At the moment (Version 2), they are capable of the following:
 
 #### [Node Manager](node-manager/README.md)
-The Node Manager is responsible for setting up required virtual machines in the Cloud and installing the node agent.
-Setting up the infrastructure does also involve manipulating networking delays between machines.
+The Node Manager is responsible for setting up the for the infrastructure emulation required virtual machines in the Cloud and installing the node agent.
+It is also capable of managing the application lifecycle and the collection of experiment results.
 The Node Manager is controlled through a node.js CLI application.
 
 #### [Node Agent](node-agent/README.md)
@@ -57,17 +57,18 @@ For this purpose, it offers a REST interface; this interface is fully documented
 
 For more information on the roadmap and related issues, see the [project overview](https://github.com/MoeweX/MockFog2/projects).
 
-#### Version 1 (current version)
+#### Version 1
 Supports the management of the infrastructure (all functionality of stage 1). Code is properly documented and node agent offers basic functionalities. The node manager can be controlled via cli.
 
-#### Version 2
+#### Version 2  (current version)
 Supports the management of the application (all functionality of stage 2). This includes application roll-out, startup, shutdown, and the collection of results.
 
 #### Version 3
 Supports the orchestration of the infrastructure (all functionality of stage 3). For that, the node manager runs through pre-defined network manipulations and distributes them to the affected node agents at the appropriate time.
+The node manager is also capable of orchestrating a set of load generators.
 
 #### Version 4
-Supports advanced functionality to improve the user experience and infrastructure manipulation capabilities.
+Supports advanced functionality to improve the user experience and infrastructure manipulation capabilities (e.g., more network manipuations or the manipulation of machine characteristics such as to applications available memory).
 
 ## Key Differences to MockFog(Light)
 - Definition solely based on config files, no source code changes necessary to start an application

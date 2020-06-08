@@ -3,7 +3,7 @@
   hosts: localhost
 
   tasks:
-    - name: Get VPC Id
+    - name: Get VPC ID
       ec2_vpc_net_info:
         region: "{{ ec2_region }}"
         filters:

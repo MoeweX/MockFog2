@@ -1,12 +1,14 @@
 # MockFog2 Node Manager
 
 The Node Manager is configured by the three configuration files found in the config directory:
-- infrastructure.jsonc: defines machines and dependencies
-- containers.jsonc: defines docker containers + application specific configurations (not supported, yet)
-- deployment.jsonc defines how containers are deployed on the infrastructure (not supported, yet)
+- [infrastructure.jsonc](./run-example/config/infrastructure.jsonc): defines machines and dependencies
+- [containers.jsonc](./run-example/config/containers.jsonc): defines docker containers + application specific configurations
+- [deployment.jsonc](./run-example/config/deployment.jsonc) defines how containers are deployed on the infrastructure
+The linked [example configurations](./run-example/config) will result in the deployment of the three application components of the path A1 from the [Zero2Fog](https://github.com/pfandzelter/zero2fog) example application.
 To remove comments from the JSON files, use https://www.npmjs.com/package/strip-json-comments.
 
 Before you begin using the node manager, you have to create/update configurations in `run/config` directory, json comments will be automatically removed with [strip-json-comments](https://www.npmjs.com/package/strip-json-comments).
+A good starting point is to copy the configuration files from `run-example/config`.
 The node manager uses ansible playbooks under the hood for all infrastructure/provisioning related tasks.
 
 ## Stages and Phases
@@ -18,13 +20,13 @@ Depending on the current stage, MockFog2 makes it possible to emulate a fog comp
 Each stage comprises multiple phases that should, in general, be run consecutively.
 At the moment, the easiest way of running a phase is through the command line.
 
-### Stage 1
+### Stage 1 - Infrastructure Emulation
 
 ![](../misc/Stage1-01_Bootstrap.png)
 
 Start this phase by running `node app.js bootstrap`, this:
 - Creates a var file for the bootstrap playbook at `run/vars/`
-- Bootstraps the infrastructure on AWS
+- Bootstraps the infrastructure on AWS based on `run/infrastructure.jsonc`
     - Setup a VPC
     - Setup a management subnet (access to internet, only ssh and node agent) -> mapped to eth0
     - Setup an internal subnet (access to all other machines, all traffic) -> mapped to eth1
@@ -54,6 +56,40 @@ Start this phase by running `node app.js destroy`, this:
 - Creates a var file for the destroy playbook, stores at `run/vars/`
 - Destroys the VPC and all EC2 instances that have been part of the VPC
 - Deletes all local files in the `run` directory that are not located in `./run/config`.
+
+### Stage 2 - Application Management
+
+![](../misc/Stage2-01_Prepare.png)
+
+Start this phase by running `node app.js prepare`, this:
+- Creates a general var file for the prepare playbook at `run/vars/`
+- Creates files and folders based on `run/container.jsonc` and `deployment.jsonc` for each container
+    - Create local directories in `run/`
+    - Create environment files in local directories
+    - Create container specific var files for playbooks, stores at `run/vars/container/`
+- On the remotes of each container:
+    - Synchronize local directories
+    - Install Docker SDK and pull application container images
+
+![](../misc/Stage2-02_Start.png)
+
+Start this phase by running `node app.js start`, this:
+- Creates a general var file for the start playbook, stores at `run/vars/`
+- On the remotes of each container:
+    - Removes old docker logs
+    - Starts the application container using the container specific var and environment files
+
+![](../misc/Stage2-03_Stop.png)
+
+Start this phase by running `node app.js stop`, this:
+- Creates a general var file for the stop playbook, stores at `run/vars/`
+- Stops all docker containers on each remote
+
+![](../misc/Stage2-04_Collect.png)
+
+Start this phase by running `node app.js collect`, this:
+- Creates a general var file for the collect playbook, stores at `run/vars/`
+- Retrieves all container log files and stores them in the corresponding local directories
 
 ## Actions per Phase
 

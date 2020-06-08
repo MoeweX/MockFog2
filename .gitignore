@@ -5,3 +5,4 @@ node-manager/node_modules/*
 node-agent/node_modules/*
 node-agent/tmptcconfig.json
 *.log
+~$Figures.pptx
