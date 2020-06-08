@@ -40,6 +40,19 @@
         path: "/home/ec2-user/node-agent"
         state: latest
 
+    - name: Allow Hard Time Sync
+      lineinfile:
+        path: /etc/chrony/chrony.conf
+        line: makestep 1 -1
+        create: yes
+      become: yes
+
+    - name: Synchronize Time
+      service:
+        name: chronyd
+        state: restarted
+      become: yes
+
     - name: Kill Active Screen Sessions
       shell: pkill screen
       ignore_errors: yes
