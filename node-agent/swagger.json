@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "description": "This is the swagger file for the MockFog2 agent. You can find out more about MockFog2 by visiting our GitHub [repository](https://github.com/MoeweX/MockFog2).",
-        "version": "1.0.0",
+        "version": "3.0.0",
         "title": "MockFog2",
         "contact": {
             "email": "hasenburg@tu-berlin.de"
@@ -12,7 +12,7 @@
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         }
     },
-    "basePath": "/v1",
+    "basePath": "/v3",
     "tags": [
         {
             "name": "network",

@@ -32,7 +32,7 @@ A full list of our [publications](https://www.mcc.tu-berlin.de/menue/forschung/p
 ## Project Overview
 
 This project extends and builds upon prior versions of MockFog.
-Depending on the current stage, MockFog2 makes it possible to emulate a fog computing infrastructure, manage the lifecycle of a fog application, and orchestrate experiments with that application:
+Depending on the current **stage** (1, 2, or 3), MockFog2 makes it possible to emulate a fog computing infrastructure, manage the lifecycle of a fog application, and orchestrate experiments with that application:
 
 ![](misc/Stages.png)
 
@@ -50,7 +50,7 @@ For this purpose, it offers a REST interface; this interface is fully documented
 ## Quickstart using Gitpod
 - Open the repository or an individual issue/PR in [Gitpod](https://gitpod.io/#https://github.com/MoeweX/MockFog2)
 - Set the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables in your [Gitpod settings](https://www.gitpod.io/docs/environment-variables/)
-- Copy and customize the infrastructure.jsonc file from the `node-manager/run-examples/config` directory to the `node-manager/run/config` directory
+- Copy and customize  all .jsonc files from the `node-manager/run-examples/config` directory to the `node-manager/run/config` directory (create the directory if it does not exist)
 - You can now use MockFog2, change directory to `node-manager` and bootstrap your infrastructure by running `node app.js bootstrap`
 
 If you do not want to use Gitpod, run the tasks from the [.gitpod.yml](./.gitpod.yml) file manually before doing the above.

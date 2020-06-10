@@ -54,7 +54,7 @@ class Child extends Phase {
                 var options = {
                     "host": ip,
                     "port": 3100,
-                    "path": "/v1/network/tcconfig",
+                    "path": "/v3/network/tcconfig",
                     "method": "PUT",
                     "headers": {
                         "Content-Type": "application/json",
