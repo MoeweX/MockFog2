@@ -89,7 +89,8 @@ module.exports = function(fileLocation) {
         infra: infra,
         graph: getGraph(infra),
         awsYML: getAWSYml(infra.aws),
-        machinesYML: getMachinesYml(infra.machines)
+        machinesYML: getMachinesYml(infra.machines),
+        getGraph: getGraph
     }
 }
 
