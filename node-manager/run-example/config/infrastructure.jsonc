@@ -2,7 +2,7 @@
 {
     "aws": {
         "ec2_region": "eu-central-1",
-        "ssh_key_name": "ec2:mockfog2:ssh-key",
+        "ssh_key_name": "ec2-mockfog2-ssh-key",
         "agent_port": 3100 // the port on which the node agent provides its services
     },
     // Every machine in this list defines a single remote host setup on AWS EC2.
