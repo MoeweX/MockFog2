@@ -26,16 +26,16 @@ checkFolderExists(runPlaybookVarDir)
 checkFolderExists(runContainerVarDir)
 
 //runConfigDir misses files -> copy from run-example
-if (!fs.existsSync(runDir + "/infrastructure.jsonc")) {
+if (!fs.existsSync(runConfigDir + "/infrastructure.jsonc")) {
     fs.copyFileSync(runExampleConfigDir + "/infrastructure.jsonc", runConfigDir + "/infrastructure.jsonc");
 }
-if (!fs.existsSync(runDir + "/container.jsonc")) {
+if (!fs.existsSync(runConfigDir + "/container.jsonc")) {
     fs.copyFileSync(runExampleConfigDir + "/container.jsonc", runConfigDir + "/container.jsonc");
 }
-if (!fs.existsSync(runDir + "/deployment.jsonc")) {
+if (!fs.existsSync(runConfigDir + "/deployment.jsonc")) {
     fs.copyFileSync(runExampleConfigDir + "/deployment.jsonc", runConfigDir + "/deployment.jsonc");
 }
-if (!fs.existsSync(runDir + "/orchestration.jsonc")) {
+if (!fs.existsSync(runConfigDir + "/orchestration.jsonc")) {
     fs.copyFileSync(runExampleConfigDir + "/orchestration.jsonc", runConfigDir + "/orchestration.jsonc");
 }
 

@@ -1,4 +1,6 @@
-const logger = require("../../services/logService.js")("Node Agent Service")
+const http = require('http')
+
+const logger = require("./logService.js")("Node Agent Service")
 
 /**
  * Sends the given tcconfigs to the public endpoint of each agent as identified by the given machine-meta object.

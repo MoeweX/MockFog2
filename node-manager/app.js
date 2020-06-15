@@ -13,35 +13,44 @@ const Prepare = require("./lib/stages/02_application/01_prepare.js")
 const Start = require("./lib/stages/02_application/02_start.js")
 const Stop = require("./lib/stages/02_application/03_stop.js")
 const Collect = require("./lib/stages/02_application/04_collect.js")
+// stage 3
+const OrchestrationManager = require("./lib/stages/03_orchestration/orchestration-manager.js")
 
 const logger = require("./lib/services/logService.js")("main")
 
 const phases = {
     // stage 1
-    "bootstrap": new Bootstrap("Bootstrap"),
-    "agent": new Agent("Agent"),
-    "manipulate": new Manipulate("Manipulate"),
-    "destroy": new Destroy("Destroy"),
+    "bootstrap": Bootstrap,
+    "agent": Agent,
+    "manipulate": Manipulate,
+    "destroy": Destroy,
     // stage 2
-    "prepare": new Prepare("Prepare"),
-    "start": new Start("Start"),
-    "stop": new Stop("Stop"),
-    "collect": new Collect("Collect")
+    "prepare": Prepare,
+    "start": Start,
+    "stop": Stop,
+    "collect": Collect,
+    // stage 3
+    "orchestrate": OrchestrationManager
 }
 
 var myArgs = process.argv.slice(2);
 
 if (myArgs[0] in phases) {
-    var phase = phases[myArgs[0]]
+    var Phase = phases[myArgs[0]]
 } else {
     logger.info("Please tell me what to do...")
     process.exit(1)
 }
 
 (async () => {
-    await phase.parseInput()
-    await phase.runPrePlaybookTasks()
-    await phase.executePlaybook()
-    await phase.runPostPlaybookTasks()
-    await phase.cleanUp()
+    if (myArgs[0] === "orchestrate") {
+        new Phase().execute_schedule()
+    } else {
+        const phase = new Phase(myArgs[0]) 
+        await phase.parseInput()
+        await phase.runPrePlaybookTasks()
+        await phase.executePlaybook()
+        await phase.runPostPlaybookTasks()
+        await phase.cleanUp()
+    }
 })();

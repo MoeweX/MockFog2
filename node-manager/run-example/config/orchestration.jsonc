@@ -49,7 +49,7 @@
             "transition_conditions": [
                 {
                     "type": "time-based",
-                    "active-for": 100000,
+                    "active-for": 20000,
                     "next_state": "final"
                 }
             ]

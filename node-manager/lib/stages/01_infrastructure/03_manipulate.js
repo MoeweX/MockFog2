@@ -1,12 +1,10 @@
 const fs = require("fs")
 const fsp = fs.promises
-const http = require('http')
 
 const infrastructure = require("../../data/infrastructure.js")
 const machineMeta = require("../../data/machine-meta.js")
 const multiFileFunctions = require("../../data/multi-file.js")
 
-const common = require("../common.js")
 const Phase = require("../phase.js")
 const naService = require("../../services/nodeAgentService.js")
 
