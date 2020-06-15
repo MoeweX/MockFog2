@@ -9,7 +9,7 @@ module.exports = function(app) {
     /**
      * Expects a tcconfig JSON as produced by the tcshow command.
      */
-    app.put("/v1/network/tcconfig", jsonParser, function(req, res) {
+    app.put("/v3/network/tcconfig", jsonParser, function(req, res) {
         
         networkService.updateTCConfig(req.body)
             .then(result => {
@@ -40,7 +40,7 @@ module.exports = function(app) {
     /**
      * Replies with a tcconfig JSON as produced by the tcshow command, or an empty object if none was set yet.
      */
-    app.get("/v1/network/tcconfig", function(req, res) {
+    app.get("/v3/network/tcconfig", function(req, res) {
         res.status(200).send(networkService.tcconfig())
     });
 

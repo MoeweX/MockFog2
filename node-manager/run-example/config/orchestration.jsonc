@@ -1,8 +1,8 @@
 // Defines the orchestration schedule and meta data.
 {
     "maximum_state_change_delay": 5, // in ms; if the Node Manager detects a larger delay, the orchestration schedule exeuction is invalid
-    // Comprises a set of states and conditions for state transitions.
-    "schedule": [
+    // Each state comprises instructions and conditions for state transitions.
+    "states": [
         {
             "state_name": "initial", // it is a good idea to have an initial state that resets resource manipulations
             "resource_manipulation_instructions": "reset", // this re-applies all manipulations from infrastructure.jsonc
@@ -37,17 +37,19 @@
             },
             // Application instructions will be sent via HTTP GET at the beginning of each state to all machines on which a target_container is deployed.
             "application_instructions": [
-                "target_container": "camera", // will be sent to the public ip and port of each machine that this container is deployed on (not affected by manipuations)
-                "path": "/config" // target url path for the instruction request
-                // these key-value pairs depend on the application running in the container => not interpreted by MockFog
-                "query_strings": {
-                    "interval": 500
+                {
+                    "target_container": "camera", // will be sent to the public ip and port of each machine that this container is deployed on (not affected by manipuations)
+                    "path": "/config", // target url path for the instruction request
+                    // these key-value pairs depend on the application running in the container => not interpreted by MockFog
+                    "query_strings": {
+                        "interval": 500
+                    }
                 }
             ],
             "transition_conditions": [
                 {
                     "type": "time-based",
-                    "active-for": 100000,
+                    "active-for": 20000,
                     "next_state": "final"
                 }
             ]
@@ -56,11 +58,13 @@
             "state_name": "final",
             "resource_manipulation_instructions": "reset",
             "application_instructions": [
-                "target_container": "camera", // will be sent to the public ip and port of each machine that this container is deployed on (not affected by manipuations)
-                "path": "/config" // target url path for the instruction request
-                // these key-value pairs depend on the application running in the container => not interpreted by MockFog
-                "query_strings": {
-                    "interval": "reset"
+                {
+                    "target_container": "camera", // will be sent to the public ip and port of each machine that this container is deployed on (not affected by manipuations)
+                    "path": "/config", // target url path for the instruction request
+                    // these key-value pairs depend on the application running in the container => not interpreted by MockFog
+                    "query_strings": {
+                        "interval": "reset"
+                    }
                 }
             ],
             "transition_conditions": [] // the final event has no transition condition
