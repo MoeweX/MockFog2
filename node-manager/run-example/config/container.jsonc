@@ -6,7 +6,7 @@
         "container_dirname": "/camera",
         "local_dirname": "appdata/camera", // all files in this directory are synced with container_dirname, placed in run folder
         "env": {
-            "CFD_IP": "{{ internal_ip('edge1') }}", // internal_ip(machine_name) is a magic function
+            "CFD_IP": "{{ internal_ip('production-machine') }}", // internal_ip(machine_name) is a magic function -> returns ip of the corresponding machine
             "CFD_PORT": 8008
         },
         "ports": [], // passed to "ports" of ansible docker_container module
@@ -16,13 +16,13 @@
         ]
     },
     {
-        "container_name": "cfd",
+        "container_name": "check-for-defects",
         "docker_image": "pfandzelter/cfd",
-        "container_dirname": "/cfd",
-        "local_dirname": "appdata/cfd",
+        "container_dirname": "/check-for-defects",
+        "local_dirname": "appdata/check-for-defects",
         "env": {
             "CFD_PORT": 8008,
-            "CNTRL_IP": "{{ internal_ip('cloud') }}",
+            "CNTRL_IP": "{{ internal_ip_container('production-control') }}", // internal_ip_container(container_name) is also a magic functions -> returns one ip of any machine the container is deployed on
             "CNTRL_PORT": 8004
         },
         "ports": [
@@ -31,15 +31,132 @@
         "command": []
     },
     {
-        "container_name": "cntrl",
+        "container_name": "production-control",
         "docker_image": "pfandzelter/cntrl",
-        "container_dirname": "/cntrl",
-        "local_dirname": "appdata/cntrl",
+        "container_dirname": "/production-control",
+        "local_dirname": "appdata/production-control",
         "env": {
-            "CNTRL_PORT": 8004
+            "CNTRL_PORT": 8004,
+            "ADAPT_IP": "{{ internal_ip_container('adapt-packaging') }}",
+            "ADAPT_PORT": 8009
         },
         "ports": [
             "8004:8004"
+        ],
+        "command": []
+    },
+    {
+        "container_name": "temperature-sensor",
+        "docker_image": "pfandzelter/sensor",
+        "container_dirname": "/temperature-sensor",
+        "local_dirname": "appdata/temperature-sensor",
+        "env": {
+            "ADAPT_IP": "{{ internal_ip_container('adapt-packaging') }}",
+            "ADAPT_PORT": 8009
+        },
+        "ports": [],
+        "command": []
+    },
+    {
+        "container_name": "adapt-packaging",
+        "docker_image": "pfandzelter/adapt",
+        "container_dirname": "/adapt-packaging",
+        "local_dirname": "appdata/adapt-packaging",
+        "env": {
+            "ADAPT_PORT": 8009,
+            "PKGCNTRL_IP": "{{ internal_ip_container('packaging-control') }}",
+            "PKGCNTRL_PORT": 8002
+        },
+        "ports": [
+            "8009:8009"
+        ],
+        "command": []
+    },
+    {
+        "container_name": "packaging-control",
+        "docker_image": "pfandzelter/pkgcntrol",
+        "container_dirname": "/packaging-control",
+        "local_dirname": "appdata/packaging-control",
+        "env": {
+            "PKGCNTRL_PORT": 8002,
+            "PREDICT_IP": "{{ internal_ip_container('predict-pickup') }}",
+            "PREDICT_PORT": 8010,
+            "AGGREGATE_IP": "{{ internal_ip_container('aggregate') }}",
+            "AGGREGATE_PORT": 8007
+        },
+        "ports": [
+            "8002:8002"
+        ],
+        "command": []
+    },
+    {
+        "container_name": "predict-pickup",
+        "docker_image": "pfandzelter/predict",
+        "container_dirname": "/predict-pickup",
+        "local_dirname": "appdata/predict-pickup",
+        "env": {
+            "PREDICT_PORT": 8010,
+            "PROGNOSIS_IP": "{{ internal_ip_container('logistics-prognosis') }}",
+            "PROGNOSIS_PORT": 8001
+        },
+        "ports": [
+            "8010:8010"
+        ],
+        "command": []
+    },
+    {
+        "container_name": "logistics-prognosis",
+        "docker_image": "pfandzelter/prognosis",
+        "container_dirname": "/logistics-prognosis",
+        "local_dirname": "appdata/logistics-prognosis",
+        "env": {
+            "PROGNOSIS_PORT": 8001
+        },
+        "ports": [
+            "8001:8001"
+        ],
+        "command": []
+    },
+    {
+        "container_name": "aggregate",
+        "docker_image": "pfandzelter/aggregate",
+        "container_dirname": "/aggregate",
+        "local_dirname": "appdata/aggregate",
+        "env": {
+            "AGGREGATE_PORT": 8007,
+            "GENERATEDASHBOARD_IP": "{{ internal_ip_container('logistics-prognosis') }}",
+            "GENERATEDASHBOARD_PORT": 8006
+        },
+        "ports": [
+            "8007:8007"
+        ],
+        "command": []
+    },
+    {
+        "container_name": "generate-dashboard",
+        "docker_image": "pfandzelter/generatedashboard",
+        "container_dirname": "/generate-dashboard",
+        "local_dirname": "appdata/generate-dashboard",
+        "env": {
+            "GENERATEDASHBOARD_PORT": 8006,
+            "CENTRALDASHBOARD_IP": "{{ internal_ip_container('central-office-dashboard') }}",
+            "CENTRALDASHBOARD_PORT": 8000
+        },
+        "ports": [
+            "8006:8006"
+        ],
+        "command": []
+    },
+    {
+        "container_name": "central-office-dashboard",
+        "docker_image": "pfandzelter/centraldashboard",
+        "container_dirname": "/central-office-dashboard",
+        "local_dirname": "appdata/central-office-dashboard",
+        "env": {
+            "CENTRALDASHBOARD_PORT": 8000
+        },
+        "ports": [
+            "8000:8000"
         ],
         "command": []
     }

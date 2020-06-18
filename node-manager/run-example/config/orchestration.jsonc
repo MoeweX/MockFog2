@@ -28,9 +28,9 @@
                 // Connection updates overwrite the connection properties of the initial state (defined in infrastructure.jsonc) and prior state updates.
                 "connection_updates": [
                     {
-                        "from": "cloud",
-                        "to": "edge1",
-                        "delay": 25
+                        "from": "factory-server",
+                        "to": "cloud",
+                        "delay": 100
                     }
                 ]
                 // other kinds of resource manipulations will be added in the future
@@ -38,18 +38,25 @@
             // Application instructions will be sent via HTTP GET at the beginning of each state to all machines on which a target_container is deployed.
             "application_instructions": [
                 {
-                    "target_container": "camera", // will be sent to the public ip and port of each machine that this container is deployed on (not affected by manipuations)
+                    "target_container": "adapt-packaging", // will be sent to the public ip and port of each machine that this container is deployed on (not affected by manipuations)
                     "path": "/config", // target url path for the instruction request
                     // these key-value pairs depend on the application running in the container => not interpreted by MockFog
                     "query_strings": {
-                        "interval": 500
+                        "upperthreshold": 700
                     }
                 }
             ],
             "transition_conditions": [
+                // only when both conditions are met, transition to final begins
                 {
                     "type": "time-based",
                     "active-for": 20000,
+                    "next_state": "final"
+                },
+                {
+                    "type": "message-based",
+                    "event_name": "dashboard-updated",
+                    "threshold": 5, // how often the defined event_name must be sent to the node manager transition endpoint
                     "next_state": "final"
                 }
             ]
@@ -59,11 +66,10 @@
             "resource_manipulation_instructions": "reset",
             "application_instructions": [
                 {
-                    "target_container": "camera", // will be sent to the public ip and port of each machine that this container is deployed on (not affected by manipuations)
-                    "path": "/config", // target url path for the instruction request
-                    // these key-value pairs depend on the application running in the container => not interpreted by MockFog
+                    "target_container": "adapt-packaging",
+                    "path": "/config",
                     "query_strings": {
-                        "interval": "reset"
+                        "upperthreshold": "reset"
                     }
                 }
             ],
