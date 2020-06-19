@@ -124,7 +124,7 @@
         "local_dirname": "appdata/aggregate",
         "env": {
             "AGGREGATE_PORT": 8007,
-            "GENERATEDASHBOARD_IP": "{{ internal_ip_container('logistics-prognosis') }}",
+            "GENERATEDASHBOARD_IP": "{{ internal_ip_container('generate-dashboard') }}",
             "GENERATEDASHBOARD_PORT": 8006
         },
         "ports": [

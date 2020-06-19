@@ -1,0 +1,8 @@
+---
+container_name: central-office-dashboard
+docker_image: pfandzelter/centraldashboard
+container_dirname: /central-office-dashboard
+local_dirname: appdata/central-office-dashboard
+ports: 
+ - "8000:8000"
+

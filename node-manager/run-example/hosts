@@ -7,18 +7,30 @@ ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 # ---------------------------------------
 
 [machines:children]
-edge1
-edge2
+wireless-gateway
 cloud
+production-machine
+packaging-machine
+factory-server
+central-office-server
 
-[edge1]
-ec2-52-59-224-203.eu-central-1.compute.amazonaws.com machine_name=edge1
-
-[edge2]
-ec2-35-159-18-33.eu-central-1.compute.amazonaws.com machine_name=edge2
+[wireless-gateway]
+ec2-18-196-237-33.eu-central-1.compute.amazonaws.com machine_name=wireless-gateway
 
 [cloud]
-ec2-18-194-118-115.eu-central-1.compute.amazonaws.com machine_name=cloud
+ec2-54-93-233-66.eu-central-1.compute.amazonaws.com machine_name=cloud
+
+[production-machine]
+ec2-18-196-110-4.eu-central-1.compute.amazonaws.com machine_name=production-machine
+
+[packaging-machine]
+ec2-54-93-34-248.eu-central-1.compute.amazonaws.com machine_name=packaging-machine
+
+[factory-server]
+ec2-35-158-233-29.eu-central-1.compute.amazonaws.com machine_name=factory-server
+
+[central-office-server]
+ec2-35-158-239-87.eu-central-1.compute.amazonaws.com machine_name=central-office-server
 
 # ---------------------------------------
 # Hosts by container_names
@@ -26,14 +38,47 @@ ec2-18-194-118-115.eu-central-1.compute.amazonaws.com machine_name=cloud
 
 [container:children]
 camera
-cfd
-cntrl
+check-for-defects
+production-control
+temperature-sensor
+adapt-packaging
+packaging-control
+predict-pickup
+logistics-prognosis
+aggregate
+generate-dashboard
+central-office-dashboard
 
 [camera]
-ec2-35-159-18-33.eu-central-1.compute.amazonaws.com machine_name=edge2
+ec2-18-196-110-4.eu-central-1.compute.amazonaws.com machine_name=production-machine
 
-[cfd]
-ec2-52-59-224-203.eu-central-1.compute.amazonaws.com machine_name=edge1
+[check-for-defects]
+ec2-18-196-110-4.eu-central-1.compute.amazonaws.com machine_name=production-machine
 
-[cntrl]
-ec2-18-194-118-115.eu-central-1.compute.amazonaws.com machine_name=cloud
+[production-control]
+ec2-18-196-110-4.eu-central-1.compute.amazonaws.com machine_name=production-machine
+
+[temperature-sensor]
+ec2-54-93-34-248.eu-central-1.compute.amazonaws.com machine_name=packaging-machine
+
+[adapt-packaging]
+ec2-18-196-237-33.eu-central-1.compute.amazonaws.com machine_name=wireless-gateway
+
+[packaging-control]
+ec2-54-93-34-248.eu-central-1.compute.amazonaws.com machine_name=packaging-machine
+
+[predict-pickup]
+ec2-35-158-233-29.eu-central-1.compute.amazonaws.com machine_name=factory-server
+
+[logistics-prognosis]
+ec2-35-158-233-29.eu-central-1.compute.amazonaws.com machine_name=factory-server
+
+[aggregate]
+ec2-35-158-233-29.eu-central-1.compute.amazonaws.com machine_name=factory-server
+
+[generate-dashboard]
+ec2-54-93-233-66.eu-central-1.compute.amazonaws.com machine_name=cloud
+
+[central-office-dashboard]
+ec2-35-158-239-87.eu-central-1.compute.amazonaws.com machine_name=central-office-server
+

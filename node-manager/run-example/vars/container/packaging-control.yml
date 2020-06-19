@@ -1,0 +1,8 @@
+---
+container_name: packaging-control
+docker_image: pfandzelter/pkgcntrl
+container_dirname: /packaging-control
+local_dirname: appdata/packaging-control
+ports: 
+ - "8002:8002"
+

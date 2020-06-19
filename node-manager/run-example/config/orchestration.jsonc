@@ -11,7 +11,7 @@
             "transition_conditions": [
                 {
                     "type": "time-based", // the type can be time or event
-                    "active-for": 10000, // how long to stay in this state if type = time
+                    "active-for": 100000, // how long to stay in this state if type = time
                     "next_state": "s1"
                 },
                 {
@@ -28,8 +28,8 @@
                 // Connection updates overwrite the connection properties of the initial state (defined in infrastructure.jsonc) and prior state updates.
                 "connection_updates": [
                     {
-                        "from": "factory-server",
-                        "to": "cloud",
+                        "from": "cloud",
+                        "to": "factory-server",
                         "delay": 100
                     }
                 ]
@@ -50,7 +50,7 @@
                 // only when both conditions are met, transition to final begins
                 {
                     "type": "time-based",
-                    "active-for": 20000,
+                    "active-for": 200000,
                     "next_state": "final"
                 },
                 {

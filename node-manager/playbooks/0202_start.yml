@@ -12,9 +12,9 @@
         name: "{{ container_name }}"
         image: "{{ docker_image }}"
         state: started
+        network_mode: host
         auto_remove: yes
         log_driver: journald
         env_file: "{{ container_dirname }}/env_file.env"
-        ports: "{{ ports }}"
         volumes:
           - "{{ container_dirname }}:{{ container_dirname }}"
