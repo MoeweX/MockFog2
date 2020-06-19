@@ -1,5 +1,0 @@
----
-container_name: cntrl
-docker_image: pfandzelter/cntrl
-container_dirname: /cntrl
-local_dirname: appdata/cntrl

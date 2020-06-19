@@ -9,16 +9,31 @@
     "machines": [
         {
             "machine_name": "cloud", // machine_name is also used to set the "Name" tag on EC2
+            "type": "t3.small",
+            "image": "ami-0aa9794817db273c1"
+        },
+        {
+            "machine_name": "central-office-server",
+            "type": "t3.micro",
+            "image": "ami-0aa9794817db273c1"
+        },
+        {
+            "machine_name": "factory-server",
+            "type": "t3.large",
+            "image": "ami-0aa9794817db273c1"
+        },
+        {
+            "machine_name": "wireless-gateway",
             "type": "t3.nano",
             "image": "ami-0aa9794817db273c1"
         },
         {
-            "machine_name": "edge1",
+            "machine_name": "packaging-machine",
             "type": "t3.nano",
             "image": "ami-0aa9794817db273c1"
         },
         {
-            "machine_name": "edge2",
+            "machine_name": "production-machine",
             "type": "t3.nano",
             "image": "ami-0aa9794817db273c1"
         }
@@ -30,12 +45,32 @@
     "connections": [
         {
             "from": "cloud",
-            "to": "edge1",
+            "to": "centra-office-server",
             "delay": 10 // in ms, set on each machine so roundtrip will be 20ms
         },
         {
-            "from": "edge1",
-            "to": "edge2",
+            "from": "cloud",
+            "to": "factory-server",
+            "delay": 12
+        },
+        {
+            "from": "central-office-server",
+            "to": "factory-server",
+            "delay": 8
+        },
+        {
+            "from": "wireless-gateway",
+            "to": "factory-server",
+            "delay": 1
+        },
+        {
+            "from": "wireless-gateway",
+            "to": "packaging-machine",
+            "delay": 2
+        },
+        {
+            "from": "wireless-gateway",
+            "to": "production-machine",
             "delay": 2
         }
     ]

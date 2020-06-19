@@ -9,7 +9,7 @@ const myFormat = printf(({ level, message, label, timestamp }) => {
 
 function getLogger(labelName) {
     const logger = createLogger({
-        level: "silly",
+        level: "info",
         format: combine(
             label({ label: labelName }),
             timestamp({

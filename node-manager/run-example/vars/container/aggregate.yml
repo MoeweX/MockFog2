@@ -1,0 +1,8 @@
+---
+container_name: aggregate
+docker_image: pfandzelter/aggregate
+container_dirname: /aggregate
+local_dirname: appdata/aggregate
+ports: 
+ - "8007:8007"
+

@@ -2,14 +2,46 @@
 [
     {
         "container_name": "camera",
-        "machine_names": ["edge2"] // the same machine can only be once in each list
+        "machine_names": ["production-machine"] // the same machine can only be once in each list
     },
     {
-        "container_name": "cfd",
-        "machine_names": ["edge1"]
+        "container_name": "check-for-defects",
+        "machine_names": ["production-machine"]
     },
     {
-        "container_name": "cntrl",
+        "container_name": "production-control",
+        "machine_names": ["production-machine"]
+    },
+    {
+        "container_name": "temperature-sensor",
+        "machine_names": ["packaging-machine"]
+    },
+    {
+        "container_name": "adapt-packaging",
+        "machine_names": ["wireless-gateway"]
+    },
+    {
+        "container_name": "packaging-control",
+        "machine_names": ["packaging-machine"]
+    },
+    {
+        "container_name": "predict-pickup",
+        "machine_names": ["factory-server"]
+    },
+    {
+        "container_name": "logistics-prognosis",
+        "machine_names": ["factory-server"]
+    },
+    {
+        "container_name": "aggregate",
+        "machine_names": ["factory-server"]
+    },
+    {
+        "container_name": "generate-dashboard",
         "machine_names": ["cloud"]
+    },
+    {
+        "container_name": "central-office-dashboard",
+        "machine_names": ["central-office-server"]
     }
 ]

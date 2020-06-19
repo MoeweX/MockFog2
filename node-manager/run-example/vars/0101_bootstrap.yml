@@ -1,15 +1,24 @@
 ---
 ec2_region: eu-central-1
-ssh_key_name: ec2:mockfog2:ssh-key
+ssh_key_name: ec2-mockfog2-ssh-key
 agent_port: 3100
 
 machines:
 - machine_name: cloud
+  type: t3.small
+  image: ami-0aa9794817db273c1
+- machine_name: central-office-server
+  type: t3.micro
+  image: ami-0aa9794817db273c1
+- machine_name: factory-server
+  type: t3.large
+  image: ami-0aa9794817db273c1
+- machine_name: wireless-gateway
   type: t3.nano
   image: ami-0aa9794817db273c1
-- machine_name: edge1
+- machine_name: packaging-machine
   type: t3.nano
   image: ami-0aa9794817db273c1
-- machine_name: edge2
+- machine_name: production-machine
   type: t3.nano
   image: ami-0aa9794817db273c1

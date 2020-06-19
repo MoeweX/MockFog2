@@ -1,0 +1,8 @@
+---
+container_name: production-control
+docker_image: pfandzelter/cntrl
+container_dirname: /production-control
+local_dirname: appdata/production-control
+ports: 
+ - "8004:8004"
+

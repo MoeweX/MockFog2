@@ -41,7 +41,7 @@ class Child extends Phase {
 
     async runPostPlaybookTasks() {
         // send current tcconfig to each agent
-        naService.distributeTCConfigs(this.machineMeta, this.tcconfigs)
+        await naService.distributeTCConfigs(this.machineMeta, this.tcconfigs)
     }
 
 }
