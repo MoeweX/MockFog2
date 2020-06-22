@@ -1,6 +1,8 @@
+const http = require('http')
+
 const orchestrationF = require("../../data/orchestration.js")
 const deploymentF = require("../../data/deployment.js")
-const infrastructureF = require("../../data/infrastructure.js")()
+const infrastructureF = require("../../data/infrastructure.js")
 
 const multiFileFunctions = require("../../data/multi-file.js")
 const naService = require("../../services/nodeAgentService.js")
@@ -42,7 +44,7 @@ class Manager {
         // resource manipulation
         if (state.resource_manipulation_instructions === "reset") {
             logger.info("Resetting infrastructure manipulations")
-            this.infrastructure = require("../../data/infrastructure.js")()
+            this.infrastructure = infrastructureF()
         } else {
             // apply manipulations to this.infrastructure.infra
             this.infrastructure = applyConnectionUpdates(this.infrastructure, state.resource_manipulation_instructions.connection_updates)
@@ -57,7 +59,9 @@ class Manager {
             await naService.distributeTCConfigs(mm, tcconfigs)
 
             // application instructions
-            await distributeApplicationInstructions(state.application_instructions, this.deployment, mm, this.infrastructure.infra.aws.agent_port)
+            if (state.application_instructions.length !== 0) {
+                await distributeApplicationInstructions(state.application_instructions, this.deployment, mm)
+            }
         }
     }
 
@@ -65,6 +69,7 @@ class Manager {
         return new Promise(resolve => {
             // TODO resolve transition conditions for each target state individually
             // TODO also consider message-based conditions
+            // TODO notify applications with message-based conditions about new state, measure notification delay
 
             // find time-based conditions
             const timeBasedConditions = state.transition_conditions.filter(tc => tc.type === "time-based")
@@ -122,14 +127,16 @@ function applyConnectionUpdates(infrastructure, connection_updates) {
  * @param {Array} application_instructions the array of application instruction objects
  * @param {Object} deployment the object returned by the deployment.js module function
  * @param {Object} mm - the object returned by the machine-meta.js module function
- * @param {int} agent_port - the port at which the agent runs
  */
-async function distributeApplicationInstructions(application_instructions, deployment, mm, agent_port) {
+
+async function distributeApplicationInstructions(application_instructions, deployment, mm) {
     var replyCount = 0
 
     return new Promise((resolve) => {
         for (const ai of application_instructions) {
             const target_machines = deployment.getMachineNames(ai.target_container)
+            const port = ai.port
+            
             let queryString = ""
             for (const [key, value] of Object.entries(ai.query_strings)) {
                 if (queryString === "") {
@@ -141,13 +148,16 @@ async function distributeApplicationInstructions(application_instructions, deplo
             }
 
             for (const machine of target_machines) {
+                const ip = mm.getPublicIP(machine)
+
                 const options = {
-                    "host": mm.getPublicIP(machine),
-                    "port": agent_port,
+                    "host": ip,
+                    "port": port,
                     "path": `${ai.path}${queryString}`,
                     "method": "GET"
                 }
 
+                logger.info(`Sending application instruction to ${ip}:${port}`)
                 http.request(options, (res) => {
                     logger.info(`Sent application instruction to ${ip}, status code is ${res.statusCode}`)
                     replyCount++

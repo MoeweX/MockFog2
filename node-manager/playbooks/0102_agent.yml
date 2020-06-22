@@ -49,7 +49,7 @@
     - name: Install Agent
       npm:
         path: "/home/ec2-user/node-agent"
-        state: latest
+        state: present
 
     - name: Allow Hard Time Sync
       lineinfile:
