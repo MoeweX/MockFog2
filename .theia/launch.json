@@ -29,6 +29,18 @@
             "name": "Agent",
             "program": "${workspaceFolder}/node-agent/app.js",
             "cwd": "${workspaceFolder}/node-agent"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Mocha All",
+            "program": "${workspaceFolder}/node-manager/node_modules/mocha/bin/_mocha",
+            "args": [
+                "--recursive",
+                "${workspaceFolder}/node-manager/test"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
         }
     ]
 }

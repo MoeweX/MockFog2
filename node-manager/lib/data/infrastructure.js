@@ -63,6 +63,7 @@ function getGraph(infra) {
  * 
  * @param {String} machine_name
  * @param {Object} connections the infrastructure json connnections object
+ * @returns {Object} with machine names as key and the delay to the target machine as value
  */
 function getOneHopEdges(machine_name, connections) {
     let result = {}
@@ -90,7 +91,8 @@ module.exports = function(fileLocation) {
         graph: getGraph(infra),
         awsYML: getAWSYml(infra.aws),
         machinesYML: getMachinesYml(infra.machines),
-        getGraph: getGraph
+        getGraph: getGraph,
+        _getOneHopEdges: getOneHopEdges
     }
 }
 
