@@ -1,4 +1,7 @@
-const orchestration = require("../../data/orchestration.js")
+const orchestrationF = require("../../data/orchestration.js")
+const deploymentF = require("../../data/deployment.js")
+const infrastructureF = require("../../data/infrastructure.js")()
+
 const multiFileFunctions = require("../../data/multi-file.js")
 const naService = require("../../services/nodeAgentService.js")
 const machineMeta = require("../../data/machine-meta.js")
@@ -9,8 +12,9 @@ class Manager {
 
     constructor(debug = false) {
         this.debug = debug
-        this.states = orchestration().states
-        this.infrastructure = require("../../data/infrastructure.js")()
+        this.states = orchestrationF().states
+        this.infrastructure = infrastructureF()
+        this.deployment = deploymentF()
         this.status = "idle"
     }
 
@@ -47,16 +51,21 @@ class Manager {
             this.infrastructure.graph = this.infrastructure.getGraph(this.infrastructure.infra)
         }
         if (!this.debug) {
-            const tcconfigs = multiFileFunctions.getTCConfigs(this.infrastructure, machineMeta())
-            await naService.distributeTCConfigs(machineMeta(), tcconfigs)
+            const mm = machineMeta()
+
+            const tcconfigs = multiFileFunctions.getTCConfigs(this.infrastructure, mm)
+            await naService.distributeTCConfigs(mm, tcconfigs)
+
+            // application instructions
+            await distributeApplicationInstructions(state.application_instructions, this.deployment, mm, this.infrastructure.infra.aws.agent_port)
         }
-
-        // TODO application instructions 
-
     }
 
     async doState(state) {
         return new Promise(resolve => {
+            // TODO resolve transition conditions for each target state individually
+            // TODO also consider message-based conditions
+
             // find time-based conditions
             const timeBasedConditions = state.transition_conditions.filter(tc => tc.type === "time-based")
 
@@ -73,7 +82,7 @@ class Manager {
 
             // if there is one -> wait for defined time
             const time = timeBasedConditions[0]["active-for"]
-            logger.info("Time-based condition: " + time/1000 + "s.")
+            logger.info("Time-based condition: " + time / 1000 + "s.")
             setTimeout(resolve, time)
         })
     }
@@ -105,6 +114,51 @@ function applyConnectionUpdates(infrastructure, connection_updates) {
     infrastructure.infra = infra // let's make it explicit
     logger.verbose("Applied connection updates, new connections are " + JSON.stringify(infrastructure.infra.connections))
     return infrastructure
+}
+
+/**
+ * Sends the given application instructions to the respective application endpoints.
+ * 
+ * @param {Array} application_instructions the array of application instruction objects
+ * @param {Object} deployment the object returned by the deployment.js module function
+ * @param {Object} mm - the object returned by the machine-meta.js module function
+ * @param {int} agent_port - the port at which the agent runs
+ */
+async function distributeApplicationInstructions(application_instructions, deployment, mm, agent_port) {
+    var replyCount = 0
+
+    return new Promise((resolve) => {
+        for (const ai of application_instructions) {
+            const target_machines = deployment.getMachineNames(ai.target_container)
+            let queryString = ""
+            for (const [key, value] of Object.entries(ai.query_strings)) {
+                if (queryString === "") {
+                    queryString += "?" // add ? if not present
+                } else if (queryString !== "?") {
+                    queryString += "&" // add & if not first object
+                }
+                queryString += `${key}=${value}`
+            }
+
+            for (const machine of target_machines) {
+                const options = {
+                    "host": mm.getPublicIP(machine),
+                    "port": agent_port,
+                    "path": `${ai.path}${queryString}`,
+                    "method": "GET"
+                }
+
+                http.request(options, (res) => {
+                    logger.info(`Sent application instruction to ${ip}, status code is ${res.statusCode}`)
+                    replyCount++
+                    if (replyCount === application_instructions.length) {
+                        logger.info("Distributed all application instructions")
+                        resolve()
+                    }
+                }).end()
+            }
+        }
+    })
 }
 
 module.exports = Manager

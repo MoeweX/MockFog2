@@ -38,11 +38,11 @@
             // Application instructions will be sent via HTTP GET at the beginning of each state to all machines on which a target_container is deployed.
             "application_instructions": [
                 {
-                    "target_container": "adapt-packaging", // will be sent to the public ip and port of each machine that this container is deployed on (not affected by manipuations)
-                    "path": "/config", // target url path for the instruction request
+                    "target_container": "aggregate", // will be sent to the public ip and port of each machine that this container is deployed on (not affected by manipuations)
+                    "path": "/interval", // target url path for the instruction request
                     // these key-value pairs depend on the application running in the container => not interpreted by MockFog
                     "query_strings": {
-                        "upperthreshold": 700
+                        "interval": 5000
                     }
                 }
             ],
@@ -55,7 +55,7 @@
                 },
                 {
                     "type": "message-based",
-                    "event_name": "dashboard-updated",
+                    "event": "dashboard-generated",
                     "threshold": 5, // how often the defined event_name must be sent to the node manager transition endpoint
                     "next_state": "final"
                 }
@@ -66,10 +66,10 @@
             "resource_manipulation_instructions": "reset",
             "application_instructions": [
                 {
-                    "target_container": "adapt-packaging",
-                    "path": "/config",
+                    "target_container": "aggregate",
+                    "path": "/interval",
                     "query_strings": {
-                        "upperthreshold": "reset"
+                        "interval": "reset"
                     }
                 }
             ],
