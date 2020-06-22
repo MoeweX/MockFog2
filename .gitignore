@@ -1,5 +1,4 @@
 .DS_Store
-package-lock.json
 node-manager/run/
 node-manager/node_modules/*
 node-agent/node_modules/*
