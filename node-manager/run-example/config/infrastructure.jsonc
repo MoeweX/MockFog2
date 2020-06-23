@@ -45,7 +45,7 @@
     "connections": [
         {
             "from": "cloud",
-            "to": "centra-office-server",
+            "to": "central-office-server",
             "delay": 10 // in ms, set on each machine so roundtrip will be 20ms
         },
         {

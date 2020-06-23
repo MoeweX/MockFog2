@@ -22,6 +22,7 @@ function getTCConfigs(infrastructure, machineMeta) {
             const delay = graph.path(start.machine_name, target.machine_name, { cost: true }).cost
 
             outgoing[`dst-network=${getInternalIP(target.machine_name)}/32, protocol=ip`] = {
+                machine_name: target.machine_name,
                 filler_id: `800:${fillerId}`,
                 delay: delay
             }
@@ -58,7 +59,7 @@ function getContainerChildren(container) {
  * 
  * Returns information on each container in the following form:
  *  [camera]
- *  ec2-35-159-18-33.eu-central-1.compute.amazonaws.com machine_name=edge2
+ *  ec2-35-159-18-33.eu-central-1.compute.amazonaws.com machine_name=edge2 internal_ip=10.0.2.4
  * 
  * @param {Object} container the object return by the container.js module function
  * @param {Object} deployment the object return by the deployment.js module function
@@ -69,7 +70,7 @@ function getHostContainerDetails(container, deployment, machineMeta) {
     for (const cn of container.containerNames) {
         result = result + `\n[${cn}]\n`
         for (const mn of deployment.getMachineNames(cn)) {
-            result = result + `${machineMeta.getPublicIP(mn)} machine_name=${mn}\n`
+            result = result + `${machineMeta.getPublicIP(mn)} machine_name=${mn} internal_ip=${machineMeta.getInternalIP(mn)}\n`
         }
     }
     return result
