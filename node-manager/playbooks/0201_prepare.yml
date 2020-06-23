@@ -16,17 +16,6 @@
         dest: "{{ container_dirname }}"
       become: yes
 
-    - name: Install Docker SDK
-      pip:
-        name: docker
-      become: yes
-
-    - name: Start Docker Service
-      service:
-        name: docker
-        state: started
-      become: yes
-
     - name: Pull Docker Image
       docker_image:
         name: "{{ docker_image }}"

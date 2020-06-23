@@ -42,6 +42,7 @@ class Child extends Phase {
     }
 
     async executePlaybook() {
+        const promises = []
         // we need to run multiple playbooks, not just one
         for (const i in this.playbooks) {
             const pb = this.playbooks[i]
@@ -56,9 +57,10 @@ class Child extends Phase {
                 playbook: pb
             }
 
-            await super.executePlaybook.apply(thisObject)
+            promises.push(super.executePlaybook.apply(thisObject))
         }
-
+        await Promise.all(promises);
+        this.logger.info("All playbooks have been executed")
     }
 
     preparePlaybooks(containerVarPaths) {

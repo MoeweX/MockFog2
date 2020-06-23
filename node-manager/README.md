@@ -70,7 +70,7 @@ Start this phase by running `node app.js prepare`, this:
     - Create container specific var files for playbooks, stores at `run/vars/container/`
 - On the remotes of each container:
     - Synchronize local directories
-    - Install Docker SDK and pull application container images
+    - Pull application container images
 
 ![](../misc/Stage2-02_Start.png)
 
