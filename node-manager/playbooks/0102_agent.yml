@@ -30,6 +30,17 @@
       shell: pip3 install "tcconfig==0.25.2"
       become: yes
 
+    - name: Install Docker SDK
+      pip:
+        name: docker
+      become: yes
+
+    - name: Start Docker Service
+      service:
+        name: docker
+        state: started
+      become: yes
+
     - name: Copy Agent
       synchronize:
         src: "{{ playbook_dir }}/../../node-agent"
