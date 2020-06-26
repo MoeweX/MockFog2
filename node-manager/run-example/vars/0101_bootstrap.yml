@@ -3,6 +3,9 @@ ec2_region: eu-central-1
 ssh_key_name: ec2-mockfog2-ssh-key
 agent_port: 3100
 
+application_instruction_ports:
+- 8007
+
 machines:
 - machine_name: cloud
   type: t3.small

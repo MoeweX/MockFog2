@@ -2,7 +2,7 @@
 [
     {
         "container_name": "camera",
-        "docker_image": "pfandzelter/camera", // passed to "image" of ansible docker_container module
+        "docker_image": "hasenburg/camera", // passed to "image" of ansible docker_container module
         "container_dirname": "/camera",
         "local_dirname": "appdata/camera", // all files in this directory are synced with container_dirname, placed in run folder
         "env": {
@@ -17,7 +17,7 @@
     },
     {
         "container_name": "check-for-defects",
-        "docker_image": "pfandzelter/cfd",
+        "docker_image": "hasenburg/cfd",
         "container_dirname": "/check-for-defects",
         "local_dirname": "appdata/check-for-defects",
         "env": {
@@ -32,7 +32,7 @@
     },
     {
         "container_name": "production-control",
-        "docker_image": "pfandzelter/cntrl",
+        "docker_image": "hasenburg/cntrl",
         "container_dirname": "/production-control",
         "local_dirname": "appdata/production-control",
         "env": {
@@ -47,7 +47,7 @@
     },
     {
         "container_name": "temperature-sensor",
-        "docker_image": "pfandzelter/sensor",
+        "docker_image": "hasenburg/sensor",
         "container_dirname": "/temperature-sensor",
         "local_dirname": "appdata/temperature-sensor",
         "env": {
@@ -59,7 +59,7 @@
     },
     {
         "container_name": "adapt-packaging",
-        "docker_image": "pfandzelter/adapt",
+        "docker_image": "hasenburg/adapt",
         "container_dirname": "/adapt-packaging",
         "local_dirname": "appdata/adapt-packaging",
         "env": {
@@ -74,7 +74,7 @@
     },
     {
         "container_name": "packaging-control",
-        "docker_image": "pfandzelter/pkgcntrl",
+        "docker_image": "hasenburg/pkgcntrl",
         "container_dirname": "/packaging-control",
         "local_dirname": "appdata/packaging-control",
         "env": {
@@ -91,7 +91,7 @@
     },
     {
         "container_name": "predict-pickup",
-        "docker_image": "pfandzelter/predict",
+        "docker_image": "hasenburg/predict",
         "container_dirname": "/predict-pickup",
         "local_dirname": "appdata/predict-pickup",
         "env": {
@@ -106,7 +106,7 @@
     },
     {
         "container_name": "logistics-prognosis",
-        "docker_image": "pfandzelter/prognosis",
+        "docker_image": "hasenburg/prognosis",
         "container_dirname": "/logistics-prognosis",
         "local_dirname": "appdata/logistics-prognosis",
         "env": {
@@ -119,7 +119,7 @@
     },
     {
         "container_name": "aggregate",
-        "docker_image": "pfandzelter/aggregate",
+        "docker_image": "hasenburg/aggregate",
         "container_dirname": "/aggregate",
         "local_dirname": "appdata/aggregate",
         "env": {
@@ -134,7 +134,7 @@
     },
     {
         "container_name": "generate-dashboard",
-        "docker_image": "pfandzelter/generatedashboard",
+        "docker_image": "hasenburg/generatedashboard",
         "container_dirname": "/generate-dashboard",
         "local_dirname": "appdata/generate-dashboard",
         "env": {
@@ -149,7 +149,7 @@
     },
     {
         "container_name": "central-office-dashboard",
-        "docker_image": "pfandzelter/centraldashboard",
+        "docker_image": "hasenburg/centraldashboard",
         "container_dirname": "/central-office-dashboard",
         "local_dirname": "appdata/central-office-dashboard",
         "env": {

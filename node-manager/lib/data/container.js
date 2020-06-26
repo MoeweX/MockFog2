@@ -89,6 +89,9 @@ module.exports = function(fileLocation) {
         },
         getContainerVarYml: function(container_name) {
             return getContainerVarYml(containers, container_name)
+        },
+        getContainerObject: function(container_name) {
+            return getContainerObject(containers, container_name)
         }
     }
 }
