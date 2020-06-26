@@ -30,16 +30,17 @@ function startPinging(hosts) {
  * @returns {object} - see above
  */
 async function pingHosts(hosts) {
-    pings = []
-    for(let host of hosts) {
-        res = await ping.promise.probe(host, {
+    results = []
+    for(const host of hosts) {
+        results.push(ping.promise.probe(host, {
             extra: ["-c", "10"]
-        })
+        }))
+    }
 
-        logger.verbose(res)
-
+    const pings = []
+    for (const res of await Promise.all(results)) {
         pings.push({
-            "host": host,
+            "host": res.host,
             "ping": res.avg,
             "packetLoss": res.packetLoss,
             "time": Date.now()

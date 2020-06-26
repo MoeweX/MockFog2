@@ -4,13 +4,14 @@ const Graph = require('node-dijkstra')
 const converter = require("../services/conversionService.js")
 
 const conf = require("../config.js")
+const logger = require("../services/logService.js")("Infrastructure")
 
 /**
  * The defaults are used if a certain field is optional and not set
  */
 const DEFAULTS = {
     // connection rate
-    "rate": Number.MAX_VALUE + "bps",
+    "rate": "1gbps",
     // connection delay distribution in ms
     "delay-distro": 0,
     // connection duplicate probablity in %
@@ -23,8 +24,17 @@ const DEFAULTS = {
     "reordering": 0
 }
 
+function avg(arr) {
+    let sum = 0
+    for (v of arr) {
+        sum += v
+    }
+    return sum/arr.length
+}
+
 /**
- * Returns the connection object with the given to and from field
+ * Returns the connection object with the given to and from field.
+ * Also checks reverse paths as connections are bidirectional.
  * 
  * @param {Object} infra the infrastructure json object
  * @param {String} to 
@@ -34,6 +44,8 @@ const DEFAULTS = {
 function getConnection(infra, to, from) {
     for (const connection of infra.connections) {
         if (connection.to === to && connection.from === from) {
+            return connection
+        } else if (connection.to === from && connection.from === to) {
             return connection
         }
     }
@@ -155,7 +167,7 @@ function calculatePathDelayDistro(infra, path) {
         const delayDistro = connection["delay-distro"] || DEFAULTS["delay-distro"]
         values.push(delayDistro)
     }
-    return (values) => values.reduce((a, b) => a + b) / values.length
+    return avg(values)
 }
 
 /**
@@ -173,7 +185,7 @@ function calculatePathDuplicate(infra, path) {
         const duplicate = connection["duplicate"] || DEFAULTS["duplicate"]
         values.push(duplicate)
     }
-    return (values) => values.reduce((a, b) => a + b) / values.length
+    return avg(values)
 }
 
 /**
@@ -191,7 +203,7 @@ function calculatePathLoss(infra, path) {
         const loss = connection["loss"] || DEFAULTS["loss"]
         values.push(loss)
     }
-    return (values) => values.reduce((a, b) => a + b) / values.length
+    return avg(values)
 }
 
 /**
@@ -209,7 +221,7 @@ function calculatePathCorrupt(infra, path) {
         const corrupt = connection["corrupt"] || DEFAULTS["corrupt"]
         values.push(corrupt)
     }
-    return (values) => values.reduce((a, b) => a + b) / values.length
+    return avg(values)
 }
 
 /**
@@ -227,7 +239,7 @@ function calculatePathReordering(infra, path) {
         const reordering = connection["reordering"] || DEFAULTS["reordering"]
         values.push(reordering)
     }
-    return (values) => values.reduce((a, b) => a + b) / values.length
+    return avg(values)
 }
 
 module.exports = function(fileLocation) {

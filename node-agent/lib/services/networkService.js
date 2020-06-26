@@ -65,7 +65,7 @@ function getOtherHostIPs(json) {
         console.log("Unable to parse host ips" + error)
     }
 
-    logger.verbose("The communication to the following hosts is currently delayed " + ips)
+    logger.verbose("The communication to the following hosts is currently shaped " + ips)
         
     return ips
 }

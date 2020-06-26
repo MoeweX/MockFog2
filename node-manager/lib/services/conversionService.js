@@ -43,7 +43,7 @@ function convertTobps(information_rate) {
         case "gbps":
             return (1000 * 1000 * 1000 * value)
         default:
-            logger.error(unitString + " is not a valid unit; " + information_rate + "is thus not a valid input.")
+            logger.error(unitString + " is not a valid unit; " + information_rate + " is thus not a valid input.")
             return 1000000000
     }
 }
