@@ -19,7 +19,7 @@ module.exports = function(app) {
                     // restart pinging of other hosts
                     hosts = networkService.otherHostIps()
                     logger.verbose("Pinging " + hosts)
-                    pingService.startPinging(5000, hosts)
+                    pingService.startPinging(hosts)
                     res.sendStatus(200)
                 } else if (result == false) {
                     logger.info("Update of network is already in progress")

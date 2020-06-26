@@ -2,9 +2,11 @@ var ping = require('ping')
 const logger = require("./logService.js")("pingService")
 
 let timer
+// TODO add updateInterval endpoint
+let interval = 20000
 const ping_history = []
 
-function startPinging(interval, hosts) {
+function startPinging(hosts) {
 
     if (timer) {
         logger.debug("Clearing ping timer")
@@ -31,7 +33,7 @@ async function pingHosts(hosts) {
     pings = []
     for(let host of hosts) {
         res = await ping.promise.probe(host, {
-            extra: ["-c", "3"]
+            extra: ["-c", "10"]
         })
 
         logger.verbose(res)
@@ -39,6 +41,7 @@ async function pingHosts(hosts) {
         pings.push({
             "host": host,
             "ping": res.avg,
+            "packetLoss": res.packetLoss,
             "time": Date.now()
         })
     }
