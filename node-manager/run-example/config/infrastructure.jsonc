@@ -40,13 +40,24 @@
     ],
     /*
         Every machine must have at least one connection to another machine.
+        One can specify traffic shaping rules; they are applied to the outgoing traffic.
+        Connections are bidirectional; thus, the same rule is applied to the "from" and "to" machine.
+        All rules except "from", "to", and "delay" are optional.
         The latency between two machines is the sum of all delays on the shortest path.
+        The rate between two machines is the minimum rate on the shortest path.
+        For all other traffic shaping rules: the value applied to the connection between two machines is the average of all values on the shortest path.
     */
     "connections": [
         {
             "from": "cloud",
             "to": "central-office-server",
-            "delay": 10 // in ms, set on each machine so roundtrip will be 20ms
+            "delay": 10, // connection latency/delay in ms, set on each machine so roundtrip will be 20ms
+            "rate": "2gbps", // available connection bandwidth rate
+            "delay-distro": 0, // connection delay distribution in ms
+            "duplicate": 0, // connection duplicate probablity in %
+            "loss": 20, // connection loss probability in %
+            "corrupt": 0, // connection corrupt probality in %
+            "reordering": 0 // connection reordering probability in %
         },
         {
             "from": "cloud",

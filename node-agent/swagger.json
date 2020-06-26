@@ -180,6 +180,9 @@
                     "ping": {
                         "type": "string"
                     },
+                    "packetLoss": {
+                        "type": "string"
+                    },
                     "time": {
                         "type": "integer"
                     }

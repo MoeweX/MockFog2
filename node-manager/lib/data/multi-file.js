@@ -19,12 +19,28 @@ function getTCConfigs(infrastructure, machineMeta) {
         for (const target of machines) {
             if (start.machine_name === target.machine_name) continue
 
-            const delay = graph.path(start.machine_name, target.machine_name, { cost: true }).cost
+            const route = graph.path(start.machine_name, target.machine_name, { cost: true })
+            const path = route.path
+
+            // variable names are also the key names for tcconfig if not specified otherwise
+            const delay = route.cost
+            const rate = infrastructure.calculatePathRate(path, true)
+            const delayDistro = infrastructure.calculatePathDelayDistro(path) // keyname must be delay-distro
+            const duplicate  = infrastructure.calculatePathDuplicate(path)
+            const loss = infrastructure.calculatePathLoss(path)
+            const corrupt = infrastructure.calculatePathCorrupt(path)
+            const reordering = infrastructure.calculatePathReordering(path)
 
             outgoing[`dst-network=${getInternalIP(target.machine_name)}/32, protocol=ip`] = {
                 machine_name: target.machine_name,
                 filler_id: `800:${fillerId}`,
-                delay: delay
+                delay: delay,
+                rate: rate,
+                "delay-distro": delayDistro,
+                duplicate: duplicate,
+                loss: loss,
+                corrupt: corrupt,
+                reordering: reordering
             }
 
             fillerId++
