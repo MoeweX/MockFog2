@@ -6,6 +6,7 @@ const machineMeta = require("../../data/machine-meta.js")
 const container = require("../../data/container.js")
 const deployment = require("../../data/deployment.js")
 const multiFileFunctions = require("../../data/multi-file.js")
+const orchestrationF = require("../../data/orchestration.js")
 
 const common = require("../common.js")
 const Phase = require("../phase.js")
@@ -27,11 +28,12 @@ class Child extends Phase {
         this.infra = infrastructure()
         this.container = container()
         this.deployment = deployment()
+        this.orchestration = orchestrationF()
     }
 
     async runPrePlaybookTasks() {
         // write var file
-        await fsp.writeFile(this.varPath, this.infra.awsYML + this.infra.machinesYML)
+        await fsp.writeFile(this.varPath, this.infra.awsYML + this.orchestration.applicationInstructionsPortsYml + this.infra.machinesYML)
         this.logger.info("Bootstrap playbook vars written to " + this.varPath)
 
         // create playbook object

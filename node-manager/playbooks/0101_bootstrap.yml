@@ -59,6 +59,10 @@
               - "{{ agent_port }}"
             cidr_ip: 0.0.0.0/0
             rule_desc: Allow agent traffic
+          - proto: tcp
+            ports: "{{ application_instruction_ports}} "
+            cidr_ip: 0.0.0.0/0
+            rule_desc: Allow application instruction traffic
       register: public_security_group
 
     - name: Create Security Group for Testbed-internal Connections (no restrictions)
