@@ -29,7 +29,7 @@ class Phase {
                 // err can be ignored, if it did not exist -> fine
 
                 phase.playbook.on("playlog", function(data) {
-                    phase.logger.verbose(data)
+                    phase.logger.silly(data)
                     fs.appendFile(phase.playbookLogPath, data, { "flag": "a+" }, (err) => { if (err) throw err})
                 })
 
