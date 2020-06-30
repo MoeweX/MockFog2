@@ -98,3 +98,74 @@ Internally, each phase can comprise up to five standardized actions.
 These actions are executed by the node manager and do not require user intervention.
 
 ![](../misc/Actions.png)
+
+## Direct Interactions
+
+The node-manager directly interacts with/controls application containers in Stage 2 (Phase 02 - Start Containers and Phase 04 - Collect Results) and Stage 3.
+
+![](../misc/Direct_Interaction.png)
+
+In the following, we describe the prerequisites and the reason for each kind of interaction.
+
+### Stage 2 Phase 2 - Start Containers
+
+#### Environment Variables
+
+Reason: Application Configuration, e.g., tell an application container about:
+- ips and ports of other containers.
+- the ip and port of the node manager.
+- other configuration parameters.
+
+Prerequisites: "env" object in container.jsonc contains environment variable information.
+
+#### Application Input
+
+Reason: Provide the application with additional required data, e.g., a log4j2.xml file.
+
+Prerequisites: Files are placed in the "container_dirname" specified in container.jsonc.
+
+#### Command Line Arguments
+
+Reason: Provide application with required command line arguments.
+
+Prerequisites: "command" list in container.jsonc contains the command line arguments.
+
+### Stage 3 - Orchestration
+
+#### State Notification
+
+Reason: Notify application container about the successful transition to a particular state.
+
+Prerequisites: "state_notifications" object in container.jsonc contains informaotin on the HTTP endpoint.
+
+#### Application Instructions
+
+Reason: Change the behavior of the application at runtime.
+
+Prerequisites: "application_instructions" list in container.jsonc contains application instruction information.
+
+#### State Acknowledgements
+
+Reason: Acknowledge received state notification at node manager, e.g., to determine notification delay.
+
+Prerequisites: Application received state notification and replies with HTTP 200.
+
+#### Transition Condition Event
+
+Reason: Needed for message-based transition conditions.
+
+Prerequisites: Application sends events to node-manager /<apiVersion>/transition/messages endpoint.
+
+### Stage 2 Phase 4 - Collect results
+
+#### Log Files
+
+Reason: Application logs can be analyzed.
+
+Prerequisites: Application logs data to console.
+
+#### Application Results
+
+Reason: Application result files (i.e., files created by an application container) can be analyzed.
+
+Prerequisites: Application writes files to the "container_dirname" specified in container.jsonc.
