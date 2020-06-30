@@ -1,10 +1,10 @@
 // Defines the orchestration schedule and meta data.
 {
     "maximum_state_change_delay": 5, // in ms; if the Node Manager detects a larger delay, the orchestration schedule exeuction is invalid
-    // Each state comprises instructions and conditions for state transitions.
+    // Each state comprises instructions applied while transitioning to this state and conditions for state transitions.
     "states": [
         {
-            "state_name": "initial", // it is a good idea to have an initial state that resets resource manipulations
+            "state_name": "initial", // the name of the first state must be initial, use it to reset the infrastructure
             "resource_manipulation_instructions": "reset", // this re-applies all manipulations from infrastructure.jsonc
             "application_instructions": [],
             // When all conditions for the transition to any stage are met, a transition to this state begins.
@@ -56,7 +56,7 @@
                 },
                 {
                     "type": "message-based",
-                    "event": "dashboard-generated",
+                    "event_name": "dashboard-generated",
                     "threshold": 5, // how often the defined event_name must be sent to the node manager transition endpoint
                     "next_state": "final"
                 }

@@ -1,7 +1,7 @@
-const express = require("express");
-var path = require('path');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+const express = require("express")
+var path = require('path')
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./swagger.json')
 
 const logger = require("./lib/services/logService.js")("main")
 const networkService = require("./lib/services/networkService.js")

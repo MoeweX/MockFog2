@@ -54,8 +54,14 @@ class TCEvaluator {
      * If so, calls #_notifyStageCompletion
      * 
      * @param {String} event - the name of the event
+     * @returns true if successful; if the evaluator is not active or the event is not part of active conditions, returns false
      */
     addEvent(event) {
+        if (!this.active) {
+            logger.warn("TCEvaluator is not active")
+            return false
+        }
+
         for (const mbc of this._getMBC()) {
             if (mbc.event_name === event) {
                 // decrement threshold
@@ -70,10 +76,11 @@ class TCEvaluator {
                         this._notifyStateCompletion(mbc.next_state)
                     }
                 }
-                return
+                return true
             }
         }
-        logger.warn("Event " + event + " is not part of active conditions")
+        logger.warn("Event " + event + " is not part of active conditions " + JSON.stringify(this._activeConditions))
+        return false
     }
 
     /**

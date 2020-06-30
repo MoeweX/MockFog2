@@ -8,6 +8,8 @@ const multiFileFunctions = require("../../data/multi-file.js")
 const naService = require("../../services/nodeAgentService.js")
 const machineMeta = require("../../data/machine-meta.js")
 
+const TCEvaluator = require("./tc-evaluator.js")
+
 const logger = require("../../services/logService.js")("Orchestration Manager")
 
 class Manager {
@@ -17,7 +19,9 @@ class Manager {
         this.states = orchestrationF().states
         this.infrastructure = infrastructureF()
         this.deployment = deploymentF()
+        this.tcEvaluator = new TCEvaluator()
         this.status = "idle"
+        this.next_state = "initial"
     }
 
     async execute_schedule() {
@@ -27,20 +31,23 @@ class Manager {
         }
         this.status = "executing"
 
-        for (const state of this.states) {
-            logger.info("Starting transition to state " + state.state_name)
-            await this.doTransition(state)
-            logger.info("Completed transition to state " + state.state_name)
+        while (this.status !== "done") {
+            const targetStateName = this.next_state
+            let targetState = this.states.filter(s => { return s.state_name === targetStateName })[0]
+            if (!targetState) {
+                logger.error(`There is no state with state_name ${targetStateName}`)
+                break
+            }
 
-            logger.info("Doing state " + state.state_name)
-            await this.doState(state)
-            logger.info("Completed state " + state.state_name)
+            await this.doTransition(targetState)
+            await this.doState(targetState)
         }
 
         this.status = "idle"
     }
 
     async doTransition(state) {
+        logger.info("Starting transition to state " + state.state_name)
         // resource manipulation
         if (state.resource_manipulation_instructions === "reset") {
             logger.info("Resetting infrastructure manipulations")
@@ -63,33 +70,22 @@ class Manager {
                 await distributeApplicationInstructions(state.application_instructions, this.deployment, mm)
             }
         }
+        logger.info("Completed transition to state " + state.state_name)
     }
 
     async doState(state) {
-        return new Promise(resolve => {
-            // TODO resolve transition conditions for each target state individually
-            // TODO also consider message-based conditions
-            // TODO notify applications with message-based conditions about new state, measure notification delay
+        logger.info("Doing state " + state.state_name)
+        if (state.transition_conditions.length === 0) {
+            logger.info("All states completed")
+            this.status = "done"
+            return
+        }
 
-            // find time-based conditions
-            const timeBasedConditions = state.transition_conditions.filter(tc => tc.type === "time-based")
+        // TODO notify defined applications about new state, measure notification delay
 
-            // if there is none -> return
-            if (timeBasedConditions.length === 0) {
-                logger.debug("There is no time-based transition condition, state completes immediatly")
-                resolve()
-            }
-
-            // validate there is at most one
-            if (timeBasedConditions.length > 1) {
-                logger.error("There should only be a single time-based condition; picking the first one")
-            }
-
-            // if there is one -> wait for defined time
-            const time = timeBasedConditions[0]["active-for"]
-            logger.info("Time-based condition: " + time / 1000 + "s.")
-            setTimeout(resolve, time)
-        })
+        // wait until all transition conditions for any subsequent state are fulfilled
+        this.next_state = await this.tcEvaluator.activate(state.transition_conditions)
+        logger.info(`Completed state ${state.state_name}, transitioning to state ${this.next_state}`)
     }
 
 }
@@ -175,8 +171,33 @@ module.exports = Manager
 
 if (require.main === module) {
     (async () => {
-        const manager = new Manager(true)
+        const app = require("express")()
+        const server = app.listen(3000)
+        const tmController = require("../../controller/transitionMessagesController.js")
 
-        await manager.execute_schedule()
+        const manager = new Manager(true)
+        tmController(app, "test", manager.tcEvaluator)
+
+        const interval = setInterval(function() {
+            const ip = "localhost"
+
+            const options = {
+                "host": ip,
+                "port": 3000,
+                "path": "/test/transition/message?event_name=dashboard-generated",
+                "method": "GET"
+            }
+
+            logger.info(`Sending transition message to ${ip}:3000`)
+            http.request(options, (res) => {
+                logger.info(`Sent transition message to ${ip}, status code is ${res.statusCode}`)
+            }).end()
+        }, 5000)
+
+        manager.execute_schedule().then(_ => {
+            logger.info("Schedlue executed")
+            clearInterval(interval)
+            server.close()
+        })
     })();
 }
