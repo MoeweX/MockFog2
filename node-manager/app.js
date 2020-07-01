@@ -1,7 +1,11 @@
 const fs = require("fs")
 
+const app = require("express")()
+const tmController = require("./lib/controller/transitionMessagesController.js")
+
 const conf = require("./lib/config.js")
 const infrastructure = require("./lib/data/infrastructure")
+process.setMaxListeners(15)
 
 // stage 1
 const Bootstrap = require("./lib/stages/01_infrastructure/01_bootstrap.js")
@@ -44,7 +48,14 @@ if (myArgs[0] in phases) {
 
 (async () => {
     if (myArgs[0] === "orchestrate") {
-        new Phase().execute_schedule()
+        const server = app.listen(conf.nmPort)
+        const manager = new Phase()
+        tmController(app, conf.apiVersion, manager.tcEvaluator)
+
+        new Phase().execute_schedule().then(_ => {
+            logger.info("Schedlue executed")
+            server.close()
+        })
     } else {
         const phase = new Phase(myArgs[0]) 
         await phase.parseInput()

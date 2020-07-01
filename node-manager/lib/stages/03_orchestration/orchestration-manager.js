@@ -75,19 +75,67 @@ class Manager {
 
     async doState(state) {
         logger.info("Doing state " + state.state_name)
+
+        if (!this.debug) {
+            const mm = machineMeta()
+
+            let timestamps = {}
+
+            // distribute state notifications, measure notification delay
+            for (sn of state.state_notifications) {
+                const target_machines = this.deployment.getMachineNames(sn.target_container)
+                const port = sn.port
+
+                for (const machine of target_machines) {
+                    const ip = mm.getPublicIP(machine)
+
+                    const options = {
+                        "host": ip,
+                        "port": port,
+                        "path": sn.path,
+                        "method": "GET",
+                        time: true
+                    }
+
+                    logger.info(`Sending state notification to ${ip}:${port}`)
+
+                    timestamps[options.host] = process.hrtime()
+                    http.request(options, (res) => {
+                        const delay = calculateTimeDiff(timestamps[options.host], process.hrtime())
+                        logger.info(`Notification acknowledgement delay for ${options.host} was ${delay}ms, status code is ${res.statusCode}`)
+                    }).end()
+                }
+            }
+        }
+
         if (state.transition_conditions.length === 0) {
             logger.info("All states completed")
             this.status = "done"
             return
         }
 
-        // TODO notify defined applications about new state, measure notification delay
-
         // wait until all transition conditions for any subsequent state are fulfilled
         this.next_state = await this.tcEvaluator.activate(state.transition_conditions)
         logger.info(`Completed state ${state.state_name}, transitioning to state ${this.next_state}`)
     }
 
+}
+
+/**
+* Calculate the time difference in milliseconds from process.hrtime()
+* @param {Array} startTime - [seconds, nanoseconds]
+* @param {Array} endTime - [seconds, nanoseconds]
+* @return {Number} time difference in ms
+*/
+function calculateTimeDiff(startTime, endTime) {
+    const NS_PER_SEC = 1e9
+    const MS_PER_NS = 1e6
+
+    const secondDiff = endTime[0] - startTime[0]
+    const nanoSecondDiff = endTime[1] - startTime[1]
+    const diffInNanoSecond = secondDiff * NS_PER_SEC + nanoSecondDiff
+
+    return diffInNanoSecond / MS_PER_NS
 }
 
 /**
@@ -132,7 +180,7 @@ async function distributeApplicationInstructions(application_instructions, deplo
         for (const ai of application_instructions) {
             const target_machines = deployment.getMachineNames(ai.target_container)
             const port = ai.port
-            
+
             let queryString = ""
             for (const [key, value] of Object.entries(ai.query_strings)) {
                 if (queryString === "") {
@@ -155,7 +203,7 @@ async function distributeApplicationInstructions(application_instructions, deplo
 
                 logger.info(`Sending application instruction to ${ip}:${port}`)
                 http.request(options, (res) => {
-                    logger.info(`Sent application instruction to ${ip}, status code is ${res.statusCode}`)
+                    logger.info(`Sent application instruction to ${options.host}, status code is ${res.statusCode}`)
                     replyCount++
                     if (replyCount === application_instructions.length) {
                         logger.info("Distributed all application instructions")
@@ -178,7 +226,7 @@ if (require.main === module) {
         const manager = new Manager(true)
         tmController(app, "test", manager.tcEvaluator)
 
-        const interval = setInterval(function() {
+        const interval = setInterval(function () {
             const ip = "localhost"
 
             const options = {

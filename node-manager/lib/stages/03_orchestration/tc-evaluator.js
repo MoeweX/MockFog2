@@ -62,6 +62,7 @@ class TCEvaluator {
             return false
         }
 
+        logger.info("Received event " + event)
         for (const mbc of this._getMBC()) {
             if (mbc.event_name === event) {
                 // decrement threshold

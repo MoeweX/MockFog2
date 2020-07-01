@@ -52,7 +52,7 @@
             "state_notifications": [
                 {
                     "target_container": "generate-dashboard", // will be sent to the public ip and port of each machine that this container is deployed on
-                    "path": "/state/notifications", // target url path for the instruction request
+                    "path": "/state/notifications", // target url path for the notification request
                     "port": 8006 // the port at which the application waits for notifications
                 }   
             ],
