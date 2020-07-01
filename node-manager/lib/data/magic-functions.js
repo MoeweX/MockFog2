@@ -1,5 +1,6 @@
 const logger = require("../services/logService.js")("magic")
 
+const config = require("../config.js")
 const machineMeta = require("./machine-meta.js")
 const deployment = require("./deployment.js")
 
@@ -19,6 +20,10 @@ function evaluateMagicFunction(valueString) {
     logger.debug("Running magic function " + valueString)
     const fun = valueString.replace("{{", "").replace("}}", "").replace(" ", "")
     return eval(fun)
+}
+
+function nm_event_endpoint() {
+    return `${config.getNMaddress()}/${config.apiVersion}/transition/message`
 }
 
 function internal_ip(machine_name) {

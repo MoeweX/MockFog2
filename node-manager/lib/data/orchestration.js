@@ -6,7 +6,7 @@ const conf = require("../config.js")
 /**
  * @param {Object} orchestration the object returned by the orchestration.js module function
  */
-function getApplicationInstructionPortsYml(orchestration) {
+function getApplicationInstructionsPortsYml(orchestration) {
     let ports = new Set()
     for (state of orchestration.states) {
         for (ai of state.application_instructions) {
@@ -14,6 +14,25 @@ function getApplicationInstructionPortsYml(orchestration) {
         }
     }
     let ymlString = "application_instruction_ports:\n"
+
+    ports.forEach(port => {
+        ymlString = ymlString + `- ${port}\n`
+    });
+
+    return ymlString + "\n"
+}
+
+/**
+ * @param {Object} orchestration the object returned by the orchestration.js module function
+ */
+function getStateNotificationsPortsYml(orchestration) {
+    let ports = new Set()
+    for (state of orchestration.states) {
+        for (sn of state.state_notifications) {
+            ports.add(sn.port)
+        }
+    }
+    let ymlString = "state_notification_ports:\n"
 
     ports.forEach(port => {
         ymlString = ymlString + `- ${port}\n`
@@ -33,7 +52,8 @@ module.exports = function(fileLocation) {
     return {
         orchestration: orchestration,
         states: orchestration.states,
-        applicationInstructionsPortsYml: getApplicationInstructionPortsYml(orchestration)
+        applicationInstructionsPortsYml: getApplicationInstructionsPortsYml(orchestration),
+        stateNotificationsPortsYml: getStateNotificationsPortsYml(orchestration)
     }
 }
 

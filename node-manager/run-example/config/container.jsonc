@@ -140,7 +140,8 @@
         "env": {
             "GENERATEDASHBOARD_PORT": 8006,
             "CENTRALDASHBOARD_IP": "{{ internal_ip_container('central-office-dashboard') }}",
-            "CENTRALDASHBOARD_PORT": 8000
+            "CENTRALDASHBOARD_PORT": 8000,
+            "NODEMANAGER_EVENT_ENDPOINT": "{{ nm_event_endpoint() }}" // nm_event_endpoint() is a magic function -> returns the event endpoint url
         },
         "ports": [
             "8006:8006"
