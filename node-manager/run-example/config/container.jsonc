@@ -1,4 +1,4 @@
-// Contains general information and configuration data for the containers that will be deployed on the emulated infrastructure.
+// contains general information and configuration data for the containers that will be deployed on the emulated infrastructure
 [
     {
         "container_name": "camera",
@@ -9,7 +9,6 @@
             "CFD_IP": "{{ internal_ip('production-machine') }}", // internal_ip(machine_name) is a magic function -> returns ip of the corresponding machine
             "CFD_PORT": 8008
         },
-        "ports": [], // passed to "ports" of ansible docker_container module
         "command": [ // passed to "command" of ansible docker_container module
             // when the image has an entrypoint, these will be appended, e.g., to supply flags:
             //"--output", "/camera/results"
@@ -25,9 +24,6 @@
             "CNTRL_IP": "{{ internal_ip_container('production-control') }}", // internal_ip_container(container_name) is also a magic functions -> returns one ip of any machine the container is deployed on
             "CNTRL_PORT": 8004
         },
-        "ports": [
-            "8008:8008"
-        ],
         "command": []
     },
     {
@@ -40,9 +36,6 @@
             "ADAPT_IP": "{{ internal_ip_container('adapt-packaging') }}",
             "ADAPT_PORT": 8009
         },
-        "ports": [
-            "8004:8004"
-        ],
         "command": []
     },
     {
@@ -54,7 +47,6 @@
             "ADAPT_IP": "{{ internal_ip_container('adapt-packaging') }}",
             "ADAPT_PORT": 8009
         },
-        "ports": [],
         "command": []
     },
     {
@@ -67,9 +59,6 @@
             "PKGCNTRL_IP": "{{ internal_ip_container('packaging-control') }}",
             "PKGCNTRL_PORT": 8002
         },
-        "ports": [
-            "8009:8009"
-        ],
         "command": []
     },
     {
@@ -84,9 +73,6 @@
             "AGGREGATE_IP": "{{ internal_ip_container('aggregate') }}",
             "AGGREGATE_PORT": 8007
         },
-        "ports": [
-            "8002:8002"
-        ],
         "command": []
     },
     {
@@ -99,9 +85,6 @@
             "PROGNOSIS_IP": "{{ internal_ip_container('logistics-prognosis') }}",
             "PROGNOSIS_PORT": 8001
         },
-        "ports": [
-            "8010:8010"
-        ],
         "command": []
     },
     {
@@ -112,9 +95,6 @@
         "env": {
             "PROGNOSIS_PORT": 8001
         },
-        "ports": [
-            "8001:8001"
-        ],
         "command": []
     },
     {
@@ -127,9 +107,6 @@
             "GENERATEDASHBOARD_IP": "{{ internal_ip_container('generate-dashboard') }}",
             "GENERATEDASHBOARD_PORT": 8006
         },
-        "ports": [
-            "8007:8007"
-        ],
         "command": []
     },
     {
@@ -143,9 +120,6 @@
             "CENTRALDASHBOARD_PORT": 8000,
             "NODEMANAGER_EVENT_ENDPOINT": "{{ nm_event_endpoint() }}" // nm_event_endpoint() is a magic function -> returns the event endpoint url
         },
-        "ports": [
-            "8006:8006"
-        ],
         "command": []
     },
     {
@@ -156,9 +130,6 @@
         "env": {
             "CENTRALDASHBOARD_PORT": 8000
         },
-        "ports": [
-            "8000:8000"
-        ],
         "command": []
     }
 ]

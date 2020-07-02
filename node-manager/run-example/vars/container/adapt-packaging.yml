@@ -1,8 +1,6 @@
 ---
 container_name: adapt-packaging
-docker_image: pfandzelter/adapt
+docker_image: hasenburg/adapt
 container_dirname: /adapt-packaging
 local_dirname: appdata/adapt-packaging
-ports: 
- - "8009:8009"
 

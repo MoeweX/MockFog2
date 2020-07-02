@@ -1,8 +1,6 @@
 ---
 container_name: logistics-prognosis
-docker_image: pfandzelter/prognosis
+docker_image: hasenburg/prognosis
 container_dirname: /logistics-prognosis
 local_dirname: appdata/logistics-prognosis
-ports: 
- - "8001:8001"
 

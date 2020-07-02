@@ -1,8 +1,6 @@
 ---
 container_name: check-for-defects
-docker_image: pfandzelter/cfd
+docker_image: hasenburg/cfd
 container_dirname: /check-for-defects
 local_dirname: appdata/check-for-defects
-ports: 
- - "8008:8008"
 

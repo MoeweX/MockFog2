@@ -3,163 +3,10 @@
     {
       "ami_launch_index": 0,
       "image_id": "ami-0aa9794817db273c1",
-      "instance_id": "i-0f5e64b60a0f32577",
-      "instance_type": "t3.nano",
-      "key_name": "ec2-mockfog2-ssh-key",
-      "launch_time": "2020-06-19T10:15:21+00:00",
-      "monitoring": {
-        "state": "disabled"
-      },
-      "placement": {
-        "availability_zone": "eu-central-1b",
-        "group_name": "",
-        "tenancy": "default"
-      },
-      "private_dns_name": "ip-10-0-1-44.eu-central-1.compute.internal",
-      "private_ip_address": "10.0.1.44",
-      "product_codes": [],
-      "public_dns_name": "ec2-18-196-237-33.eu-central-1.compute.amazonaws.com",
-      "public_ip_address": "18.196.237.33",
-      "state": {
-        "code": 16,
-        "name": "running"
-      },
-      "state_transition_reason": "",
-      "subnet_id": "subnet-0c5c91cc7dfc4228d",
-      "vpc_id": "vpc-0d054a208ea9b1cfd",
-      "architecture": "x86_64",
-      "block_device_mappings": [
-        {
-          "device_name": "/dev/xvda",
-          "ebs": {
-            "attach_time": "2020-06-19T10:15:22+00:00",
-            "delete_on_termination": true,
-            "status": "attached",
-            "volume_id": "vol-09331c07cb084427f"
-          }
-        }
-      ],
-      "client_token": "",
-      "ebs_optimized": false,
-      "ena_support": true,
-      "hypervisor": "xen",
-      "network_interfaces": [
-        {
-          "attachment": {
-            "attach_time": "2020-06-19T10:15:36+00:00",
-            "attachment_id": "eni-attach-0f232c329684c8f2a",
-            "delete_on_termination": true,
-            "device_index": 1,
-            "status": "attached"
-          },
-          "description": "",
-          "groups": [
-            {
-              "group_name": "ec2:mockfog2:internal-security-group",
-              "group_id": "sg-0e27c142e31eb328b"
-            }
-          ],
-          "ipv6_addresses": [],
-          "mac_address": "06:72:f4:8b:97:8e",
-          "network_interface_id": "eni-09b2b0334faa4a50e",
-          "owner_id": "746022503515",
-          "private_dns_name": "ip-10-0-2-248.eu-central-1.compute.internal",
-          "private_ip_address": "10.0.2.248",
-          "private_ip_addresses": [
-            {
-              "primary": true,
-              "private_dns_name": "ip-10-0-2-248.eu-central-1.compute.internal",
-              "private_ip_address": "10.0.2.248"
-            }
-          ],
-          "source_dest_check": true,
-          "status": "in-use",
-          "subnet_id": "subnet-01c848be464b58850",
-          "vpc_id": "vpc-0d054a208ea9b1cfd",
-          "interface_type": "interface"
-        },
-        {
-          "association": {
-            "ip_owner_id": "amazon",
-            "public_dns_name": "ec2-18-196-237-33.eu-central-1.compute.amazonaws.com",
-            "public_ip": "18.196.237.33"
-          },
-          "attachment": {
-            "attach_time": "2020-06-19T10:15:21+00:00",
-            "attachment_id": "eni-attach-017869d91aee0b311",
-            "delete_on_termination": true,
-            "device_index": 0,
-            "status": "attached"
-          },
-          "description": "",
-          "groups": [
-            {
-              "group_name": "ec2:mockfog2:public-security-group",
-              "group_id": "sg-040848b34ddb3e782"
-            }
-          ],
-          "ipv6_addresses": [],
-          "mac_address": "06:6d:5b:61:9e:78",
-          "network_interface_id": "eni-0a5cdb2e9976399a5",
-          "owner_id": "746022503515",
-          "private_dns_name": "ip-10-0-1-44.eu-central-1.compute.internal",
-          "private_ip_address": "10.0.1.44",
-          "private_ip_addresses": [
-            {
-              "association": {
-                "ip_owner_id": "amazon",
-                "public_dns_name": "ec2-18-196-237-33.eu-central-1.compute.amazonaws.com",
-                "public_ip": "18.196.237.33"
-              },
-              "primary": true,
-              "private_dns_name": "ip-10-0-1-44.eu-central-1.compute.internal",
-              "private_ip_address": "10.0.1.44"
-            }
-          ],
-          "source_dest_check": true,
-          "status": "in-use",
-          "subnet_id": "subnet-0c5c91cc7dfc4228d",
-          "vpc_id": "vpc-0d054a208ea9b1cfd",
-          "interface_type": "interface"
-        }
-      ],
-      "root_device_name": "/dev/xvda",
-      "root_device_type": "ebs",
-      "security_groups": [
-        {
-          "group_name": "ec2:mockfog2:public-security-group",
-          "group_id": "sg-040848b34ddb3e782"
-        }
-      ],
-      "source_dest_check": true,
-      "tags": {
-        "Name": "wireless-gateway"
-      },
-      "virtualization_type": "hvm",
-      "cpu_options": {
-        "core_count": 1,
-        "threads_per_core": 2
-      },
-      "capacity_reservation_specification": {
-        "capacity_reservation_preference": "open"
-      },
-      "hibernation_options": {
-        "configured": false
-      },
-      "metadata_options": {
-        "state": "applied",
-        "http_tokens": "optional",
-        "http_put_response_hop_limit": 1,
-        "http_endpoint": "enabled"
-      }
-    },
-    {
-      "ami_launch_index": 0,
-      "image_id": "ami-0aa9794817db273c1",
-      "instance_id": "i-0c704d42c771e67b4",
+      "instance_id": "i-0d28b62c08038c939",
       "instance_type": "t3.small",
       "key_name": "ec2-mockfog2-ssh-key",
-      "launch_time": "2020-06-19T10:15:20+00:00",
+      "launch_time": "2020-07-02T11:20:27+00:00",
       "monitoring": {
         "state": "disabled"
       },
@@ -168,27 +15,27 @@
         "group_name": "",
         "tenancy": "default"
       },
-      "private_dns_name": "ip-10-0-1-209.eu-central-1.compute.internal",
-      "private_ip_address": "10.0.1.209",
+      "private_dns_name": "ip-10-0-1-186.eu-central-1.compute.internal",
+      "private_ip_address": "10.0.1.186",
       "product_codes": [],
-      "public_dns_name": "ec2-54-93-233-66.eu-central-1.compute.amazonaws.com",
-      "public_ip_address": "54.93.233.66",
+      "public_dns_name": "ec2-54-93-34-108.eu-central-1.compute.amazonaws.com",
+      "public_ip_address": "54.93.34.108",
       "state": {
         "code": 16,
         "name": "running"
       },
       "state_transition_reason": "",
-      "subnet_id": "subnet-0c5c91cc7dfc4228d",
-      "vpc_id": "vpc-0d054a208ea9b1cfd",
+      "subnet_id": "subnet-0b4152850834eb921",
+      "vpc_id": "vpc-08965601b8ab182ca",
       "architecture": "x86_64",
       "block_device_mappings": [
         {
           "device_name": "/dev/xvda",
           "ebs": {
-            "attach_time": "2020-06-19T10:15:21+00:00",
+            "attach_time": "2020-07-02T11:20:28+00:00",
             "delete_on_termination": true,
             "status": "attached",
-            "volume_id": "vol-0caccb6bbba6de98b"
+            "volume_id": "vol-06803903d8f70a372"
           }
         }
       ],
@@ -199,8 +46,8 @@
       "network_interfaces": [
         {
           "attachment": {
-            "attach_time": "2020-06-19T10:15:41+00:00",
-            "attachment_id": "eni-attach-0d760c51121513c02",
+            "attach_time": "2020-07-02T11:20:43+00:00",
+            "attachment_id": "eni-attach-07fbd42c63e193e0f",
             "delete_on_termination": true,
             "device_index": 1,
             "status": "attached"
@@ -209,37 +56,37 @@
           "groups": [
             {
               "group_name": "ec2:mockfog2:internal-security-group",
-              "group_id": "sg-0e27c142e31eb328b"
+              "group_id": "sg-07570e54ac66520d8"
             }
           ],
           "ipv6_addresses": [],
-          "mac_address": "06:ee:fb:05:5e:de",
-          "network_interface_id": "eni-0fa4fc3a137dca308",
+          "mac_address": "06:d8:b3:d3:15:fe",
+          "network_interface_id": "eni-01f63c01e3e86fe5b",
           "owner_id": "746022503515",
-          "private_dns_name": "ip-10-0-2-171.eu-central-1.compute.internal",
-          "private_ip_address": "10.0.2.171",
+          "private_dns_name": "ip-10-0-2-232.eu-central-1.compute.internal",
+          "private_ip_address": "10.0.2.232",
           "private_ip_addresses": [
             {
               "primary": true,
-              "private_dns_name": "ip-10-0-2-171.eu-central-1.compute.internal",
-              "private_ip_address": "10.0.2.171"
+              "private_dns_name": "ip-10-0-2-232.eu-central-1.compute.internal",
+              "private_ip_address": "10.0.2.232"
             }
           ],
           "source_dest_check": true,
           "status": "in-use",
-          "subnet_id": "subnet-01c848be464b58850",
-          "vpc_id": "vpc-0d054a208ea9b1cfd",
+          "subnet_id": "subnet-0bc8fc82e1d58e279",
+          "vpc_id": "vpc-08965601b8ab182ca",
           "interface_type": "interface"
         },
         {
           "association": {
             "ip_owner_id": "amazon",
-            "public_dns_name": "ec2-54-93-233-66.eu-central-1.compute.amazonaws.com",
-            "public_ip": "54.93.233.66"
+            "public_dns_name": "ec2-54-93-34-108.eu-central-1.compute.amazonaws.com",
+            "public_ip": "54.93.34.108"
           },
           "attachment": {
-            "attach_time": "2020-06-19T10:15:20+00:00",
-            "attachment_id": "eni-attach-0ca8b16de120c2a59",
+            "attach_time": "2020-07-02T11:20:27+00:00",
+            "attachment_id": "eni-attach-0102ce3105b571090",
             "delete_on_termination": true,
             "device_index": 0,
             "status": "attached"
@@ -248,31 +95,31 @@
           "groups": [
             {
               "group_name": "ec2:mockfog2:public-security-group",
-              "group_id": "sg-040848b34ddb3e782"
+              "group_id": "sg-0aec84adbe5a47a30"
             }
           ],
           "ipv6_addresses": [],
-          "mac_address": "06:69:09:71:cb:8c",
-          "network_interface_id": "eni-0829afb3b6757e44a",
+          "mac_address": "06:8a:fc:85:be:38",
+          "network_interface_id": "eni-0a64be5d41fcd2db6",
           "owner_id": "746022503515",
-          "private_dns_name": "ip-10-0-1-209.eu-central-1.compute.internal",
-          "private_ip_address": "10.0.1.209",
+          "private_dns_name": "ip-10-0-1-186.eu-central-1.compute.internal",
+          "private_ip_address": "10.0.1.186",
           "private_ip_addresses": [
             {
               "association": {
                 "ip_owner_id": "amazon",
-                "public_dns_name": "ec2-54-93-233-66.eu-central-1.compute.amazonaws.com",
-                "public_ip": "54.93.233.66"
+                "public_dns_name": "ec2-54-93-34-108.eu-central-1.compute.amazonaws.com",
+                "public_ip": "54.93.34.108"
               },
               "primary": true,
-              "private_dns_name": "ip-10-0-1-209.eu-central-1.compute.internal",
-              "private_ip_address": "10.0.1.209"
+              "private_dns_name": "ip-10-0-1-186.eu-central-1.compute.internal",
+              "private_ip_address": "10.0.1.186"
             }
           ],
           "source_dest_check": true,
           "status": "in-use",
-          "subnet_id": "subnet-0c5c91cc7dfc4228d",
-          "vpc_id": "vpc-0d054a208ea9b1cfd",
+          "subnet_id": "subnet-0b4152850834eb921",
+          "vpc_id": "vpc-08965601b8ab182ca",
           "interface_type": "interface"
         }
       ],
@@ -281,7 +128,7 @@
       "security_groups": [
         {
           "group_name": "ec2:mockfog2:public-security-group",
-          "group_id": "sg-040848b34ddb3e782"
+          "group_id": "sg-0aec84adbe5a47a30"
         }
       ],
       "source_dest_check": true,
@@ -309,10 +156,10 @@
     {
       "ami_launch_index": 0,
       "image_id": "ami-0aa9794817db273c1",
-      "instance_id": "i-0910921e3cc7f8cd1",
-      "instance_type": "t3.nano",
+      "instance_id": "i-0a86e1c027a56afa5",
+      "instance_type": "t3.micro",
       "key_name": "ec2-mockfog2-ssh-key",
-      "launch_time": "2020-06-19T10:15:21+00:00",
+      "launch_time": "2020-07-02T11:20:27+00:00",
       "monitoring": {
         "state": "disabled"
       },
@@ -321,27 +168,27 @@
         "group_name": "",
         "tenancy": "default"
       },
-      "private_dns_name": "ip-10-0-1-231.eu-central-1.compute.internal",
-      "private_ip_address": "10.0.1.231",
+      "private_dns_name": "ip-10-0-1-128.eu-central-1.compute.internal",
+      "private_ip_address": "10.0.1.128",
       "product_codes": [],
-      "public_dns_name": "ec2-18-196-110-4.eu-central-1.compute.amazonaws.com",
-      "public_ip_address": "18.196.110.4",
+      "public_dns_name": "ec2-52-28-201-99.eu-central-1.compute.amazonaws.com",
+      "public_ip_address": "52.28.201.99",
       "state": {
         "code": 16,
         "name": "running"
       },
       "state_transition_reason": "",
-      "subnet_id": "subnet-0c5c91cc7dfc4228d",
-      "vpc_id": "vpc-0d054a208ea9b1cfd",
+      "subnet_id": "subnet-0b4152850834eb921",
+      "vpc_id": "vpc-08965601b8ab182ca",
       "architecture": "x86_64",
       "block_device_mappings": [
         {
           "device_name": "/dev/xvda",
           "ebs": {
-            "attach_time": "2020-06-19T10:15:22+00:00",
+            "attach_time": "2020-07-02T11:20:28+00:00",
             "delete_on_termination": true,
             "status": "attached",
-            "volume_id": "vol-0cd42b5182f5531f7"
+            "volume_id": "vol-04f076047ab9de018"
           }
         }
       ],
@@ -353,12 +200,12 @@
         {
           "association": {
             "ip_owner_id": "amazon",
-            "public_dns_name": "ec2-18-196-110-4.eu-central-1.compute.amazonaws.com",
-            "public_ip": "18.196.110.4"
+            "public_dns_name": "ec2-52-28-201-99.eu-central-1.compute.amazonaws.com",
+            "public_ip": "52.28.201.99"
           },
           "attachment": {
-            "attach_time": "2020-06-19T10:15:21+00:00",
-            "attachment_id": "eni-attach-0a4f4cf21e98d499e",
+            "attach_time": "2020-07-02T11:20:27+00:00",
+            "attachment_id": "eni-attach-0dad05f97d7654115",
             "delete_on_termination": true,
             "device_index": 0,
             "status": "attached"
@@ -367,37 +214,37 @@
           "groups": [
             {
               "group_name": "ec2:mockfog2:public-security-group",
-              "group_id": "sg-040848b34ddb3e782"
+              "group_id": "sg-0aec84adbe5a47a30"
             }
           ],
           "ipv6_addresses": [],
-          "mac_address": "06:b1:ee:7e:01:7e",
-          "network_interface_id": "eni-0f3bbeb37710edf5d",
+          "mac_address": "06:55:2f:f5:90:52",
+          "network_interface_id": "eni-0b71cc85c3adc5931",
           "owner_id": "746022503515",
-          "private_dns_name": "ip-10-0-1-231.eu-central-1.compute.internal",
-          "private_ip_address": "10.0.1.231",
+          "private_dns_name": "ip-10-0-1-128.eu-central-1.compute.internal",
+          "private_ip_address": "10.0.1.128",
           "private_ip_addresses": [
             {
               "association": {
                 "ip_owner_id": "amazon",
-                "public_dns_name": "ec2-18-196-110-4.eu-central-1.compute.amazonaws.com",
-                "public_ip": "18.196.110.4"
+                "public_dns_name": "ec2-52-28-201-99.eu-central-1.compute.amazonaws.com",
+                "public_ip": "52.28.201.99"
               },
               "primary": true,
-              "private_dns_name": "ip-10-0-1-231.eu-central-1.compute.internal",
-              "private_ip_address": "10.0.1.231"
+              "private_dns_name": "ip-10-0-1-128.eu-central-1.compute.internal",
+              "private_ip_address": "10.0.1.128"
             }
           ],
           "source_dest_check": true,
           "status": "in-use",
-          "subnet_id": "subnet-0c5c91cc7dfc4228d",
-          "vpc_id": "vpc-0d054a208ea9b1cfd",
+          "subnet_id": "subnet-0b4152850834eb921",
+          "vpc_id": "vpc-08965601b8ab182ca",
           "interface_type": "interface"
         },
         {
           "attachment": {
-            "attach_time": "2020-06-19T10:15:46+00:00",
-            "attachment_id": "eni-attach-024ef4617300af4ea",
+            "attach_time": "2020-07-02T11:20:49+00:00",
+            "attachment_id": "eni-attach-0105076174b34d6a6",
             "delete_on_termination": true,
             "device_index": 1,
             "status": "attached"
@@ -406,26 +253,26 @@
           "groups": [
             {
               "group_name": "ec2:mockfog2:internal-security-group",
-              "group_id": "sg-0e27c142e31eb328b"
+              "group_id": "sg-07570e54ac66520d8"
             }
           ],
           "ipv6_addresses": [],
-          "mac_address": "06:d5:d7:72:a1:d2",
-          "network_interface_id": "eni-068cc58e2f705b9de",
+          "mac_address": "06:ca:c3:92:de:20",
+          "network_interface_id": "eni-02def9af16dc1dcfc",
           "owner_id": "746022503515",
-          "private_dns_name": "ip-10-0-2-38.eu-central-1.compute.internal",
-          "private_ip_address": "10.0.2.38",
+          "private_dns_name": "ip-10-0-2-184.eu-central-1.compute.internal",
+          "private_ip_address": "10.0.2.184",
           "private_ip_addresses": [
             {
               "primary": true,
-              "private_dns_name": "ip-10-0-2-38.eu-central-1.compute.internal",
-              "private_ip_address": "10.0.2.38"
+              "private_dns_name": "ip-10-0-2-184.eu-central-1.compute.internal",
+              "private_ip_address": "10.0.2.184"
             }
           ],
           "source_dest_check": true,
           "status": "in-use",
-          "subnet_id": "subnet-01c848be464b58850",
-          "vpc_id": "vpc-0d054a208ea9b1cfd",
+          "subnet_id": "subnet-0bc8fc82e1d58e279",
+          "vpc_id": "vpc-08965601b8ab182ca",
           "interface_type": "interface"
         }
       ],
@@ -434,12 +281,12 @@
       "security_groups": [
         {
           "group_name": "ec2:mockfog2:public-security-group",
-          "group_id": "sg-040848b34ddb3e782"
+          "group_id": "sg-0aec84adbe5a47a30"
         }
       ],
       "source_dest_check": true,
       "tags": {
-        "Name": "production-machine"
+        "Name": "central-office-server"
       },
       "virtualization_type": "hvm",
       "cpu_options": {
@@ -462,10 +309,10 @@
     {
       "ami_launch_index": 0,
       "image_id": "ami-0aa9794817db273c1",
-      "instance_id": "i-0898751be7e90c3f4",
-      "instance_type": "t3.nano",
+      "instance_id": "i-01844b2c15beb0594",
+      "instance_type": "t3.medium",
       "key_name": "ec2-mockfog2-ssh-key",
-      "launch_time": "2020-06-19T10:15:21+00:00",
+      "launch_time": "2020-07-02T11:20:27+00:00",
       "monitoring": {
         "state": "disabled"
       },
@@ -474,27 +321,27 @@
         "group_name": "",
         "tenancy": "default"
       },
-      "private_dns_name": "ip-10-0-1-185.eu-central-1.compute.internal",
-      "private_ip_address": "10.0.1.185",
+      "private_dns_name": "ip-10-0-1-87.eu-central-1.compute.internal",
+      "private_ip_address": "10.0.1.87",
       "product_codes": [],
-      "public_dns_name": "ec2-54-93-34-248.eu-central-1.compute.amazonaws.com",
-      "public_ip_address": "54.93.34.248",
+      "public_dns_name": "ec2-18-197-127-87.eu-central-1.compute.amazonaws.com",
+      "public_ip_address": "18.197.127.87",
       "state": {
         "code": 16,
         "name": "running"
       },
       "state_transition_reason": "",
-      "subnet_id": "subnet-0c5c91cc7dfc4228d",
-      "vpc_id": "vpc-0d054a208ea9b1cfd",
+      "subnet_id": "subnet-0b4152850834eb921",
+      "vpc_id": "vpc-08965601b8ab182ca",
       "architecture": "x86_64",
       "block_device_mappings": [
         {
           "device_name": "/dev/xvda",
           "ebs": {
-            "attach_time": "2020-06-19T10:15:22+00:00",
+            "attach_time": "2020-07-02T11:20:28+00:00",
             "delete_on_termination": true,
             "status": "attached",
-            "volume_id": "vol-035ab1c3c17556900"
+            "volume_id": "vol-0ef651c3ed3813002"
           }
         }
       ],
@@ -506,12 +353,12 @@
         {
           "association": {
             "ip_owner_id": "amazon",
-            "public_dns_name": "ec2-54-93-34-248.eu-central-1.compute.amazonaws.com",
-            "public_ip": "54.93.34.248"
+            "public_dns_name": "ec2-18-197-127-87.eu-central-1.compute.amazonaws.com",
+            "public_ip": "18.197.127.87"
           },
           "attachment": {
-            "attach_time": "2020-06-19T10:15:21+00:00",
-            "attachment_id": "eni-attach-0fd76071019bf01f0",
+            "attach_time": "2020-07-02T11:20:27+00:00",
+            "attachment_id": "eni-attach-08a4dac1a065ce4d8",
             "delete_on_termination": true,
             "device_index": 0,
             "status": "attached"
@@ -520,37 +367,37 @@
           "groups": [
             {
               "group_name": "ec2:mockfog2:public-security-group",
-              "group_id": "sg-040848b34ddb3e782"
+              "group_id": "sg-0aec84adbe5a47a30"
             }
           ],
           "ipv6_addresses": [],
-          "mac_address": "06:57:6f:37:0c:02",
-          "network_interface_id": "eni-04f656eac75f80d66",
+          "mac_address": "06:3b:4b:cd:c1:80",
+          "network_interface_id": "eni-0cce119e703f73db2",
           "owner_id": "746022503515",
-          "private_dns_name": "ip-10-0-1-185.eu-central-1.compute.internal",
-          "private_ip_address": "10.0.1.185",
+          "private_dns_name": "ip-10-0-1-87.eu-central-1.compute.internal",
+          "private_ip_address": "10.0.1.87",
           "private_ip_addresses": [
             {
               "association": {
                 "ip_owner_id": "amazon",
-                "public_dns_name": "ec2-54-93-34-248.eu-central-1.compute.amazonaws.com",
-                "public_ip": "54.93.34.248"
+                "public_dns_name": "ec2-18-197-127-87.eu-central-1.compute.amazonaws.com",
+                "public_ip": "18.197.127.87"
               },
               "primary": true,
-              "private_dns_name": "ip-10-0-1-185.eu-central-1.compute.internal",
-              "private_ip_address": "10.0.1.185"
+              "private_dns_name": "ip-10-0-1-87.eu-central-1.compute.internal",
+              "private_ip_address": "10.0.1.87"
             }
           ],
           "source_dest_check": true,
           "status": "in-use",
-          "subnet_id": "subnet-0c5c91cc7dfc4228d",
-          "vpc_id": "vpc-0d054a208ea9b1cfd",
+          "subnet_id": "subnet-0b4152850834eb921",
+          "vpc_id": "vpc-08965601b8ab182ca",
           "interface_type": "interface"
         },
         {
           "attachment": {
-            "attach_time": "2020-06-19T10:15:51+00:00",
-            "attachment_id": "eni-attach-05f545faed4d482f6",
+            "attach_time": "2020-07-02T11:20:54+00:00",
+            "attachment_id": "eni-attach-096ebedde4971fd36",
             "delete_on_termination": true,
             "device_index": 1,
             "status": "attached"
@@ -559,26 +406,26 @@
           "groups": [
             {
               "group_name": "ec2:mockfog2:internal-security-group",
-              "group_id": "sg-0e27c142e31eb328b"
+              "group_id": "sg-07570e54ac66520d8"
             }
           ],
           "ipv6_addresses": [],
-          "mac_address": "06:99:82:57:dd:1e",
-          "network_interface_id": "eni-0dc9b130f71f7a78a",
+          "mac_address": "06:bb:31:e1:06:5e",
+          "network_interface_id": "eni-0cfaa5c727f6f7e9a",
           "owner_id": "746022503515",
-          "private_dns_name": "ip-10-0-2-152.eu-central-1.compute.internal",
-          "private_ip_address": "10.0.2.152",
+          "private_dns_name": "ip-10-0-2-188.eu-central-1.compute.internal",
+          "private_ip_address": "10.0.2.188",
           "private_ip_addresses": [
             {
               "primary": true,
-              "private_dns_name": "ip-10-0-2-152.eu-central-1.compute.internal",
-              "private_ip_address": "10.0.2.152"
+              "private_dns_name": "ip-10-0-2-188.eu-central-1.compute.internal",
+              "private_ip_address": "10.0.2.188"
             }
           ],
           "source_dest_check": true,
           "status": "in-use",
-          "subnet_id": "subnet-01c848be464b58850",
-          "vpc_id": "vpc-0d054a208ea9b1cfd",
+          "subnet_id": "subnet-0bc8fc82e1d58e279",
+          "vpc_id": "vpc-08965601b8ab182ca",
           "interface_type": "interface"
         }
       ],
@@ -587,160 +434,7 @@
       "security_groups": [
         {
           "group_name": "ec2:mockfog2:public-security-group",
-          "group_id": "sg-040848b34ddb3e782"
-        }
-      ],
-      "source_dest_check": true,
-      "tags": {
-        "Name": "packaging-machine"
-      },
-      "virtualization_type": "hvm",
-      "cpu_options": {
-        "core_count": 1,
-        "threads_per_core": 2
-      },
-      "capacity_reservation_specification": {
-        "capacity_reservation_preference": "open"
-      },
-      "hibernation_options": {
-        "configured": false
-      },
-      "metadata_options": {
-        "state": "applied",
-        "http_tokens": "optional",
-        "http_put_response_hop_limit": 1,
-        "http_endpoint": "enabled"
-      }
-    },
-    {
-      "ami_launch_index": 0,
-      "image_id": "ami-0aa9794817db273c1",
-      "instance_id": "i-0056f478779789b44",
-      "instance_type": "t3.large",
-      "key_name": "ec2-mockfog2-ssh-key",
-      "launch_time": "2020-06-19T10:15:20+00:00",
-      "monitoring": {
-        "state": "disabled"
-      },
-      "placement": {
-        "availability_zone": "eu-central-1b",
-        "group_name": "",
-        "tenancy": "default"
-      },
-      "private_dns_name": "ip-10-0-1-157.eu-central-1.compute.internal",
-      "private_ip_address": "10.0.1.157",
-      "product_codes": [],
-      "public_dns_name": "ec2-35-158-233-29.eu-central-1.compute.amazonaws.com",
-      "public_ip_address": "35.158.233.29",
-      "state": {
-        "code": 16,
-        "name": "running"
-      },
-      "state_transition_reason": "",
-      "subnet_id": "subnet-0c5c91cc7dfc4228d",
-      "vpc_id": "vpc-0d054a208ea9b1cfd",
-      "architecture": "x86_64",
-      "block_device_mappings": [
-        {
-          "device_name": "/dev/xvda",
-          "ebs": {
-            "attach_time": "2020-06-19T10:15:21+00:00",
-            "delete_on_termination": true,
-            "status": "attached",
-            "volume_id": "vol-091ea4ae7059244a6"
-          }
-        }
-      ],
-      "client_token": "",
-      "ebs_optimized": false,
-      "ena_support": true,
-      "hypervisor": "xen",
-      "network_interfaces": [
-        {
-          "attachment": {
-            "attach_time": "2020-06-19T10:15:56+00:00",
-            "attachment_id": "eni-attach-01f5ccefc0fbb96e2",
-            "delete_on_termination": true,
-            "device_index": 1,
-            "status": "attached"
-          },
-          "description": "",
-          "groups": [
-            {
-              "group_name": "ec2:mockfog2:internal-security-group",
-              "group_id": "sg-0e27c142e31eb328b"
-            }
-          ],
-          "ipv6_addresses": [],
-          "mac_address": "06:01:99:a5:c4:14",
-          "network_interface_id": "eni-0ccdd3441d6996491",
-          "owner_id": "746022503515",
-          "private_dns_name": "ip-10-0-2-247.eu-central-1.compute.internal",
-          "private_ip_address": "10.0.2.247",
-          "private_ip_addresses": [
-            {
-              "primary": true,
-              "private_dns_name": "ip-10-0-2-247.eu-central-1.compute.internal",
-              "private_ip_address": "10.0.2.247"
-            }
-          ],
-          "source_dest_check": true,
-          "status": "in-use",
-          "subnet_id": "subnet-01c848be464b58850",
-          "vpc_id": "vpc-0d054a208ea9b1cfd",
-          "interface_type": "interface"
-        },
-        {
-          "association": {
-            "ip_owner_id": "amazon",
-            "public_dns_name": "ec2-35-158-233-29.eu-central-1.compute.amazonaws.com",
-            "public_ip": "35.158.233.29"
-          },
-          "attachment": {
-            "attach_time": "2020-06-19T10:15:20+00:00",
-            "attachment_id": "eni-attach-0d9bcb2d39e825416",
-            "delete_on_termination": true,
-            "device_index": 0,
-            "status": "attached"
-          },
-          "description": "",
-          "groups": [
-            {
-              "group_name": "ec2:mockfog2:public-security-group",
-              "group_id": "sg-040848b34ddb3e782"
-            }
-          ],
-          "ipv6_addresses": [],
-          "mac_address": "06:05:de:aa:51:e8",
-          "network_interface_id": "eni-0c88c5fbfb0c777c9",
-          "owner_id": "746022503515",
-          "private_dns_name": "ip-10-0-1-157.eu-central-1.compute.internal",
-          "private_ip_address": "10.0.1.157",
-          "private_ip_addresses": [
-            {
-              "association": {
-                "ip_owner_id": "amazon",
-                "public_dns_name": "ec2-35-158-233-29.eu-central-1.compute.amazonaws.com",
-                "public_ip": "35.158.233.29"
-              },
-              "primary": true,
-              "private_dns_name": "ip-10-0-1-157.eu-central-1.compute.internal",
-              "private_ip_address": "10.0.1.157"
-            }
-          ],
-          "source_dest_check": true,
-          "status": "in-use",
-          "subnet_id": "subnet-0c5c91cc7dfc4228d",
-          "vpc_id": "vpc-0d054a208ea9b1cfd",
-          "interface_type": "interface"
-        }
-      ],
-      "root_device_name": "/dev/xvda",
-      "root_device_type": "ebs",
-      "security_groups": [
-        {
-          "group_name": "ec2:mockfog2:public-security-group",
-          "group_id": "sg-040848b34ddb3e782"
+          "group_id": "sg-0aec84adbe5a47a30"
         }
       ],
       "source_dest_check": true,
@@ -768,10 +462,10 @@
     {
       "ami_launch_index": 0,
       "image_id": "ami-0aa9794817db273c1",
-      "instance_id": "i-0e3c60e031dc3f206",
-      "instance_type": "t3.micro",
+      "instance_id": "i-053a50aec3deaf278",
+      "instance_type": "t3.nano",
       "key_name": "ec2-mockfog2-ssh-key",
-      "launch_time": "2020-06-19T10:15:20+00:00",
+      "launch_time": "2020-07-02T11:20:28+00:00",
       "monitoring": {
         "state": "disabled"
       },
@@ -780,27 +474,333 @@
         "group_name": "",
         "tenancy": "default"
       },
-      "private_dns_name": "ip-10-0-1-236.eu-central-1.compute.internal",
-      "private_ip_address": "10.0.1.236",
+      "private_dns_name": "ip-10-0-1-49.eu-central-1.compute.internal",
+      "private_ip_address": "10.0.1.49",
       "product_codes": [],
-      "public_dns_name": "ec2-35-158-239-87.eu-central-1.compute.amazonaws.com",
-      "public_ip_address": "35.158.239.87",
+      "public_dns_name": "ec2-18-185-136-245.eu-central-1.compute.amazonaws.com",
+      "public_ip_address": "18.185.136.245",
       "state": {
         "code": 16,
         "name": "running"
       },
       "state_transition_reason": "",
-      "subnet_id": "subnet-0c5c91cc7dfc4228d",
-      "vpc_id": "vpc-0d054a208ea9b1cfd",
+      "subnet_id": "subnet-0b4152850834eb921",
+      "vpc_id": "vpc-08965601b8ab182ca",
       "architecture": "x86_64",
       "block_device_mappings": [
         {
           "device_name": "/dev/xvda",
           "ebs": {
-            "attach_time": "2020-06-19T10:15:21+00:00",
+            "attach_time": "2020-07-02T11:20:29+00:00",
             "delete_on_termination": true,
             "status": "attached",
-            "volume_id": "vol-0f11ef8ba1c467ad9"
+            "volume_id": "vol-097873b10d5fb3e30"
+          }
+        }
+      ],
+      "client_token": "",
+      "ebs_optimized": false,
+      "ena_support": true,
+      "hypervisor": "xen",
+      "network_interfaces": [
+        {
+          "association": {
+            "ip_owner_id": "amazon",
+            "public_dns_name": "ec2-18-185-136-245.eu-central-1.compute.amazonaws.com",
+            "public_ip": "18.185.136.245"
+          },
+          "attachment": {
+            "attach_time": "2020-07-02T11:20:28+00:00",
+            "attachment_id": "eni-attach-024018a8afa49bb5d",
+            "delete_on_termination": true,
+            "device_index": 0,
+            "status": "attached"
+          },
+          "description": "",
+          "groups": [
+            {
+              "group_name": "ec2:mockfog2:public-security-group",
+              "group_id": "sg-0aec84adbe5a47a30"
+            }
+          ],
+          "ipv6_addresses": [],
+          "mac_address": "06:d4:13:67:19:90",
+          "network_interface_id": "eni-06753cb4f5a09373c",
+          "owner_id": "746022503515",
+          "private_dns_name": "ip-10-0-1-49.eu-central-1.compute.internal",
+          "private_ip_address": "10.0.1.49",
+          "private_ip_addresses": [
+            {
+              "association": {
+                "ip_owner_id": "amazon",
+                "public_dns_name": "ec2-18-185-136-245.eu-central-1.compute.amazonaws.com",
+                "public_ip": "18.185.136.245"
+              },
+              "primary": true,
+              "private_dns_name": "ip-10-0-1-49.eu-central-1.compute.internal",
+              "private_ip_address": "10.0.1.49"
+            }
+          ],
+          "source_dest_check": true,
+          "status": "in-use",
+          "subnet_id": "subnet-0b4152850834eb921",
+          "vpc_id": "vpc-08965601b8ab182ca",
+          "interface_type": "interface"
+        },
+        {
+          "attachment": {
+            "attach_time": "2020-07-02T11:20:59+00:00",
+            "attachment_id": "eni-attach-00504f84357c59208",
+            "delete_on_termination": true,
+            "device_index": 1,
+            "status": "attached"
+          },
+          "description": "",
+          "groups": [
+            {
+              "group_name": "ec2:mockfog2:internal-security-group",
+              "group_id": "sg-07570e54ac66520d8"
+            }
+          ],
+          "ipv6_addresses": [],
+          "mac_address": "06:42:52:7e:60:58",
+          "network_interface_id": "eni-0af38c2ca040e2708",
+          "owner_id": "746022503515",
+          "private_dns_name": "ip-10-0-2-201.eu-central-1.compute.internal",
+          "private_ip_address": "10.0.2.201",
+          "private_ip_addresses": [
+            {
+              "primary": true,
+              "private_dns_name": "ip-10-0-2-201.eu-central-1.compute.internal",
+              "private_ip_address": "10.0.2.201"
+            }
+          ],
+          "source_dest_check": true,
+          "status": "in-use",
+          "subnet_id": "subnet-0bc8fc82e1d58e279",
+          "vpc_id": "vpc-08965601b8ab182ca",
+          "interface_type": "interface"
+        }
+      ],
+      "root_device_name": "/dev/xvda",
+      "root_device_type": "ebs",
+      "security_groups": [
+        {
+          "group_name": "ec2:mockfog2:public-security-group",
+          "group_id": "sg-0aec84adbe5a47a30"
+        }
+      ],
+      "source_dest_check": true,
+      "tags": {
+        "Name": "packaging-machine"
+      },
+      "virtualization_type": "hvm",
+      "cpu_options": {
+        "core_count": 1,
+        "threads_per_core": 2
+      },
+      "capacity_reservation_specification": {
+        "capacity_reservation_preference": "open"
+      },
+      "hibernation_options": {
+        "configured": false
+      },
+      "metadata_options": {
+        "state": "applied",
+        "http_tokens": "optional",
+        "http_put_response_hop_limit": 1,
+        "http_endpoint": "enabled"
+      }
+    },
+    {
+      "ami_launch_index": 0,
+      "image_id": "ami-0aa9794817db273c1",
+      "instance_id": "i-0e054c6a67568b5c2",
+      "instance_type": "t3.nano",
+      "key_name": "ec2-mockfog2-ssh-key",
+      "launch_time": "2020-07-02T11:20:28+00:00",
+      "monitoring": {
+        "state": "disabled"
+      },
+      "placement": {
+        "availability_zone": "eu-central-1b",
+        "group_name": "",
+        "tenancy": "default"
+      },
+      "private_dns_name": "ip-10-0-1-94.eu-central-1.compute.internal",
+      "private_ip_address": "10.0.1.94",
+      "product_codes": [],
+      "public_dns_name": "ec2-3-121-229-241.eu-central-1.compute.amazonaws.com",
+      "public_ip_address": "3.121.229.241",
+      "state": {
+        "code": 16,
+        "name": "running"
+      },
+      "state_transition_reason": "",
+      "subnet_id": "subnet-0b4152850834eb921",
+      "vpc_id": "vpc-08965601b8ab182ca",
+      "architecture": "x86_64",
+      "block_device_mappings": [
+        {
+          "device_name": "/dev/xvda",
+          "ebs": {
+            "attach_time": "2020-07-02T11:20:29+00:00",
+            "delete_on_termination": true,
+            "status": "attached",
+            "volume_id": "vol-0d0e8e0984bbe2418"
+          }
+        }
+      ],
+      "client_token": "",
+      "ebs_optimized": false,
+      "ena_support": true,
+      "hypervisor": "xen",
+      "network_interfaces": [
+        {
+          "association": {
+            "ip_owner_id": "amazon",
+            "public_dns_name": "ec2-3-121-229-241.eu-central-1.compute.amazonaws.com",
+            "public_ip": "3.121.229.241"
+          },
+          "attachment": {
+            "attach_time": "2020-07-02T11:20:28+00:00",
+            "attachment_id": "eni-attach-095f0da8d808c923e",
+            "delete_on_termination": true,
+            "device_index": 0,
+            "status": "attached"
+          },
+          "description": "",
+          "groups": [
+            {
+              "group_name": "ec2:mockfog2:public-security-group",
+              "group_id": "sg-0aec84adbe5a47a30"
+            }
+          ],
+          "ipv6_addresses": [],
+          "mac_address": "06:5f:12:1d:47:90",
+          "network_interface_id": "eni-048f170f43a896498",
+          "owner_id": "746022503515",
+          "private_dns_name": "ip-10-0-1-94.eu-central-1.compute.internal",
+          "private_ip_address": "10.0.1.94",
+          "private_ip_addresses": [
+            {
+              "association": {
+                "ip_owner_id": "amazon",
+                "public_dns_name": "ec2-3-121-229-241.eu-central-1.compute.amazonaws.com",
+                "public_ip": "3.121.229.241"
+              },
+              "primary": true,
+              "private_dns_name": "ip-10-0-1-94.eu-central-1.compute.internal",
+              "private_ip_address": "10.0.1.94"
+            }
+          ],
+          "source_dest_check": true,
+          "status": "in-use",
+          "subnet_id": "subnet-0b4152850834eb921",
+          "vpc_id": "vpc-08965601b8ab182ca",
+          "interface_type": "interface"
+        },
+        {
+          "attachment": {
+            "attach_time": "2020-07-02T11:21:04+00:00",
+            "attachment_id": "eni-attach-0001aba109de568a4",
+            "delete_on_termination": true,
+            "device_index": 1,
+            "status": "attached"
+          },
+          "description": "",
+          "groups": [
+            {
+              "group_name": "ec2:mockfog2:internal-security-group",
+              "group_id": "sg-07570e54ac66520d8"
+            }
+          ],
+          "ipv6_addresses": [],
+          "mac_address": "06:f8:4e:49:a3:64",
+          "network_interface_id": "eni-0f2f850c7eb3c48ef",
+          "owner_id": "746022503515",
+          "private_dns_name": "ip-10-0-2-246.eu-central-1.compute.internal",
+          "private_ip_address": "10.0.2.246",
+          "private_ip_addresses": [
+            {
+              "primary": true,
+              "private_dns_name": "ip-10-0-2-246.eu-central-1.compute.internal",
+              "private_ip_address": "10.0.2.246"
+            }
+          ],
+          "source_dest_check": true,
+          "status": "in-use",
+          "subnet_id": "subnet-0bc8fc82e1d58e279",
+          "vpc_id": "vpc-08965601b8ab182ca",
+          "interface_type": "interface"
+        }
+      ],
+      "root_device_name": "/dev/xvda",
+      "root_device_type": "ebs",
+      "security_groups": [
+        {
+          "group_name": "ec2:mockfog2:public-security-group",
+          "group_id": "sg-0aec84adbe5a47a30"
+        }
+      ],
+      "source_dest_check": true,
+      "tags": {
+        "Name": "production-machine"
+      },
+      "virtualization_type": "hvm",
+      "cpu_options": {
+        "core_count": 1,
+        "threads_per_core": 2
+      },
+      "capacity_reservation_specification": {
+        "capacity_reservation_preference": "open"
+      },
+      "hibernation_options": {
+        "configured": false
+      },
+      "metadata_options": {
+        "state": "applied",
+        "http_tokens": "optional",
+        "http_put_response_hop_limit": 1,
+        "http_endpoint": "enabled"
+      }
+    },
+    {
+      "ami_launch_index": 0,
+      "image_id": "ami-0aa9794817db273c1",
+      "instance_id": "i-0e52837e632e5918a",
+      "instance_type": "t3.nano",
+      "key_name": "ec2-mockfog2-ssh-key",
+      "launch_time": "2020-07-02T11:20:28+00:00",
+      "monitoring": {
+        "state": "disabled"
+      },
+      "placement": {
+        "availability_zone": "eu-central-1b",
+        "group_name": "",
+        "tenancy": "default"
+      },
+      "private_dns_name": "ip-10-0-1-200.eu-central-1.compute.internal",
+      "private_ip_address": "10.0.1.200",
+      "product_codes": [],
+      "public_dns_name": "ec2-18-195-52-224.eu-central-1.compute.amazonaws.com",
+      "public_ip_address": "18.195.52.224",
+      "state": {
+        "code": 16,
+        "name": "running"
+      },
+      "state_transition_reason": "",
+      "subnet_id": "subnet-0b4152850834eb921",
+      "vpc_id": "vpc-08965601b8ab182ca",
+      "architecture": "x86_64",
+      "block_device_mappings": [
+        {
+          "device_name": "/dev/xvda",
+          "ebs": {
+            "attach_time": "2020-07-02T11:20:29+00:00",
+            "delete_on_termination": true,
+            "status": "attached",
+            "volume_id": "vol-09fad749e065cc338"
           }
         }
       ],
@@ -811,8 +811,8 @@
       "network_interfaces": [
         {
           "attachment": {
-            "attach_time": "2020-06-19T10:16:01+00:00",
-            "attachment_id": "eni-attach-0d96fbf2157c38b39",
+            "attach_time": "2020-07-02T11:21:09+00:00",
+            "attachment_id": "eni-attach-040eec08e19c8d73f",
             "delete_on_termination": true,
             "device_index": 1,
             "status": "attached"
@@ -821,37 +821,37 @@
           "groups": [
             {
               "group_name": "ec2:mockfog2:internal-security-group",
-              "group_id": "sg-0e27c142e31eb328b"
+              "group_id": "sg-07570e54ac66520d8"
             }
           ],
           "ipv6_addresses": [],
-          "mac_address": "06:f8:11:bd:b7:e2",
-          "network_interface_id": "eni-044d30ba9b2090af1",
+          "mac_address": "06:c1:b0:7c:81:68",
+          "network_interface_id": "eni-046893c99d64e1d47",
           "owner_id": "746022503515",
-          "private_dns_name": "ip-10-0-2-181.eu-central-1.compute.internal",
-          "private_ip_address": "10.0.2.181",
+          "private_dns_name": "ip-10-0-2-43.eu-central-1.compute.internal",
+          "private_ip_address": "10.0.2.43",
           "private_ip_addresses": [
             {
               "primary": true,
-              "private_dns_name": "ip-10-0-2-181.eu-central-1.compute.internal",
-              "private_ip_address": "10.0.2.181"
+              "private_dns_name": "ip-10-0-2-43.eu-central-1.compute.internal",
+              "private_ip_address": "10.0.2.43"
             }
           ],
           "source_dest_check": true,
           "status": "in-use",
-          "subnet_id": "subnet-01c848be464b58850",
-          "vpc_id": "vpc-0d054a208ea9b1cfd",
+          "subnet_id": "subnet-0bc8fc82e1d58e279",
+          "vpc_id": "vpc-08965601b8ab182ca",
           "interface_type": "interface"
         },
         {
           "association": {
             "ip_owner_id": "amazon",
-            "public_dns_name": "ec2-35-158-239-87.eu-central-1.compute.amazonaws.com",
-            "public_ip": "35.158.239.87"
+            "public_dns_name": "ec2-18-195-52-224.eu-central-1.compute.amazonaws.com",
+            "public_ip": "18.195.52.224"
           },
           "attachment": {
-            "attach_time": "2020-06-19T10:15:20+00:00",
-            "attachment_id": "eni-attach-0a0e4d903302ebce3",
+            "attach_time": "2020-07-02T11:20:28+00:00",
+            "attachment_id": "eni-attach-013897b146050a249",
             "delete_on_termination": true,
             "device_index": 0,
             "status": "attached"
@@ -860,31 +860,31 @@
           "groups": [
             {
               "group_name": "ec2:mockfog2:public-security-group",
-              "group_id": "sg-040848b34ddb3e782"
+              "group_id": "sg-0aec84adbe5a47a30"
             }
           ],
           "ipv6_addresses": [],
-          "mac_address": "06:97:5f:93:8e:de",
-          "network_interface_id": "eni-0b1c80ea4329dce0e",
+          "mac_address": "06:ca:af:cd:9a:4c",
+          "network_interface_id": "eni-07d565336bb318095",
           "owner_id": "746022503515",
-          "private_dns_name": "ip-10-0-1-236.eu-central-1.compute.internal",
-          "private_ip_address": "10.0.1.236",
+          "private_dns_name": "ip-10-0-1-200.eu-central-1.compute.internal",
+          "private_ip_address": "10.0.1.200",
           "private_ip_addresses": [
             {
               "association": {
                 "ip_owner_id": "amazon",
-                "public_dns_name": "ec2-35-158-239-87.eu-central-1.compute.amazonaws.com",
-                "public_ip": "35.158.239.87"
+                "public_dns_name": "ec2-18-195-52-224.eu-central-1.compute.amazonaws.com",
+                "public_ip": "18.195.52.224"
               },
               "primary": true,
-              "private_dns_name": "ip-10-0-1-236.eu-central-1.compute.internal",
-              "private_ip_address": "10.0.1.236"
+              "private_dns_name": "ip-10-0-1-200.eu-central-1.compute.internal",
+              "private_ip_address": "10.0.1.200"
             }
           ],
           "source_dest_check": true,
           "status": "in-use",
-          "subnet_id": "subnet-0c5c91cc7dfc4228d",
-          "vpc_id": "vpc-0d054a208ea9b1cfd",
+          "subnet_id": "subnet-0b4152850834eb921",
+          "vpc_id": "vpc-08965601b8ab182ca",
           "interface_type": "interface"
         }
       ],
@@ -893,12 +893,12 @@
       "security_groups": [
         {
           "group_name": "ec2:mockfog2:public-security-group",
-          "group_id": "sg-040848b34ddb3e782"
+          "group_id": "sg-0aec84adbe5a47a30"
         }
       ],
       "source_dest_check": true,
       "tags": {
-        "Name": "central-office-server"
+        "Name": "wireless-gateway"
       },
       "virtualization_type": "hvm",
       "cpu_options": {

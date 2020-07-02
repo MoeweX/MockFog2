@@ -6,6 +6,9 @@ agent_port: 3100
 application_instruction_ports:
 - 8007
 
+state_notification_ports:
+- 8006
+
 machines:
 - machine_name: cloud
   type: t3.small
@@ -14,7 +17,7 @@ machines:
   type: t3.micro
   image: ami-0aa9794817db273c1
 - machine_name: factory-server
-  type: t3.large
+  type: t3.medium
   image: ami-0aa9794817db273c1
 - machine_name: wireless-gateway
   type: t3.nano
