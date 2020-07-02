@@ -1,4 +1,5 @@
 const http = require('http')
+const conf = require("./../config.js")
 
 const logger = require("./logService.js")("Node Agent Service")
 
@@ -19,21 +20,27 @@ async function distributeTCConfigs(machineMeta, tcconfigs) {
             var options = {
                 "host": ip,
                 "port": 3100,
-                "path": "/v3/network/tcconfig",
+                "path": `/${conf.apiVersion}/network/tcconfig`,
                 "method": "PUT",
                 "headers": {
                     "Content-Type": "application/json",
                 }
             }
 
-            http.request(options, (res) => {
+            const req = http.request(options, (res) => {
                 logger.info(`Sent tcconfig to ${ip}, status code is ${res.statusCode}`)
                 replyCount++
                 if (replyCount === Object.keys(tcconfigs).length) {
                     logger.info("Updated tcconfig on all agents")
                     resolve()
                 }
-            }).end(tcconfig);
+            })
+
+            req.on('Error', (e) => {
+                logger.error(`Error while distributing tcconfigs: ${e.message}`);
+            });
+            
+            req.end(tcconfig);
         }
     })
 }

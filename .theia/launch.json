@@ -8,13 +8,16 @@
             "request": "launch",
             "name": "App",
             "program": "${workspaceFolder}/node-manager/app.js",
-            "cwd": "${workspaceFolder}/node-manager"
+            "cwd": "${workspaceFolder}/node-manager",
+            "args": [
+                "orchestrate"   
+            ],
         },
         {
             "type": "node",
             "request": "launch",
             "name": "Single Phase",
-            "program": "${workspaceFolder}/node-manager/lib/stages/01_infrastructure/03_manipulate.js",
+            "program": "${workspaceFolder}/node-manager/lib/stages/03_orchestration/orchestration-manager.js",
         },
         {
             "type": "node",

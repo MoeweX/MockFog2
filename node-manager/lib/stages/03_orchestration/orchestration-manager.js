@@ -8,6 +8,8 @@ const multiFileFunctions = require("../../data/multi-file.js")
 const naService = require("../../services/nodeAgentService.js")
 const machineMeta = require("../../data/machine-meta.js")
 
+const TCEvaluator = require("./tc-evaluator.js")
+
 const logger = require("../../services/logService.js")("Orchestration Manager")
 
 class Manager {
@@ -17,7 +19,9 @@ class Manager {
         this.states = orchestrationF().states
         this.infrastructure = infrastructureF()
         this.deployment = deploymentF()
+        this.tcEvaluator = new TCEvaluator()
         this.status = "idle"
+        this.next_state = "initial"
     }
 
     async execute_schedule() {
@@ -27,20 +31,23 @@ class Manager {
         }
         this.status = "executing"
 
-        for (const state of this.states) {
-            logger.info("Starting transition to state " + state.state_name)
-            await this.doTransition(state)
-            logger.info("Completed transition to state " + state.state_name)
+        while (this.status !== "done") {
+            const targetStateName = this.next_state
+            let targetState = this.states.filter(s => { return s.state_name === targetStateName })[0]
+            if (!targetState) {
+                logger.error(`There is no state with state_name ${targetStateName}`)
+                break
+            }
 
-            logger.info("Doing state " + state.state_name)
-            await this.doState(state)
-            logger.info("Completed state " + state.state_name)
+            await this.doTransition(targetState)
+            await this.doState(targetState)
         }
 
         this.status = "idle"
     }
 
     async doTransition(state) {
+        logger.info("Starting transition to state " + state.state_name)
         // resource manipulation
         if (state.resource_manipulation_instructions === "reset") {
             logger.info("Resetting infrastructure manipulations")
@@ -63,35 +70,72 @@ class Manager {
                 await distributeApplicationInstructions(state.application_instructions, this.deployment, mm)
             }
         }
+        logger.info("Completed transition to state " + state.state_name)
     }
 
     async doState(state) {
-        return new Promise(resolve => {
-            // TODO resolve transition conditions for each target state individually
-            // TODO also consider message-based conditions
-            // TODO notify applications with message-based conditions about new state, measure notification delay
+        logger.info("Doing state " + state.state_name)
 
-            // find time-based conditions
-            const timeBasedConditions = state.transition_conditions.filter(tc => tc.type === "time-based")
+        if (!this.debug) {
+            const mm = machineMeta()
 
-            // if there is none -> return
-            if (timeBasedConditions.length === 0) {
-                logger.debug("There is no time-based transition condition, state completes immediatly")
-                resolve()
+            let timestamps = {}
+
+            // distribute state notifications, measure notification delay
+            for (sn of state.state_notifications) {
+                const target_machines = this.deployment.getMachineNames(sn.target_container)
+                const port = sn.port
+
+                for (const machine of target_machines) {
+                    const ip = mm.getPublicIP(machine)
+
+                    const options = {
+                        "host": ip,
+                        "port": port,
+                        "path": sn.path,
+                        "method": "GET",
+                        time: true
+                    }
+
+                    logger.info(`Sending state notification to ${ip}:${port}`)
+
+                    timestamps[options.host] = process.hrtime()
+                    http.request(options, (res) => {
+                        const delay = calculateTimeDiff(timestamps[options.host], process.hrtime())
+                        logger.info(`Notification acknowledgement delay for ${options.host} was ${delay}ms, status code is ${res.statusCode}`)
+                    }).end()
+                }
             }
+        }
 
-            // validate there is at most one
-            if (timeBasedConditions.length > 1) {
-                logger.error("There should only be a single time-based condition; picking the first one")
-            }
+        if (state.transition_conditions.length === 0) {
+            logger.info("All states completed")
+            this.status = "done"
+            return
+        }
 
-            // if there is one -> wait for defined time
-            const time = timeBasedConditions[0]["active-for"]
-            logger.info("Time-based condition: " + time / 1000 + "s.")
-            setTimeout(resolve, time)
-        })
+        // wait until all transition conditions for any subsequent state are fulfilled
+        this.next_state = await this.tcEvaluator.activate(state.transition_conditions)
+        logger.info(`Completed state ${state.state_name}, transitioning to state ${this.next_state}`)
     }
 
+}
+
+/**
+* Calculate the time difference in milliseconds from process.hrtime()
+* @param {Array} startTime - [seconds, nanoseconds]
+* @param {Array} endTime - [seconds, nanoseconds]
+* @return {Number} time difference in ms
+*/
+function calculateTimeDiff(startTime, endTime) {
+    const NS_PER_SEC = 1e9
+    const MS_PER_NS = 1e6
+
+    const secondDiff = endTime[0] - startTime[0]
+    const nanoSecondDiff = endTime[1] - startTime[1]
+    const diffInNanoSecond = secondDiff * NS_PER_SEC + nanoSecondDiff
+
+    return diffInNanoSecond / MS_PER_NS
 }
 
 /**
@@ -136,7 +180,7 @@ async function distributeApplicationInstructions(application_instructions, deplo
         for (const ai of application_instructions) {
             const target_machines = deployment.getMachineNames(ai.target_container)
             const port = ai.port
-            
+
             let queryString = ""
             for (const [key, value] of Object.entries(ai.query_strings)) {
                 if (queryString === "") {
@@ -159,7 +203,7 @@ async function distributeApplicationInstructions(application_instructions, deplo
 
                 logger.info(`Sending application instruction to ${ip}:${port}`)
                 http.request(options, (res) => {
-                    logger.info(`Sent application instruction to ${ip}, status code is ${res.statusCode}`)
+                    logger.info(`Sent application instruction to ${options.host}, status code is ${res.statusCode}`)
                     replyCount++
                     if (replyCount === application_instructions.length) {
                         logger.info("Distributed all application instructions")
@@ -175,8 +219,33 @@ module.exports = Manager
 
 if (require.main === module) {
     (async () => {
-        const manager = new Manager(true)
+        const app = require("express")()
+        const server = app.listen(3000)
+        const tmController = require("../../controller/transitionMessagesController.js")
 
-        await manager.execute_schedule()
+        const manager = new Manager(true)
+        tmController(app, "test", manager.tcEvaluator)
+
+        const interval = setInterval(function () {
+            const ip = "localhost"
+
+            const options = {
+                "host": ip,
+                "port": 3000,
+                "path": "/test/transition/message?event_name=dashboard-generated",
+                "method": "GET"
+            }
+
+            logger.info(`Sending transition message to ${ip}:3000`)
+            http.request(options, (res) => {
+                logger.info(`Sent transition message to ${ip}, status code is ${res.statusCode}`)
+            }).end()
+        }, 5000)
+
+        manager.execute_schedule().then(_ => {
+            logger.info("Schedlue executed")
+            clearInterval(interval)
+            server.close()
+        })
     })();
 }

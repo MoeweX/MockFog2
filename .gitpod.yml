@@ -4,3 +4,6 @@ tasks:
   - init: (cd node-agent; npm install)
 image:
   file: .gitpod.Dockerfile
+ports:
+  - port: 3512
+    onOpen: ignore

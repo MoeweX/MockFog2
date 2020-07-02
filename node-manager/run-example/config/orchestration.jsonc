@@ -1,12 +1,13 @@
 // Defines the orchestration schedule and meta data.
 {
     "maximum_state_change_delay": 5, // in ms; if the Node Manager detects a larger delay, the orchestration schedule exeuction is invalid
-    // Each state comprises instructions and conditions for state transitions.
+    // Each state comprises instructions applied while transitioning to this state and conditions for state transitions.
     "states": [
         {
-            "state_name": "initial", // it is a good idea to have an initial state that resets resource manipulations
+            "state_name": "initial", // the name of the first state must be initial, use it to reset the infrastructure
             "resource_manipulation_instructions": "reset", // this re-applies all manipulations from infrastructure.jsonc
             "application_instructions": [],
+            "state_notifications": [],
             // When all conditions for the transition to any stage are met, a transition to this state begins.
             "transition_conditions": [
                 {
@@ -35,10 +36,10 @@
                 ]
                 // other kinds of resource manipulations will be added in the future
             },
-            // Application instructions will be sent via HTTP GET at the beginning of each state to all machines on which a target_container is deployed.
+            // Application instructions will be sent via HTTP GET during a transition to a state to all machines on which a target_container is deployed.
             "application_instructions": [
                 {
-                    "target_container": "aggregate", // will be sent to the public ip and port of each machine that this container is deployed on (not affected by manipuations)
+                    "target_container": "aggregate", // will be sent to the public ip and port of each machine that this container is deployed on
                     "path": "/interval", // target url path for the instruction request
                     "port": 8007, // the port at which the application waits for instructions
                     // these key-value pairs depend on the application running in the container => not interpreted by MockFog
@@ -46,6 +47,14 @@
                         "interval": 5000
                     }
                 }
+            ],
+            // The node manager can notify containers about the successful transition to a new state via HTTP GET, containers have to acknowledge the notifications (HTTP 200)
+            "state_notifications": [
+                {
+                    "target_container": "generate-dashboard", // will be sent to the public ip and port of each machine that this container is deployed on
+                    "path": "/state/notifications", // target url path for the notification request
+                    "port": 8006 // the port at which the application waits for notifications
+                }   
             ],
             "transition_conditions": [
                 // only when both conditions are met, transition to final begins
@@ -56,7 +65,7 @@
                 },
                 {
                     "type": "message-based",
-                    "event": "dashboard-generated",
+                    "event_name": "dashboard-generated",
                     "threshold": 5, // how often the defined event_name must be sent to the node manager transition endpoint
                     "next_state": "final"
                 }
@@ -75,6 +84,7 @@
                     }
                 }
             ],
+            "state_notifications": [],
             "transition_conditions": [] // the final event has no transition condition
         }
     ]
