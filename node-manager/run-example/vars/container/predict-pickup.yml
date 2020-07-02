@@ -1,8 +1,6 @@
 ---
 container_name: predict-pickup
-docker_image: pfandzelter/predict
+docker_image: hasenburg/predict
 container_dirname: /predict-pickup
 local_dirname: appdata/predict-pickup
-ports: 
- - "8010:8010"
 

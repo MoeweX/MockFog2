@@ -1,8 +1,6 @@
 ---
 container_name: aggregate
-docker_image: pfandzelter/aggregate
+docker_image: hasenburg/aggregate
 container_dirname: /aggregate
 local_dirname: appdata/aggregate
-ports: 
- - "8007:8007"
 

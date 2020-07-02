@@ -1,8 +1,6 @@
 ---
 container_name: generate-dashboard
-docker_image: pfandzelter/generatedashboard
+docker_image: hasenburg/generatedashboard
 container_dirname: /generate-dashboard
 local_dirname: appdata/generate-dashboard
-ports: 
- - "8006:8006"
 

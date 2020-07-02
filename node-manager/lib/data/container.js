@@ -61,16 +61,7 @@ container_name: ${container_name}
 docker_image: ${container["docker_image"]}
 container_dirname: ${container["container_dirname"]}
 local_dirname: ${container["local_dirname"]}
-ports: ${getPortsAsYMLList(container["ports"])}
 \n`
-}
-
-function getPortsAsYMLList(ports) {
-    let res = "\n"
-    for (port of ports) {
-        res = res + ` - "${port}"`
-    }
-    return res
 }
 
 module.exports = function(fileLocation) {

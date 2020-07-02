@@ -1,8 +1,6 @@
 ---
 container_name: temperature-sensor
-docker_image: pfandzelter/sensor
+docker_image: hasenburg/sensor
 container_dirname: /temperature-sensor
 local_dirname: appdata/temperature-sensor
-ports: 
-
 

@@ -1,8 +1,6 @@
 ---
 container_name: central-office-dashboard
-docker_image: pfandzelter/centraldashboard
+docker_image: hasenburg/centraldashboard
 container_dirname: /central-office-dashboard
 local_dirname: appdata/central-office-dashboard
-ports: 
- - "8000:8000"
 

@@ -1,11 +1,11 @@
-// Defines the to be emulated infrastructure and general information on AWS.
+// defines the to be emulated infrastructure and general information on AWS
 {
     "aws": {
         "ec2_region": "eu-central-1",
         "ssh_key_name": "ec2-mockfog2-ssh-key",
         "agent_port": 3100 // the port on which the node agent provides its services
     },
-    // Every machine in this list defines a single remote host setup on AWS EC2.
+    // every machine in this list defines a single remote host setup on AWS EC2
     "machines": [
         {
             "machine_name": "cloud", // machine_name is also used to set the "Name" tag on EC2
@@ -19,7 +19,7 @@
         },
         {
             "machine_name": "factory-server",
-            "type": "t3.large",
+            "type": "t3.medium",
             "image": "ami-0aa9794817db273c1"
         },
         {

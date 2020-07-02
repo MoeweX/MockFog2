@@ -7,30 +7,30 @@ ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 # ---------------------------------------
 
 [machines:children]
-wireless-gateway
 cloud
-production-machine
-packaging-machine
-factory-server
 central-office-server
-
-[wireless-gateway]
-ec2-18-196-237-33.eu-central-1.compute.amazonaws.com machine_name=wireless-gateway
+factory-server
+packaging-machine
+production-machine
+wireless-gateway
 
 [cloud]
-ec2-54-93-233-66.eu-central-1.compute.amazonaws.com machine_name=cloud
-
-[production-machine]
-ec2-18-196-110-4.eu-central-1.compute.amazonaws.com machine_name=production-machine
-
-[packaging-machine]
-ec2-54-93-34-248.eu-central-1.compute.amazonaws.com machine_name=packaging-machine
-
-[factory-server]
-ec2-35-158-233-29.eu-central-1.compute.amazonaws.com machine_name=factory-server
+ec2-54-93-34-108.eu-central-1.compute.amazonaws.com machine_name=cloud internal_ip=10.0.2.232
 
 [central-office-server]
-ec2-35-158-239-87.eu-central-1.compute.amazonaws.com machine_name=central-office-server
+ec2-52-28-201-99.eu-central-1.compute.amazonaws.com machine_name=central-office-server internal_ip=10.0.2.184
+
+[factory-server]
+ec2-18-197-127-87.eu-central-1.compute.amazonaws.com machine_name=factory-server internal_ip=10.0.2.188
+
+[packaging-machine]
+ec2-18-185-136-245.eu-central-1.compute.amazonaws.com machine_name=packaging-machine internal_ip=10.0.2.201
+
+[production-machine]
+ec2-3-121-229-241.eu-central-1.compute.amazonaws.com machine_name=production-machine internal_ip=10.0.2.246
+
+[wireless-gateway]
+ec2-18-195-52-224.eu-central-1.compute.amazonaws.com machine_name=wireless-gateway internal_ip=10.0.2.43
 
 # ---------------------------------------
 # Hosts by container_names
@@ -50,35 +50,35 @@ generate-dashboard
 central-office-dashboard
 
 [camera]
-ec2-18-196-110-4.eu-central-1.compute.amazonaws.com machine_name=production-machine
+ec2-3-121-229-241.eu-central-1.compute.amazonaws.com machine_name=production-machine internal_ip=10.0.2.246
 
 [check-for-defects]
-ec2-18-196-110-4.eu-central-1.compute.amazonaws.com machine_name=production-machine
+ec2-3-121-229-241.eu-central-1.compute.amazonaws.com machine_name=production-machine internal_ip=10.0.2.246
 
 [production-control]
-ec2-18-196-110-4.eu-central-1.compute.amazonaws.com machine_name=production-machine
+ec2-3-121-229-241.eu-central-1.compute.amazonaws.com machine_name=production-machine internal_ip=10.0.2.246
 
 [temperature-sensor]
-ec2-54-93-34-248.eu-central-1.compute.amazonaws.com machine_name=packaging-machine
+ec2-18-185-136-245.eu-central-1.compute.amazonaws.com machine_name=packaging-machine internal_ip=10.0.2.201
 
 [adapt-packaging]
-ec2-18-196-237-33.eu-central-1.compute.amazonaws.com machine_name=wireless-gateway
+ec2-18-195-52-224.eu-central-1.compute.amazonaws.com machine_name=wireless-gateway internal_ip=10.0.2.43
 
 [packaging-control]
-ec2-54-93-34-248.eu-central-1.compute.amazonaws.com machine_name=packaging-machine
+ec2-18-185-136-245.eu-central-1.compute.amazonaws.com machine_name=packaging-machine internal_ip=10.0.2.201
 
 [predict-pickup]
-ec2-35-158-233-29.eu-central-1.compute.amazonaws.com machine_name=factory-server
+ec2-18-197-127-87.eu-central-1.compute.amazonaws.com machine_name=factory-server internal_ip=10.0.2.188
 
 [logistics-prognosis]
-ec2-35-158-233-29.eu-central-1.compute.amazonaws.com machine_name=factory-server
+ec2-18-197-127-87.eu-central-1.compute.amazonaws.com machine_name=factory-server internal_ip=10.0.2.188
 
 [aggregate]
-ec2-35-158-233-29.eu-central-1.compute.amazonaws.com machine_name=factory-server
+ec2-18-197-127-87.eu-central-1.compute.amazonaws.com machine_name=factory-server internal_ip=10.0.2.188
 
 [generate-dashboard]
-ec2-54-93-233-66.eu-central-1.compute.amazonaws.com machine_name=cloud
+ec2-54-93-34-108.eu-central-1.compute.amazonaws.com machine_name=cloud internal_ip=10.0.2.232
 
 [central-office-dashboard]
-ec2-35-158-239-87.eu-central-1.compute.amazonaws.com machine_name=central-office-server
+ec2-52-28-201-99.eu-central-1.compute.amazonaws.com machine_name=central-office-server internal_ip=10.0.2.184
 
