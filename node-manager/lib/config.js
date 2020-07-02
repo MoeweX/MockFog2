@@ -15,7 +15,7 @@ function setNMAddress(obj, nmPort) {
             // TODO if we are not in a gitpod environment, use ifconfig to get url and append port
             obj.nmAddress = `TODOAsNotInGitpod:${nmPort}`
         } else {
-            obj.nmAddress = stdout.replace("\n", "").replace("https", "http")
+            obj.nmAddress = stdout.replace("\n", "")
         }
     })
 }

@@ -33,6 +33,7 @@ class TCEvaluator {
         this.active = true
 
         const tce = this
+        logger.verbose("Activated TCEvaluator, conditions are " + JSON.stringify(conditions))
         return new Promise(resolve => {
             tce.resolve = resolve // resolved through timers or #addEvent when all conditions for any target state are met
             for (const tbc of tce._getTBC()) {

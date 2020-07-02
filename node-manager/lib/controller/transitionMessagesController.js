@@ -19,7 +19,6 @@ function controllerFunction(app, apiVersion, tcEvaluator) {
             res.status(400).send("Queryparams must contain event_name")
             return
         }
-
         const success = tcEvaluator.addEvent(event_name)
         if (success) {
             res.status(200).end()

@@ -51,8 +51,9 @@ if (myArgs[0] in phases) {
         const server = app.listen(conf.nmPort)
         const manager = new Phase()
         tmController(app, conf.apiVersion, manager.tcEvaluator)
+        logger.info("Listening for events on port " + conf.nmPort)
 
-        new Phase().execute_schedule().then(_ => {
+        manager.execute_schedule().then(_ => {
             logger.info("Schedlue executed")
             server.close()
         })
