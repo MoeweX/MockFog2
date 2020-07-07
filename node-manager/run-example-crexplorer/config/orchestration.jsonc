@@ -1,0 +1,104 @@
+{
+    "states": [
+        {
+            "state_name": "initial",
+            "connection_manipulation_instructions": "reset",
+            "machine_manipulation_instructions": "reset",
+            "application_instructions": [],
+            "state_notifications": [],
+            "transition_conditions": [
+                {
+                    "type": "time-based",
+                    "active-for": 20000,
+                    "next_state": "memory1"
+                }
+            ]
+        },
+        {
+            "state_name": "memory1",
+            "connection_manipulation_instructions": [],
+            // overwrite machine resource defaults/the properties defined in infrastructure.jsonc
+            "machine_manipulation_instructions": [
+                {
+                    "machine_name": "server1",
+                    "memory": "200m"
+                }
+            ],
+            "application_instructions": [
+                {
+                    "target_container": "crexplorer",
+                    "path": "/run",
+                    "port": 8080,
+                    "query_strings": {
+                        "max_memory": 200
+                    }
+                }
+            ],
+            "state_notifications": [],
+            "transition_conditions": [
+                {
+                    "type": "time-based",
+                    "active-for": 20000,
+                    "next_state": "network1"
+                }
+            ]
+        },
+        {
+            "state_name": "network1",
+            "connection_manipulation_instructions": [
+                {
+                    "from": "server2",
+                    "to": "server3",
+                    "delay": 10,
+                    "loss": 20 // 20% chance for package loss
+                }
+            ],
+            "machine_manipulation_instructions": "reset",
+            "application_instructions": [],
+            "state_notifications": [],
+            "transition_conditions": [
+                {
+                    "type": "time-based",
+                    "active-for": 20000,
+                    "next_state": "cpu1"
+                }
+            ]
+        },
+        {
+            "state_name": "cpu1",
+            "connection_manipulation_instructions": "reset",
+            "machine_manipulation_instructions": [
+                {
+                    "machine_name": "server1",
+                    "cpus": 1.0
+                }
+            ],
+            "application_instructions": [
+                {
+                    "target_container": "crexplorer",
+                    "path": "/run",
+                    "port": 8080,
+                    "query_strings": {
+                        "max_memory": 200
+                    }
+                }
+            ],
+            "state_notifications": [],
+            "transition_conditions": [
+                {
+                    "type": "time-based",
+                    "active-for": 20000,
+                    "next_state": "final"
+                }
+            ]
+        },
+        {
+            "state_name": "final",
+            "connection_manipulation_instructions": "reset",
+            "machine_manipulation_instructions": "reset",
+            "application_instructions": [],
+            "state_notifications": [],
+            "transition_conditions": []
+        }
+    ]
+}

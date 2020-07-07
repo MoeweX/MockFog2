@@ -1,64 +1,24 @@
 /**
- * Returns an array of tcconfig that can be restored by https://tcconfig.readthedocs.io/en/latest/index.html for each machine part of the defined infrastructure.
  * 
  * @param {Object} infrastructure the object returned by the infrastructure.js module function
  * @param {Object} machineMeta the object returned by the machine-meta.js module function
+ * @return {Array} that comprises { machine_name: xx, public_ip: xx } objects
  */
-function getTCConfigs(infrastructure, machineMeta) {
+ function getMachineList(infrastructure, machineMeta) {
     // setup fields
     const machines = infrastructure.infra.machines
-    const graph = infrastructure.graph
-    const getInternalIP = machineMeta.getInternalIP // this is a function
+    const getPublicIP = machineMeta.getPublicIP // this is a function
 
-    const tcConfig = {}
+    const machineList = []
 
     machines.forEach(start => {
-        let fillerId = 800
-        const outgoing = {}
-
-        for (const target of machines) {
-            if (start.machine_name === target.machine_name) continue
-
-            const route = graph.path(start.machine_name, target.machine_name, { cost: true })
-            const path = route.path
-
-            // variable names are also the key names for tcconfig if not specified otherwise
-            const delay = route.cost
-            const rate = infrastructure.calculatePathRate(path, true)
-            const delayDistro = infrastructure.calculatePathDelayDistro(path) // keyname must be delay-distro
-            const duplicate  = infrastructure.calculatePathDuplicate(path)
-            const loss = infrastructure.calculatePathLoss(path)
-            const corrupt = infrastructure.calculatePathCorrupt(path)
-            const reordering = infrastructure.calculatePathReordering(path)
-
-            outgoing[`dst-network=${getInternalIP(target.machine_name)}/32, protocol=ip`] = {
-                machine_name: target.machine_name,
-                filler_id: `800:${fillerId}`,
-                delay: delay,
-                rate: rate,
-                "delay-distro": delayDistro,
-                duplicate: duplicate,
-                loss: loss,
-                corrupt: corrupt,
-                reordering: reordering
-            }
-
-            fillerId++
-        }
-
-        tcConfig[start.machine_name] = {
-            "eth0": {
-                "outgoing": {},
-                "incoming": {}
-            },
-            "eth1": {
-                "outgoing": outgoing,
-                "incoming": {}
-            }
-        }
+        machineList.push({ 
+            "machine_name": start.machine_name,
+            "public_ip": getPublicIP(start.machine_name)
+        })  
     })
-
-    return tcConfig
+    
+    return machineList
 }
 
 /**
@@ -129,6 +89,6 @@ ${getHostContainerDetails(container, deployment, machineMeta)}
 }
 
 module.exports = {
-    getTCConfigs: getTCConfigs,
-    getHosts: getHosts
+    getHosts: getHosts,
+    getMachineList: getMachineList
 }

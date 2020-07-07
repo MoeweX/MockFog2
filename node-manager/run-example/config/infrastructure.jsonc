@@ -52,7 +52,7 @@
             "from": "cloud",
             "to": "central-office-server",
             "delay": 10, // connection latency/delay in ms, set on each machine so roundtrip will be 20ms
-            "rate": "2gbps", // available connection bandwidth rate
+            "rate": "2gbps", // available connection bandwidth rate (units: bps, kbps, mbps, gbps)
             "delay-distro": 0, // connection delay distribution in ms
             "duplicate": 0, // connection duplicate probablity in %
             "loss": 20, // connection loss probability in %

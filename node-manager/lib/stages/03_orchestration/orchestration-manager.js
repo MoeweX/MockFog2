@@ -4,7 +4,7 @@ const orchestrationF = require("../../data/orchestration.js")
 const deploymentF = require("../../data/deployment.js")
 const infrastructureF = require("../../data/infrastructure.js")
 
-const multiFileFunctions = require("../../data/multi-file.js")
+const manipulationService = require("../../services/manipulationService.js")
 const naService = require("../../services/nodeAgentService.js")
 const machineMeta = require("../../data/machine-meta.js")
 
@@ -17,7 +17,7 @@ class Manager {
     constructor(debug = false) {
         this.debug = debug
         this.states = orchestrationF().states
-        this.infrastructure = infrastructureF()
+        this.infrastructureO = infrastructureF()
         this.deployment = deploymentF()
         this.tcEvaluator = new TCEvaluator()
         this.status = "idle"
@@ -25,6 +25,8 @@ class Manager {
     }
 
     async execute_schedule() {
+        manipulationService.fetch()
+
         if (this.status !== "idle") {
             logger.warn("Cannot start manager is " + this.status)
             return
@@ -47,22 +49,23 @@ class Manager {
     }
 
     async doTransition(state) {
+        // TODO add machine_manipulation_instructions
         logger.info("Starting transition to state " + state.state_name)
-        // resource manipulation
-        if (state.resource_manipulation_instructions === "reset") {
-            logger.info("Resetting infrastructure manipulations")
-            this.infrastructure = infrastructureF()
+        // connection_manipulation_instructions
+        if (state.connection_manipulation_instructions === "reset") {
+            logger.info("Resetting connection manipulations")
+            this.infrastructureO = infrastructureF()
         } else {
-            // apply manipulations to this.infrastructure.infra
-            this.infrastructure = applyConnectionUpdates(this.infrastructure, state.resource_manipulation_instructions.connection_updates)
+            // apply manipulations to this.infrastructureO.infra
+            this.infrastructureO = applyConnectionUpdates(this.infrastructureO, state.connection_manipulation_instructions)
 
             // this updates the graph with the newest infra data
-            this.infrastructure.graph = this.infrastructure.getGraph(this.infrastructure.infra)
+            this.infrastructureO.graph = this.infrastructureO.getGraph(this.infrastructureO.infra)
         }
         if (!this.debug) {
             const mm = machineMeta()
 
-            const tcconfigs = multiFileFunctions.getTCConfigs(this.infrastructure, mm)
+            const tcconfigs = manipulationService.getTCConfigs(this.infrastructureO, mm)
             await naService.distributeTCConfigs(mm, tcconfigs)
 
             // application instructions
@@ -139,12 +142,17 @@ function calculateTimeDiff(startTime, endTime) {
 }
 
 /**
- * Replaces connection information in the given infrastructure object with same from/to as found in the given connection_updates
+ * Replaces connection information in the given infrastructure object with same from/to as found in the given connection_manipulation_instructions
  * 
  * @param {Object} infrastructure the object returned by the infrastructure.js module function
- * @param {*} connection_updates the new connection_updates to use
+ * @param {*} connection_updates the new connection_manipulation_instructions to use
+ * @return the updated infrastructure, if connection_updates is undefined/emptry, returns the original infrastructure
  */
 function applyConnectionUpdates(infrastructure, connection_updates) {
+    if (!connection_updates || connection_updates.length === 0) {
+        return infrastructure
+    }
+
     const infra = infrastructure.infra
 
     for (const connection of connection_updates) {
@@ -152,12 +160,19 @@ function applyConnectionUpdates(infrastructure, connection_updates) {
         let toUpdate = infra.connections.filter(con => con.from === connection.from).filter(con => con.to === connection.to)
         if (toUpdate.length !== 1) {
             logger.error(`${JSON.stringify(toUpdate)} should be updated with ${JSON.stringify(connection)}, but it is not a single element => skipping`)
+            // TODO add new connection if not found
             continue
         }
         toUpdate = toUpdate[0]
 
         // update properties
         toUpdate.delay = connection.delay
+        toUpdate.rate = connection.rate
+        toUpdate["delay-distro"] = connection["delay-distro"]
+        toUpdate.duplicate = connection.duplicate
+        toUpdate.loss = connection.loss
+        toUpdate.corrupt = connection.corrupt
+        toUpdate.reordering = connection.reorderin
     }
 
     infrastructure.infra = infra // let's make it explicit

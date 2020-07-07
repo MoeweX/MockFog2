@@ -1,3 +1,4 @@
+// TODO split resource manipulation instructions to machine and connection based
 // defines the orchestration schedule and meta data
 {
     "maximum_state_change_delay": 5, // in ms; if the Node Manager detects a larger delay, the orchestration schedule exeuction is invalid

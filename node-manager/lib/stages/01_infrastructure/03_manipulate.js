@@ -3,10 +3,10 @@ const fsp = fs.promises
 
 const infrastructure = require("../../data/infrastructure.js")
 const machineMeta = require("../../data/machine-meta.js")
-const multiFileFunctions = require("../../data/multi-file.js")
 
 const Phase = require("../phase.js")
 const naService = require("../../services/nodeAgentService.js")
+const manipulationService = require("../../services/manipulationService.js")
 
 const conf = require("../../config.js")
 
@@ -19,7 +19,8 @@ class Child extends Phase {
     async parseInput() {
         this.infra = infrastructure()
         this.machineMeta = machineMeta()
-        this.tcconfigs = multiFileFunctions.getTCConfigs(this.infra, this.machineMeta)
+        manipulationService.fetch()
+        this.tcconfigs = manipulationService.getTCConfigs(this.infra, this.machineMeta)
     }
 
     async runPrePlaybookTasks() {

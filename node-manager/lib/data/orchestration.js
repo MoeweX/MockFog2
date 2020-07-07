@@ -17,7 +17,11 @@ function getApplicationInstructionsPortsYml(orchestration) {
 
     ports.forEach(port => {
         ymlString = ymlString + `- ${port}\n`
-    });
+    })
+
+    if (ports.size == 0) {
+        ymlString = ymlString + "- 9998\n" // there must be at least one port
+    }
 
     return ymlString + "\n"
 }
@@ -37,6 +41,10 @@ function getStateNotificationsPortsYml(orchestration) {
     ports.forEach(port => {
         ymlString = ymlString + `- ${port}\n`
     });
+
+    if (ports.size == 0) {
+        ymlString = ymlString + "- 9999\n" // there must be at least one port
+    }
 
     return ymlString + "\n"
 }
