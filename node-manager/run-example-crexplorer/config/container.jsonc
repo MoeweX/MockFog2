@@ -7,7 +7,8 @@
         "env": {
             "PORT": 8080,
             "LOGFILE": "/crexplorer/log.txt",
-            "PING": "{{ internal_ip('server3') }}"
+            "PING": "{{ internal_ip('server3') }}",
+            "EVENT_ENDPOINT": "{{ nm_event_endpoint() }}"
         },
         "command": []
     }

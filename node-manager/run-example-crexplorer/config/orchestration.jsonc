@@ -5,13 +5,7 @@
             "connection_manipulation_instructions": "reset",
             "machine_manipulation_instructions": "reset",
             "application_instructions": [],
-            "state_notifications": [
-                {
-                    "target_container": "crexplorer",
-                    "path": "/state",
-                    "port": 8080
-                }
-            ],
+            "state_notifications": [],
             "transition_conditions": [
                 {
                     "type": "time-based",
@@ -33,7 +27,7 @@
             "application_instructions": [
                 {
                     "target_container": "crexplorer",
-                    "path": "/run",
+                    "path": "/prepare",
                     "port": 8080,
                     "query_strings": {
                         "max_memory": 200
@@ -49,8 +43,20 @@
             ],
             "transition_conditions": [
                 {
+                    "type": "message-based",
+                    "event_name": "cpu",
+                    "threshold": 2,
+                    "next_state": "network1"
+                },
+                {
+                    "type": "message-based",
+                    "event_name": "memory",
+                    "threshold": 1, // as server-1 has not enough memory
+                    "next_state": "network1"
+                },
+                {
                     "type": "time-based",
-                    "active-for": 20000,
+                    "active-for": 20000, // minimum time in state so we get enough pings
                     "next_state": "network1"
                 }
             ]
@@ -76,6 +82,18 @@
             ],
             "transition_conditions": [
                 {
+                    "type": "message-based",
+                    "event_name": "cpu",
+                    "threshold": 2,
+                    "next_state": "cpu1"
+                },
+                {
+                    "type": "message-based",
+                    "event_name": "memory",
+                    "threshold": 2,
+                    "next_state": "cpu1"
+                },
+                {
                     "type": "time-based",
                     "active-for": 20000,
                     "next_state": "cpu1"
@@ -88,19 +106,10 @@
             "machine_manipulation_instructions": [
                 {
                     "machine_name": "server1",
-                    "cpus": 1.0
+                    "cpus": 0.5
                 }
             ],
-            "application_instructions": [
-                {
-                    "target_container": "crexplorer",
-                    "path": "/run",
-                    "port": 8080,
-                    "query_strings": {
-                        "max_memory": 200
-                    }
-                }
-            ],
+            "application_instructions": [],
             "state_notifications": [
                 {
                     "target_container": "crexplorer",
@@ -109,6 +118,18 @@
                 }
             ],
             "transition_conditions": [
+                {
+                    "type": "message-based",
+                    "event_name": "cpu",
+                    "threshold": 2,
+                    "next_state": "final"
+                },
+                {
+                    "type": "message-based",
+                    "event_name": "memory",
+                    "threshold": 2,
+                    "next_state": "final"
+                },
                 {
                     "type": "time-based",
                     "active-for": 20000,

@@ -83,6 +83,7 @@ function createLocalDirs(container) {
 }
 
 async function createEnvFiles(container, logger) {
+    await conf.awaitNMAddress()
     for (const c of container.containers) {
         const envFileString = container.getEnvFileString(c["container_name"])
         const filepath = conf.runDir + c["local_dirname"] + "/env_file.env"

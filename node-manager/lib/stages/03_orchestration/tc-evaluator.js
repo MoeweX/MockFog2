@@ -33,7 +33,7 @@ class TCEvaluator {
         this.active = true
 
         const tce = this
-        logger.verbose("Activated TCEvaluator, conditions are " + JSON.stringify(conditions))
+        logger.info("Activated TCEvaluator, conditions are " + JSON.stringify(conditions))
         return new Promise(resolve => {
             tce.resolve = resolve // resolved through timers or #addEvent when all conditions for any target state are met
             for (const tbc of tce._getTBC()) {
@@ -140,7 +140,7 @@ class TCEvaluator {
      * @param {Object} condition - the time-based or message-based condition to remove
      */
     _removeCondition(condition) {
-        logger.verbose("Condition completed: " + JSON.stringify(condition))
+        logger.info("Condition completed: " + JSON.stringify(condition))
         for (const targetState in this._activeConditions) {
             const conditions = this._activeConditions[targetState]
             const index = conditions.indexOf(condition);
