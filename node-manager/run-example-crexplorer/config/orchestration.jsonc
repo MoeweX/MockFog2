@@ -5,7 +5,13 @@
             "connection_manipulation_instructions": "reset",
             "machine_manipulation_instructions": "reset",
             "application_instructions": [],
-            "state_notifications": [],
+            "state_notifications": [
+                {
+                    "target_container": "crexplorer",
+                    "path": "/state",
+                    "port": 8080
+                }
+            ],
             "transition_conditions": [
                 {
                     "type": "time-based",
@@ -34,7 +40,13 @@
                     }
                 }
             ],
-            "state_notifications": [],
+            "state_notifications": [
+                {
+                    "target_container": "crexplorer",
+                    "path": "/state",
+                    "port": 8080
+                }
+            ],
             "transition_conditions": [
                 {
                     "type": "time-based",
@@ -55,7 +67,13 @@
             ],
             "machine_manipulation_instructions": "reset",
             "application_instructions": [],
-            "state_notifications": [],
+            "state_notifications": [
+                {
+                    "target_container": "crexplorer",
+                    "path": "/state",
+                    "port": 8080
+                }
+            ],
             "transition_conditions": [
                 {
                     "type": "time-based",
@@ -83,7 +101,13 @@
                     }
                 }
             ],
-            "state_notifications": [],
+            "state_notifications": [
+                {
+                    "target_container": "crexplorer",
+                    "path": "/state",
+                    "port": 8080
+                }
+            ],
             "transition_conditions": [
                 {
                     "type": "time-based",
@@ -97,7 +121,13 @@
             "connection_manipulation_instructions": "reset",
             "machine_manipulation_instructions": "reset",
             "application_instructions": [],
-            "state_notifications": [],
+            "state_notifications": [
+                {
+                    "target_container": "crexplorer",
+                    "path": "/state",
+                    "port": 8080
+                }
+            ],
             "transition_conditions": []
         }
     ]

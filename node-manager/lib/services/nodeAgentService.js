@@ -36,7 +36,7 @@ async function distributeTCConfigs(machineMeta, tcconfigs) {
                 }
             })
 
-            req.on('Error', (e) => {
+            req.on('error', (e) => {
                 logger.error(`Error while distributing tcconfigs: ${e.message}`);
             });
             

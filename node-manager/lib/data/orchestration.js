@@ -6,14 +6,19 @@ const conf = require("../config.js")
 /**
  * @param {Object} orchestration the object returned by the orchestration.js module function
  */
-function getApplicationInstructionsPortsYml(orchestration) {
+function applicationInstructionsAndStatesPortsYml(orchestration) {
     let ports = new Set()
     for (state of orchestration.states) {
         for (ai of state.application_instructions) {
             ports.add(ai.port)
         }
     }
-    let ymlString = "application_instruction_ports:\n"
+    for (state of orchestration.states) {
+        for (sn of state.state_notifications) {
+            ports.add(sn.port)
+        }
+    }
+    let ymlString = "application_instruction_and_states_ports:\n"
 
     ports.forEach(port => {
         ymlString = ymlString + `- ${port}\n`
@@ -21,29 +26,6 @@ function getApplicationInstructionsPortsYml(orchestration) {
 
     if (ports.size == 0) {
         ymlString = ymlString + "- 9998\n" // there must be at least one port
-    }
-
-    return ymlString + "\n"
-}
-
-/**
- * @param {Object} orchestration the object returned by the orchestration.js module function
- */
-function getStateNotificationsPortsYml(orchestration) {
-    let ports = new Set()
-    for (state of orchestration.states) {
-        for (sn of state.state_notifications) {
-            ports.add(sn.port)
-        }
-    }
-    let ymlString = "state_notification_ports:\n"
-
-    ports.forEach(port => {
-        ymlString = ymlString + `- ${port}\n`
-    });
-
-    if (ports.size == 0) {
-        ymlString = ymlString + "- 9999\n" // there must be at least one port
     }
 
     return ymlString + "\n"
@@ -60,8 +42,7 @@ module.exports = function(fileLocation) {
     return {
         orchestration: orchestration,
         states: orchestration.states,
-        applicationInstructionsPortsYml: getApplicationInstructionsPortsYml(orchestration),
-        stateNotificationsPortsYml: getStateNotificationsPortsYml(orchestration)
+        applicationInstructionsAndStatesPortsYml: applicationInstructionsAndStatesPortsYml(orchestration)
     }
 }
 

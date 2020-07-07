@@ -47,7 +47,7 @@ function getTCConfigs(infrastructure, machineMeta) {
             const path = route.path
 
             // variable names are also the key names for tcconfig if not specified otherwise
-            const delay = route.cost // TODO consider already existing delay between machines
+            const delay = route.cost // TODO consider already existing delay between machines https://github.com/MoeweX/MockFog2/issues/36
             const rate = infrastructure.calculatePathRate(path, true)
             const delayDistro = infrastructure.calculatePathDelayDistro(path) // keyname must be delay-distro
             const duplicate  = infrastructure.calculatePathDuplicate(path)

@@ -95,7 +95,7 @@ class Manager {
                     const options = {
                         "host": ip,
                         "port": port,
-                        "path": sn.path,
+                        "path": sn.path + "?state_name=" + state.state_name,
                         "method": "GET",
                         time: true
                     }
