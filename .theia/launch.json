@@ -10,7 +10,7 @@
             "program": "${workspaceFolder}/node-manager/app.js",
             "cwd": "${workspaceFolder}/node-manager",
             "args": [
-                "bootstrap"   
+                "manipulate"   
             ],
         },
         {

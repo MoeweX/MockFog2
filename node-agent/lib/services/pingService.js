@@ -1,5 +1,5 @@
 var ping = require('ping')
-const logger = require("./logService.js")("pingService")
+const logger = require("./logService.js")("Ping Service")
 
 let timer
 // TODO add updateInterval endpoint

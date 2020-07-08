@@ -14,13 +14,14 @@
  *  - collects max_memory and max_cpu of each machine on first startup from node agents
  *  - creates per-machine mrconfigs based on inputs
  */
-const fs = require('fs');
+const fs = require('fs')
+const got = require('got');
 
 const logger = require("../services/logService.js")("Manipulation Service")
 const config = require("../config.js")
 const infrastructureF = require("../data/infrastructure.js")
 const machineMetaF = require("../data/machine-meta.js")
-const multiFile= require("../data/multi-file.js")
+const multiFile = require("../data/multi-file.js")
 
 /**
  * Returns an array of tcconfig that can be restored by https://tcconfig.readthedocs.io/en/latest/index.html for each machine part of the defined infrastructure.
@@ -50,7 +51,7 @@ function getTCConfigs(infrastructure, machineMeta) {
             const delay = route.cost // TODO consider already existing delay between machines https://github.com/MoeweX/MockFog2/issues/36
             const rate = infrastructure.calculatePathRate(path, true)
             const delayDistro = infrastructure.calculatePathDelayDistro(path) // keyname must be delay-distro
-            const duplicate  = infrastructure.calculatePathDuplicate(path)
+            const duplicate = infrastructure.calculatePathDuplicate(path)
             const loss = infrastructure.calculatePathLoss(path)
             const corrupt = infrastructure.calculatePathCorrupt(path)
             const reordering = infrastructure.calculatePathReordering(path)
@@ -102,8 +103,8 @@ function getMCConfigs(infrastructureO) {
 function updateMachineAndConnectionData(machineList) {
 
     // read in existing connectionDelay or fetch if they do not exist
-    fs.readFile(config.runMachinesDir + "connectionDelay.json", function(err, data) {
-        if (err) { 
+    fs.readFile(config.runMachinesDir + "connectionDelay.json", function (err, data) {
+        if (err) {
             logger.verbose("Connection delays have not been fetched yet, doing it now")
             connectionDelays = _fetchConnectionDelays(machineList)
         } else {
@@ -112,8 +113,8 @@ function updateMachineAndConnectionData(machineList) {
     })
 
     // read in existing machineResources or fetch if they do not exist
-    fs.readFile(config.runMachinesDir + "machineResources.json", function(err, data) {
-        if (err) { 
+    fs.readFile(config.runMachinesDir + "machineResources.json", function (err, data) {
+        if (err) {
             logger.verbose("Machine resources have not been fetched yet, doing it now")
             machineResources = _fetchMachineResources(machineList)
         } else {
@@ -146,25 +147,16 @@ function _fetchMachineResources(machineList) {
     let promises = []
 
     for (const m of machineList) {
-            var options = {
-                "host": m.public_ip,
-                "port": 3100,
-                "path": `/${conf.apiVersion}/status/resources`,
-                "method": "GET"
-            }
-
-            http.request(options).end()
-            machineNames.push(m.machine_name)
-            promises.push(req)
-        }
-    })
-
-    let result = {}
+        promises.push(got(`http://${m.public_ip}:3100/${config.apiVersion}/status/resources`))
+        machineNames.push(m.machine_name)
+    }
 
     Promise.all(promises).then(v => {
+        let result = {}
+
         for (i in machineNames) {
             const machine_name = machineNames[i]
-            const resources = v[i]
+            const resources = JSON.parse(v[i].body)
 
             result[machine_name] = {
                 "machine_name": machine_name,
@@ -175,7 +167,10 @@ function _fetchMachineResources(machineList) {
         machineResources = result
 
         // write to file
-        fs.writeFile(config.runMachinesDir + "machineResources.json", JSON.stringify(result))
+        fs.writeFile(config.runMachinesDir + "machineResources.json", JSON.stringify(result, null, "\t"), function (err) {
+            if (err) { throw err }
+            logger.verbose("Machine resources written to file")
+        })
     }).catch(error => {
         logger.error(`Error while retrieving machine resources: ${JSON.stringify(error)}`);
     })
@@ -186,22 +181,22 @@ function _fetchMachineResources(machineList) {
 // ****************************************************
 
 // machine_name -> { machine_name: xx, delay: xx }
-let connectionDelays = { }
+let connectionDelays = {}
 // machine_name -> { machine_name: xx, max_memory: xx, max_cpu: xx }
-let machineResources = { }
+let machineResources = {}
 
 async function awaitMachineResources() {
-    while (machineResources === { }) {
+    while (machineResources === {}) {
         await function sleep(ms) {
             return new Promise((resolve) => {
                 setTimeout(resolve, ms);
             })
-        }(10)  
+        }(10)
     }
 }
 
 module.exports = {
-    fetch: function() {
+    fetch: function () {
         updateMachineAndConnectionData(multiFile.getMachineList(infrastructureF(), machineMetaF()))
     },
     awaitMachineResources: awaitMachineResources,

@@ -10,6 +10,7 @@ const networkService = require("./lib/services/networkService.js")
 const networkController = require("./lib/controllers/networkController.js")
 const pingController = require("./lib/controllers/pingController.js")
 const statusController = require("./lib/controllers/statusController.js")
+const dockerController = require("./lib/controllers/dockerController.js")
 
 const app = express()
 const port = config.port
@@ -42,6 +43,7 @@ app.get("/", function (req, res) {
 networkController(app)
 pingController(app)
 statusController(app)
+dockerController(app)
 
 logger.info("Agent started, listening on port " + port)
 app.listen(port)

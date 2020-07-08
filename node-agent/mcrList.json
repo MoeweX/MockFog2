@@ -1,0 +1,12 @@
+[
+    {
+        "container_name": "container1",
+        "cpu": 1.2,
+        "memory": "400m"
+    },
+    {
+        "container_name": "container2",
+        "cpu": 2.0,
+        "memory": "200m"
+    }
+]
