@@ -23,6 +23,7 @@
     "express": "^4.17.1",
     "ping": "^0.2.3",
     "swagger-ui-express": "^4.1.4",
+    "systeminformation": "^4.26.9",
     "winston": "^3.2.1"
   }
 }
