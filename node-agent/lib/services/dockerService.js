@@ -37,21 +37,25 @@ async function updateMCRConfigs(newList) {
 
     try {
         logger.verbose(await Promise.all(promises))
+        logger.verbose("Updated all mcrconfigs")
         currentMCRList = newList
     } catch (error) {
         logger.error("Could not update machine container resource configurations")
+        throw error
     }
 }
 
 /**
- * Returns a JSON object that comprises CPU and memory container stats.
+ * Returns a JSON string that comprises CPU and memory container stats.
+ * @return {String} container stat json
  */
 async function getContainerStats() {
     try {
-        const data = await dockerCommand('stats --no-stream --format "{\"container\":\"{{ .Container }}\",\"memory\":{\"raw\":\"{{ .MemUsage }}\",\"percent\":\"{{ .MemPerc }}\"},\"cpu\":\"{{ .CPUPerc }}\"}"', options);
-        return JSON.parse(data)
+        const data = await dockerCommand('stats --no-stream --format "{\"container_name\":\"{{ .Container }}\",\"memory\":{\"raw\":\"{{ .MemUsage }}\",\"percent\":\"{{ .MemPerc }}\"},\"cpu\":\"{{ .CPUPerc }}\"}"', options);
+        logger.verbose(data)
+        return data
     } catch(error) {
-        logger.error("Could not get container stats: " + JSON.stringify(error))
+        logger.error("Could not get container stats: " + error)
         throw error
     }
 }

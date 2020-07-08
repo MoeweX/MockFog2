@@ -1,5 +1,5 @@
 const bodyParser = require("body-parser")
-const jsonParser = bodyParser.json();
+const jsonParser = bodyParser.json()
 const networkService = require("../services/networkService.js")
 const pingService = require("../services/pingService.js")
 const logger = require("../services/logService.js")("networkController")
