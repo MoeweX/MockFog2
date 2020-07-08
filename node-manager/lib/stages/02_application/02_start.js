@@ -61,6 +61,10 @@ class Child extends Phase {
         this.logger.info("All playbooks have been executed")
     }
 
+    async runPostPlaybookTasks() {
+        // TODO apply machine manipulation updates
+    }
+
     preparePlaybooks(containerVarPaths) {
         let playbooks = []
         for (const containerVarPath of containerVarPaths) {

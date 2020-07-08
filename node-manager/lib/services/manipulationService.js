@@ -86,10 +86,12 @@ function getTCConfigs(infrastructure, machineMeta) {
 }
 
 /**
- * TODO
- * @param {Object} infrastructure the object returned by the infrastructure.js module function
+ * Returns an array of mcconfigs based on the given infrastructure.
+ * If the infrastructure does not contain a memory/cpu limit for any machine, uses the values of machineResources field. 
+ *
+ * @param {Object} infrastructureO the object returned by the infrastructure.js module function
  */
-function getMCConfigs(infrastructure) {
+function getMCConfigs(infrastructureO) {
     // TODO
 }
 
@@ -137,12 +139,46 @@ function _fetchConnectionDelays(machineList) {
  * Fetches the maximum machine resources from all node agent endpoints and writes results to file.
  * 
  * @param {Array} machineList - comprises { machine_name: xx, public_ip: xx } objects
- * @return {Object} that comprises machine resources: machine_name -> { machine_name: xx, max_memory: xx, max_cpu: xx }
+ * @return {Object} that comprises machine resources: machine_name -> { machine_name: xx, max_memory: xx (int, in MB), max_cpu: xx (float)}; 
  */
 function _fetchMachineResources(machineList) {
-    // TODO
-    logger.warn("Fetch machine resources not yet implemented")
-    // TODO write to file
+    let machineNames = []
+    let promises = []
+
+    for (const m of machineList) {
+            var options = {
+                "host": m.public_ip,
+                "port": 3100,
+                "path": `/${conf.apiVersion}/status/resources`,
+                "method": "GET"
+            }
+
+            http.request(options).end()
+            machineNames.push(m.machine_name)
+            promises.push(req)
+        }
+    })
+
+    let result = {}
+
+    Promise.all(promises).then(v => {
+        for (i in machineNames) {
+            const machine_name = machineNames[i]
+            const resources = v[i]
+
+            result[machine_name] = {
+                "machine_name": machine_name,
+                "max_memory": resources["memory"],
+                "max_cpu": resources["cpu"]
+            }
+        }
+        machineResources = result
+
+        // write to file
+        fs.writeFile(config.runMachinesDir + "machineResources.json", JSON.stringify(result))
+    }).catch(error => {
+        logger.error(`Error while retrieving machine resources: ${JSON.stringify(error)}`);
+    })
 }
 
 // ****************************************************
@@ -154,12 +190,21 @@ let connectionDelays = { }
 // machine_name -> { machine_name: xx, max_memory: xx, max_cpu: xx }
 let machineResources = { }
 
-// initialize machine and connection data
+async function awaitMachineResources() {
+    while (machineResources === { }) {
+        await function sleep(ms) {
+            return new Promise((resolve) => {
+                setTimeout(resolve, ms);
+            })
+        }(10)  
+    }
+}
 
 module.exports = {
     fetch: function() {
         updateMachineAndConnectionData(multiFile.getMachineList(infrastructureF(), machineMetaF()))
     },
+    awaitMachineResources: awaitMachineResources,
     getTCConfigs: getTCConfigs,
-    updateMachineAndConnectionData: updateMachineAndConnectionData
+    getMCConfigs: getMCConfigs
 }

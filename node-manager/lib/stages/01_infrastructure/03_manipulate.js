@@ -17,13 +17,15 @@ class Child extends Phase {
     }
 
     async parseInput() {
+        manipulationService.fetch()
         this.infra = infrastructure()
         this.machineMeta = machineMeta()
-        manipulationService.fetch()
-        this.tcconfigs = manipulationService.getTCConfigs(this.infra, this.machineMeta)
+        // TODO wait for connection delay update
     }
 
     async runPrePlaybookTasks() {
+        this.tcconfigs = manipulationService.getTCConfigs(this.infra, this.machineMeta)
+
         // write tcconfig file for each machine
         for (const machine_name in this.tcconfigs) {
             const tcconfig = JSON.stringify(this.tcconfigs[machine_name], null, "\t")
