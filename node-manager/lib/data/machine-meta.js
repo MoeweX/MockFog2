@@ -67,7 +67,7 @@ function getHostsDataObject(machineMeta) {
 
 module.exports = function(fileLocation) {
     if (!fileLocation) {
-        fileLocation = conf.runDir + "machine_meta.jsonc"
+        fileLocation = conf.runMachinesDir + "machine_meta.jsonc"
     }
 
     const machineMetaJson = fs.readFileSync(fileLocation, "utf-8")

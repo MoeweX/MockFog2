@@ -45,6 +45,48 @@ async function distributeTCConfigs(machineMeta, tcconfigs) {
     })
 }
 
+/**
+ * Sends the given mcrLists to the public endpoint of each agent as identified by the given machine-meta object.
+ * 
+ * @param {Object} machineMeta the object returned by the machine-meta.js module function
+ * @param {Object} mcrLists - an object that maps machine_name to an mcrList array
+ */
+async function distributeMCRLists(machineMeta, mcrLists) {
+    var replyCount = 0
+
+    return new Promise((resolve) => {
+        for (const [machine_name, mcrList] of Object.entries(mcrLists)) {
+            const ip = machineMeta.getPublicIP(machine_name)
+
+            var options = {
+                "host": ip,
+                "port": 3100,
+                "path": `/${conf.apiVersion}/docker/mcrlist`,
+                "method": "PUT",
+                "headers": {
+                    "Content-Type": "application/json",
+                }
+            }
+
+            const req = http.request(options, (res) => {
+                logger.info(`Sent mcrList to ${ip}, status code is ${res.statusCode}`)
+                replyCount++
+                if (replyCount === Object.keys(mcrLists).length) {
+                    logger.info("Updated mcrLists on all agents")
+                    resolve()
+                }
+            })
+
+            req.on('error', (e) => {
+                logger.error(`Error while distributing mcrLists: ${e.message}`);
+            });
+            
+            req.end(JSON.stringify(mcrList));
+        }
+    })
+}
+
 module.exports = {
-    distributeTCConfigs: distributeTCConfigs
+    distributeTCConfigs: distributeTCConfigs,
+    distributeMCRLists: distributeMCRLists
 }

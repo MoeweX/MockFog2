@@ -48,6 +48,55 @@ function convertTobps(information_rate) {
     }
 }
 
+/**
+ * Converts the given amount of information to MiB (mebibyte).
+ * Format of input string "<value> <unit>" or "<value><unit>".
+ * Value must be an integer.
+ * Accepted Units (case sensitive)
+ *  - b (bit per second)
+ *  - k (kilo bit per second)
+ *  - m (mega bit per second)
+ *  - g (giga bit per second)
+ *  
+ * @param {String} input - the input string to convert
+ * @return {Number} amount in mebibyte or 1024, if not a valid input
+ */
+function convertToMebibyte(input) {
+    const noWhiteSpace = input.replace(" ", "")
+    
+    let valueString = ""
+    let unitString = ""
+
+    // split in unitString and valueString
+    for (const c of noWhiteSpace) {
+        if (c >= '0' && c <= '9') {
+            valueString += c
+        } else {
+            unitString += c
+        }
+    }
+
+    const value = parseInt(valueString)
+    if (value === undefined) {
+        logger.error(valueString + " is not an integer; " + input + " is thus not a valid input.")
+    }
+
+    switch(unitString) {
+        case "b":
+            return (value / 1024 / 1024)
+        case "k":
+            return (value / 1024)
+        case "m":
+            return value
+        case "g":
+            return (1024 * value)
+        default:
+            logger.error(unitString + " is not a valid unit; " + information_rate + " is thus not a valid input.")
+            return 1024
+    }
+}
+
 module.exports = {
-    convertTobps: convertTobps
+    convertTobps: convertTobps,
+    convertToMebibyte: convertToMebibyte
 }

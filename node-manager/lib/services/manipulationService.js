@@ -1,5 +1,5 @@
 /**
- * The manipulation service computes tcconfigs and mrconfigs.
+ * The manipulation service computes tcconfigs and mcrConfigs.
  * For that, it keeps additional connection and machine data in the machines directory.
  * Besides the additional connection and machine data, it does not have any state.
  * Thus, it computes configurations based on given inputs on the fly.
@@ -10,9 +10,9 @@
  *  - creates per-machine tcconfigs based on inputs
  *  - throws errors when machine graph is not fully connected or connections miss delay property
  * 
- * For mrconfigs, the manipulation service:
+ * For mcrConfigs, the manipulation service:
  *  - collects max_memory and max_cpu of each machine on first startup from node agents
- *  - creates per-machine mrconfigs based on inputs
+ *  - creates per-machine mcrLists based on inputs
  */
 const fs = require('fs')
 const got = require('got');
@@ -22,6 +22,8 @@ const config = require("../config.js")
 const infrastructureF = require("../data/infrastructure.js")
 const machineMetaF = require("../data/machine-meta.js")
 const multiFile = require("../data/multi-file.js")
+const conversionService = require("../services/conversionService.js")
+const stripJson = require("strip-json-comments");
 
 /**
  * Returns an array of tcconfig that can be restored by https://tcconfig.readthedocs.io/en/latest/index.html for each machine part of the defined infrastructure.
@@ -87,13 +89,38 @@ function getTCConfigs(infrastructure, machineMeta) {
 }
 
 /**
- * Returns an array of mcconfigs based on the given infrastructure.
+ * Returns an object that comprises a list of mcrconfigs or each machine of the given infrastructure.
  * If the infrastructure does not contain a memory/cpu limit for any machine, uses the values of machineResources field. 
  *
  * @param {Object} infrastructureO the object returned by the infrastructure.js module function
+ * @param {Object} deploymentO the object returned by the deployment.js module function
+ * @return {Object} maps machine_name to mcrLists
  */
-function getMCConfigs(infrastructureO) {
-    // TODO
+function getMCRLists(infrastructureO, deploymentO) {
+    let mcrLists = { }
+
+    for (const machine of infrastructureO.infra.machines) {
+        let mcrList = []
+
+        const machine_cpu = machine.cpu || machineResources[machine.machine_name].max_cpu
+        const machine_memory = conversionService.convertToMebibyte(machine.memory || machineResources[machine.machine_name].max_memory + "m")
+        logger.verbose(`Machine ${machine.machine_name} has a CPU limit of ${machine_cpu} and a memory limit of ${machine_memory}m`)
+
+        for (const pair of deploymentO.getContainerAndResourcePairs(machine.machine_name)) {
+            logger.verbose("Container pair: " + JSON.stringify(pair))
+
+            const mcrConfig = {
+                "container_name": pair.container_name,
+                "cpu": machine_cpu * pair.machine_resource_percentage / 100.0,
+                "memory": (machine_memory * pair.machine_resource_percentage / 100.0) + "m"
+            }
+
+            mcrList.push(mcrConfig)
+        }
+
+        mcrLists[machine.machine_name] = mcrList
+    }
+    return mcrLists
 }
 
 /**
@@ -103,22 +130,24 @@ function getMCConfigs(infrastructureO) {
 function updateMachineAndConnectionData(machineList) {
 
     // read in existing connectionDelay or fetch if they do not exist
-    fs.readFile(config.runMachinesDir + "connectionDelay.json", function (err, data) {
+    fs.readFile(config.runMachinesDir + "connection_delays.jsonc", "utf8", function (err, data) {
         if (err) {
             logger.verbose("Connection delays have not been fetched yet, doing it now")
             connectionDelays = _fetchConnectionDelays(machineList)
         } else {
             connectionDelays = JSON.parse(data)
+            logger.verbose("Loaded connection delays from file.")
         }
     })
 
     // read in existing machineResources or fetch if they do not exist
-    fs.readFile(config.runMachinesDir + "machineResources.json", function (err, data) {
+    fs.readFile(config.runMachinesDir + "machine_container_resources.jsonc", "utf8", function (err, data) {
         if (err) {
             logger.verbose("Machine resources have not been fetched yet, doing it now")
             machineResources = _fetchMachineResources(machineList)
         } else {
-            connectionmachineResourcesDelays = JSON.parse(data)
+            machineResources = JSON.parse(stripJson(data))
+            logger.verbose("Loaded machine resources from file.")
         }
     })
 
@@ -140,7 +169,7 @@ function _fetchConnectionDelays(machineList) {
  * Fetches the maximum machine resources from all node agent endpoints and writes results to file.
  * 
  * @param {Array} machineList - comprises { machine_name: xx, public_ip: xx } objects
- * @return {Object} that comprises machine resources: machine_name -> { machine_name: xx, max_memory: xx (int, in megabyte), max_cpu: xx (float)}; 
+ * @return {Object} that comprises machine resources: machine_name -> { machine_name: xx, max_memory: xx (int, in mebibytes), max_cpu: xx (float)}; 
  */
 function _fetchMachineResources(machineList) {
     let machineNames = []
@@ -167,7 +196,7 @@ function _fetchMachineResources(machineList) {
         machineResources = result
 
         // write to file
-        fs.writeFile(config.runMachinesDir + "machineResources.json", JSON.stringify(result, null, "\t"), function (err) {
+        fs.writeFile(config.runMachinesDir + "machine_container_resources.jsonc", JSON.stringify(result, null, "\t"), function (err) {
             if (err) { throw err }
             logger.verbose("Machine resources written to file")
         })
@@ -182,11 +211,11 @@ function _fetchMachineResources(machineList) {
 
 // machine_name -> { machine_name: xx, delay: xx }
 let connectionDelays = {}
-// machine_name -> { machine_name: xx, max_memory: xx, max_cpu: xx }
+// machine_name -> { machine_name: xx, max_memory: xx (int, in mebibytes), max_cpu: xx (float)}
 let machineResources = {}
 
 async function awaitMachineResources() {
-    while (machineResources === {}) {
+    while (!Object.keys(machineResources).length) {
         await function sleep(ms) {
             return new Promise((resolve) => {
                 setTimeout(resolve, ms);
@@ -201,5 +230,5 @@ module.exports = {
     },
     awaitMachineResources: awaitMachineResources,
     getTCConfigs: getTCConfigs,
-    getMCConfigs: getMCConfigs
+    getMCRLists: getMCRLists
 }

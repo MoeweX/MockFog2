@@ -5,7 +5,7 @@ const si = require("systeminformation");
 module.exports = function(app) {
 
     /**
-     * Replies with an object that the total memory amount in megabyte and the number of present cpu cores.
+     * Replies with an object that the total memory amount in mebibytes and the number of present cpu cores.
      */
     app.get(`/${config.apiVersion}/status/resources`, function(req, res) {
         let promises = []
@@ -14,7 +14,7 @@ module.exports = function(app) {
         Promise.all(promises).then(v => {
             logger.debug("Retrieved resources: " + JSON.stringify(v))
             const resources = {
-                "memory": Math.floor(v[0].total / 1000000),
+                "memory": Math.floor(v[0].total / 1048576), // convert to mebibytes
                 "cpu": v[1].cores
             }
             res.status(200).send(JSON.stringify(resources))

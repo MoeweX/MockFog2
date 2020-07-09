@@ -17,7 +17,7 @@
             "type": "node",
             "request": "launch",
             "name": "Single Phase",
-            "program": "${workspaceFolder}/node-manager/lib/stages/03_orchestration/orchestration-manager.js",
+            "program": "${workspaceFolder}/node-manager/lib/stages/02_application/02_start.js",
         },
         {
             "type": "node",
