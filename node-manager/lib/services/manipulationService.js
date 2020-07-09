@@ -140,7 +140,7 @@ function _fetchConnectionDelays(machineList) {
  * Fetches the maximum machine resources from all node agent endpoints and writes results to file.
  * 
  * @param {Array} machineList - comprises { machine_name: xx, public_ip: xx } objects
- * @return {Object} that comprises machine resources: machine_name -> { machine_name: xx, max_memory: xx (int, in MB), max_cpu: xx (float)}; 
+ * @return {Object} that comprises machine resources: machine_name -> { machine_name: xx, max_memory: xx (int, in megabyte), max_cpu: xx (float)}; 
  */
 function _fetchMachineResources(machineList) {
     let machineNames = []

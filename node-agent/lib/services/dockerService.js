@@ -36,7 +36,7 @@ async function updateMCRConfigs(newList) {
     }
 
     try {
-        logger.verbose(await Promise.all(promises))
+        logger.verbose(JSON.stringify(await Promise.all(promises)))
         logger.verbose("Updated all mcrconfigs")
         currentMCRList = newList
     } catch (error) {
@@ -51,17 +51,25 @@ async function updateMCRConfigs(newList) {
  */
 async function getContainerStats() {
     try {
-        const data = await dockerCommand('stats --no-stream --format "{\"container_name\":\"{{ .Container }}\",\"memory\":{\"raw\":\"{{ .MemUsage }}\",\"percent\":\"{{ .MemPerc }}\"},\"cpu\":\"{{ .CPUPerc }}\"}"', options);
-        logger.verbose(data)
-        return data
+        const data = await dockerCommand("stats --no-stream --format '{\"container_name\":\"{{ .Name }}\",\"memory\":{\"raw\":\"{{ .MemUsage }}\",\"percent\":\"{{ .MemPerc }}\"},\"cpu\":\"{{ .CPUPerc }}\"}'", options);
+        
+        const raw = data.raw
+        logger.verbose(raw)
+        const json = `[ ${raw.replace("\n", ",").slice(0, -1)} ]`
+
+        return json
     } catch(error) {
         logger.error("Could not get container stats: " + error)
         throw error
     }
 }
 
+function getMRCListJson() {
+    return JSON.stringify(currentMCRList)
+}
+
 module.exports = {
-    mcrListJson: JSON.stringify(currentMCRList),
+    getMRCListJson: getMRCListJson,
     updateMCRConfigs: updateMCRConfigs,
     getContainerStats: getContainerStats
 }

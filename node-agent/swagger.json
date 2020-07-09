@@ -250,7 +250,7 @@
       "properties": {
         "memory": {
           "type": "integer",
-          "description": "Memory available on machine in megabytes"
+          "description": "Memory available on machine in megabyte"
         },
         "cpu": {
           "type": "number",
@@ -364,7 +364,7 @@
           },
           "memory": {
             "type": "string",
-            "description": "Memory that should be availalbe to the container + unit: b, k, m, g; indicate bytes, kilobytes, megabytes, and gigabytes)",
+            "description": "Memory that should be availalbe to the container + unit: b, k, m, g; indicate bytes, kibibyte, mebibyte, and gibibyte)",
             "example": "400m"
           }
         }

@@ -34,7 +34,7 @@ module.exports = function(app) {
      * Replies with the currently applied list of mcrConfigs.
      */
     app.get(`/${config.apiVersion}/docker/mcrlist`, function(req, res) {
-        res.status(200).send(dockerService.mcrListJson)
+        res.status(200).send(dockerService.getMRCListJson())
     });
 
 }
