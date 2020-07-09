@@ -18,7 +18,7 @@ class Manager {
         this.debug = debug
         this.states = orchestrationF().states
         this.infrastructureO = infrastructureF()
-        this.deployment = deploymentF()
+        this.deploymentO = deploymentF()
         this.tcEvaluator = new TCEvaluator()
         this.status = "idle"
         this.next_state = "initial"
@@ -49,28 +49,42 @@ class Manager {
     }
 
     async doTransition(state) {
-        // TODO add machine_manipulation_instructions
         logger.info("Starting transition to state " + state.state_name)
         // connection_manipulation_instructions
         if (state.connection_manipulation_instructions === "reset") {
             logger.info("Resetting connection manipulations")
-            this.infrastructureO = infrastructureF()
+            this.infrastructureO.infra.connections = infrastructureF().infra.connections
         } else {
             // apply manipulations to this.infrastructureO.infra
             this.infrastructureO = applyConnectionUpdates(this.infrastructureO, state.connection_manipulation_instructions)
-
-            // this updates the graph with the newest infra data
-            this.infrastructureO.graph = this.infrastructureO.getGraph(this.infrastructureO.infra)
         }
+        // this updates the graph with the newest infra data
+        this.infrastructureO.graph = this.infrastructureO.getGraph(this.infrastructureO.infra)
+        
+        // machine_manipulation_instructions
+        if (state.machine_manipulation_instructions === "reset") {
+            logger.info("Resetting machine manipulations")
+            this.infrastructureO.infra.machines = infrastructureF().infra.machines
+        } else {
+            // apply manipulations to this.infrastructureO.infra
+            this.infrastructureO = applyMachineUpdates(this.infrastructureO, state.machine_manipulation_instructions)
+        }
+
         if (!this.debug) {
             const mm = machineMeta()
 
+            // get tcconfigs and distribute them
             const tcconfigs = manipulationService.getTCConfigs(this.infrastructureO, mm)
             await naService.distributeTCConfigs(mm, tcconfigs)
 
+            // get mcLists and distribute them
+            await manipulationService.awaitMachineResources()
+            const mcrLists = manipulationService.getMCRLists(this.infrastructureO, this.deploymentO)
+            await naService.distributeMCRLists(mm, mcrLists)
+
             // application instructions
             if (state.application_instructions.length !== 0) {
-                await distributeApplicationInstructions(state.application_instructions, this.deployment, mm)
+                await distributeApplicationInstructions(state.application_instructions, this.deploymentO, mm)
             }
         }
         logger.info("Completed transition to state " + state.state_name)
@@ -86,7 +100,7 @@ class Manager {
 
             // distribute state notifications, measure notification delay
             for (sn of state.state_notifications) {
-                const target_machines = this.deployment.getMachineNames(sn.target_container)
+                const target_machines = this.deploymentO.getMachineNames(sn.target_container)
                 const port = sn.port
 
                 for (const machine of target_machines) {
@@ -166,17 +180,45 @@ function applyConnectionUpdates(infrastructure, connection_updates) {
         toUpdate = toUpdate[0]
 
         // update properties
-        toUpdate.delay = connection.delay
-        toUpdate.rate = connection.rate
-        toUpdate["delay-distro"] = connection["delay-distro"]
-        toUpdate.duplicate = connection.duplicate
-        toUpdate.loss = connection.loss
-        toUpdate.corrupt = connection.corrupt
-        toUpdate.reordering = connection.reorderin
+        toUpdate.delay = connection.delay || toUpdate.delay
+        toUpdate.rate = connection.rate || toUpdate.rate
+        toUpdate["delay-distro"] = connection["delay-distro"] || toUpdate["delay-distro"]
+        toUpdate.duplicate = connection.duplicate || toUpdate.duplicate
+        toUpdate.loss = connection.loss || toUpdate.loss
+        toUpdate.corrupt = connection.corrupt || toUpdate.corrupt
+        toUpdate.reordering = connection.reorderin || toUpdate.reordering
     }
 
     infrastructure.infra = infra // let's make it explicit
-    logger.verbose("Applied connection updates, new connections are " + JSON.stringify(infrastructure.infra.connections))
+    logger.info("Applied connection updates, new connections are " + JSON.stringify(infrastructure.infra.connections))
+    return infrastructure
+}
+
+/**
+ * Replaces machine information in the given infrastructure object with same from/to as found in the given machine_manipulation_instructions
+ * 
+ * @param {Object} infrastructure the object returned by the infrastructure.js module function
+ * @param {*} machine_updates the new machine_manipulation_instructions to use
+ * @return the updated infrastructure, if machine_updates is undefined/emptry, returns the original infrastructure
+ */
+function applyMachineUpdates(infrastructure, machine_updates) {
+    if (!machine_updates || machine_updates.length === 0) {
+        return infrastructure
+    }
+
+    const infra = infrastructure.infra
+
+    for (const mu of machine_updates) {
+        // find machine
+        let toUpdate = infra.machines.filter(m => m.machine_name === mu.machine_name)[0]
+
+        // update properties
+        toUpdate.memory = mu.memory || toUpdate.memory
+        toUpdate.cpu = mu.cpu || toUpdate.cpu
+    }
+
+    infrastructure.infra = infra // let's make it explicit
+    logger.info("Applied machine updates, new machines are " + JSON.stringify(infrastructure.infra.machines))
     return infrastructure
 }
 
