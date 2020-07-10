@@ -1,0 +1,32 @@
+{
+	"cloud": {
+		"machine_name": "cloud",
+		"max_memory": 1955,
+		"max_cpu": 2
+	},
+	"central-office-server": {
+		"machine_name": "central-office-server",
+		"max_memory": 957,
+		"max_cpu": 2
+	},
+	"factory-server": {
+		"machine_name": "factory-server",
+		"max_memory": 3885,
+		"max_cpu": 2
+	},
+	"wireless-gateway": {
+		"machine_name": "wireless-gateway",
+		"max_memory": 459,
+		"max_cpu": 2
+	},
+	"packaging-machine": {
+		"machine_name": "packaging-machine",
+		"max_memory": 459,
+		"max_cpu": 2
+	},
+	"production-machine": {
+		"machine_name": "production-machine",
+		"max_memory": 459,
+		"max_cpu": 2
+	}
+}

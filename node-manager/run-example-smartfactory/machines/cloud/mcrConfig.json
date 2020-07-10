@@ -1,0 +1,7 @@
+[
+	{
+		"container_name": "generate-dashboard",
+		"cpu": 2,
+		"memory": "1955m"
+	}
+]

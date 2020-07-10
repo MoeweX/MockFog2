@@ -25,17 +25,21 @@
         {
             "machine_name": "wireless-gateway",
             "type": "t3.nano",
-            "image": "ami-0aa9794817db273c1"
+            "image": "ami-0aa9794817db273c1",
+            "memory": "400m", // optionally limit the max memory for containers (units: b, k, m, g; indicate bytes, kibibyte, mebibyte, and gibibyte)
+            "cpu": 1.0 // optionally limit number of useables cpus for containers
         },
         {
             "machine_name": "packaging-machine",
             "type": "t3.nano",
-            "image": "ami-0aa9794817db273c1"
+            "image": "ami-0aa9794817db273c1",
+            "cpu": 1.0
         },
         {
             "machine_name": "production-machine",
             "type": "t3.nano",
-            "image": "ami-0aa9794817db273c1"
+            "image": "ami-0aa9794817db273c1",
+            "cpu": 1.0
         }
     ],
     /*

@@ -6,7 +6,8 @@
     "states": [
         {
             "state_name": "initial", // the name of the first state must be initial, use it to reset the infrastructure
-            "resource_manipulation_instructions": "reset", // this re-applies all manipulations from infrastructure.jsonc
+            "connection_manipulation_instructions": "reset", // this re-applies all connection manipulations from infrastructure.jsonc
+            "machine_manipulation_instructions": "reset", // this re-applies all machine manipulations from infrastructure.jsonc
             "application_instructions": [],
             "state_notifications": [],
             // when all conditions for the transition to any stage are met, a transition to this state begins
@@ -26,17 +27,15 @@
         },
         {
             "state_name": "s1",
-            "resource_manipulation_instructions": {
-                // connection updates overwrite the connection properties of the initial state (defined in infrastructure.jsonc) and prior state updates
-                "connection_updates": [
-                    {
-                        "from": "cloud",
-                        "to": "factory-server",
-                        "delay": 100
-                    }
-                ]
-                // other kinds of resource manipulations will be added in the future
-            },
+            // connection updates overwrite the connection properties of the initial state (defined in infrastructure.jsonc) and prior state updates
+            "connection_manipulation_instructions": [
+                {
+                    "from": "cloud",
+                    "to": "factory-server",
+                    "delay": 100
+                }
+            ],
+            "machine_manipulation_instructions": [],      
             // application instructions will be sent via HTTP GET during a transition to a state to all machines on which a target_container is deployed
             "application_instructions": [
                 {
@@ -74,7 +73,8 @@
         },
         {
             "state_name": "final",
-            "resource_manipulation_instructions": "reset",
+            "connection_manipulation_instructions": "reset",
+            "machine_manipulation_instructions": "reset",
             "application_instructions": [
                 {
                     "target_container": "aggregate",

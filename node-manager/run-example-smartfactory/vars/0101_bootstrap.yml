@@ -3,10 +3,8 @@ ec2_region: eu-central-1
 ssh_key_name: ec2-mockfog2-ssh-key
 agent_port: 3100
 
-application_instruction_ports:
+application_instruction_and_states_ports:
 - 8007
-
-state_notification_ports:
 - 8006
 
 machines:

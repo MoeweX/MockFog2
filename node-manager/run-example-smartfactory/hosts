@@ -7,30 +7,30 @@ ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 # ---------------------------------------
 
 [machines:children]
-cloud
-central-office-server
 factory-server
-packaging-machine
 production-machine
+central-office-server
+packaging-machine
+cloud
 wireless-gateway
 
-[cloud]
-ec2-54-93-34-108.eu-central-1.compute.amazonaws.com machine_name=cloud internal_ip=10.0.2.232
-
-[central-office-server]
-ec2-52-28-201-99.eu-central-1.compute.amazonaws.com machine_name=central-office-server internal_ip=10.0.2.184
-
 [factory-server]
-ec2-18-197-127-87.eu-central-1.compute.amazonaws.com machine_name=factory-server internal_ip=10.0.2.188
-
-[packaging-machine]
-ec2-18-185-136-245.eu-central-1.compute.amazonaws.com machine_name=packaging-machine internal_ip=10.0.2.201
+ec2-3-126-253-143.eu-central-1.compute.amazonaws.com machine_name=factory-server internal_ip=10.0.2.195
 
 [production-machine]
-ec2-3-121-229-241.eu-central-1.compute.amazonaws.com machine_name=production-machine internal_ip=10.0.2.246
+ec2-35-156-189-236.eu-central-1.compute.amazonaws.com machine_name=production-machine internal_ip=10.0.2.186
+
+[central-office-server]
+ec2-54-93-244-84.eu-central-1.compute.amazonaws.com machine_name=central-office-server internal_ip=10.0.2.165
+
+[packaging-machine]
+ec2-54-93-208-194.eu-central-1.compute.amazonaws.com machine_name=packaging-machine internal_ip=10.0.2.20
+
+[cloud]
+ec2-18-185-49-96.eu-central-1.compute.amazonaws.com machine_name=cloud internal_ip=10.0.2.233
 
 [wireless-gateway]
-ec2-18-195-52-224.eu-central-1.compute.amazonaws.com machine_name=wireless-gateway internal_ip=10.0.2.43
+ec2-18-194-137-118.eu-central-1.compute.amazonaws.com machine_name=wireless-gateway internal_ip=10.0.2.204
 
 # ---------------------------------------
 # Hosts by container_names
@@ -50,35 +50,35 @@ generate-dashboard
 central-office-dashboard
 
 [camera]
-ec2-3-121-229-241.eu-central-1.compute.amazonaws.com machine_name=production-machine internal_ip=10.0.2.246
+ec2-35-156-189-236.eu-central-1.compute.amazonaws.com machine_name=production-machine internal_ip=10.0.2.186
 
 [check-for-defects]
-ec2-3-121-229-241.eu-central-1.compute.amazonaws.com machine_name=production-machine internal_ip=10.0.2.246
+ec2-35-156-189-236.eu-central-1.compute.amazonaws.com machine_name=production-machine internal_ip=10.0.2.186
 
 [production-control]
-ec2-3-121-229-241.eu-central-1.compute.amazonaws.com machine_name=production-machine internal_ip=10.0.2.246
+ec2-35-156-189-236.eu-central-1.compute.amazonaws.com machine_name=production-machine internal_ip=10.0.2.186
 
 [temperature-sensor]
-ec2-18-185-136-245.eu-central-1.compute.amazonaws.com machine_name=packaging-machine internal_ip=10.0.2.201
+ec2-54-93-208-194.eu-central-1.compute.amazonaws.com machine_name=packaging-machine internal_ip=10.0.2.20
 
 [adapt-packaging]
-ec2-18-195-52-224.eu-central-1.compute.amazonaws.com machine_name=wireless-gateway internal_ip=10.0.2.43
+ec2-18-194-137-118.eu-central-1.compute.amazonaws.com machine_name=wireless-gateway internal_ip=10.0.2.204
 
 [packaging-control]
-ec2-18-185-136-245.eu-central-1.compute.amazonaws.com machine_name=packaging-machine internal_ip=10.0.2.201
+ec2-54-93-208-194.eu-central-1.compute.amazonaws.com machine_name=packaging-machine internal_ip=10.0.2.20
 
 [predict-pickup]
-ec2-18-197-127-87.eu-central-1.compute.amazonaws.com machine_name=factory-server internal_ip=10.0.2.188
+ec2-3-126-253-143.eu-central-1.compute.amazonaws.com machine_name=factory-server internal_ip=10.0.2.195
 
 [logistics-prognosis]
-ec2-18-197-127-87.eu-central-1.compute.amazonaws.com machine_name=factory-server internal_ip=10.0.2.188
+ec2-3-126-253-143.eu-central-1.compute.amazonaws.com machine_name=factory-server internal_ip=10.0.2.195
 
 [aggregate]
-ec2-18-197-127-87.eu-central-1.compute.amazonaws.com machine_name=factory-server internal_ip=10.0.2.188
+ec2-3-126-253-143.eu-central-1.compute.amazonaws.com machine_name=factory-server internal_ip=10.0.2.195
 
 [generate-dashboard]
-ec2-54-93-34-108.eu-central-1.compute.amazonaws.com machine_name=cloud internal_ip=10.0.2.232
+ec2-18-185-49-96.eu-central-1.compute.amazonaws.com machine_name=cloud internal_ip=10.0.2.233
 
 [central-office-dashboard]
-ec2-52-28-201-99.eu-central-1.compute.amazonaws.com machine_name=central-office-server internal_ip=10.0.2.184
+ec2-54-93-244-84.eu-central-1.compute.amazonaws.com machine_name=central-office-server internal_ip=10.0.2.165
 

@@ -1,0 +1,17 @@
+[
+	{
+		"container_name": "predict-pickup",
+		"cpu": 0.4,
+		"memory": "777m"
+	},
+	{
+		"container_name": "logistics-prognosis",
+		"cpu": 0.4,
+		"memory": "777m"
+	},
+	{
+		"container_name": "aggregate",
+		"cpu": 1.2,
+		"memory": "2331m"
+	}
+]
