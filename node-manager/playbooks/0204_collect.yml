@@ -3,21 +3,14 @@
 - name: Collect Results from Machines
   hosts: all # this can be overwritten with the --limit option when starting the playbook
   tasks:
-    - name: Create Log Directory, if it does not Exist
-      file:
-        path: "{{ container_dirname }}/logs"
-        state: directory
-        mode: "0755"
-      become: yes
-
     - name: Save Docker Logs
-      shell: "journalctl CONTAINER_NAME={{ container_name }} > {{ container_dirname }}/logs/{{ hostvars[inventory_hostname].machine_name }}.log"
+      shell: "journalctl CONTAINER_NAME={{ container_name }} > {{ container_dirname }}/console.log"
       become: yes
 
     - name: Synchronize Results Directories
       synchronize:
         mode: pull
         src: "{{ container_dirname }}/"
-        dest: "{{ playbook_dir }}/../run/{{ local_dirname }}/"
+        dest: "{{ playbook_dir }}/../run/{{ local_dirname }}-{{ hostvars[inventory_hostname].machine_name }}/"
       become: yes
 

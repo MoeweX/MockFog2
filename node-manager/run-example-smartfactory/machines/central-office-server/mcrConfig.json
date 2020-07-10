@@ -1,0 +1,7 @@
+[
+	{
+		"container_name": "central-office-dashboard",
+		"cpu": 2,
+		"memory": "957m"
+	}
+]

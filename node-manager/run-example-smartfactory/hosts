@@ -1,0 +1,84 @@
+[all:vars]
+ansible_ssh_user=ec2-user
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+# ---------------------------------------
+# Hosts by machine_name
+# ---------------------------------------
+
+[machines:children]
+factory-server
+production-machine
+central-office-server
+packaging-machine
+cloud
+wireless-gateway
+
+[factory-server]
+ec2-3-126-253-143.eu-central-1.compute.amazonaws.com machine_name=factory-server internal_ip=10.0.2.195
+
+[production-machine]
+ec2-35-156-189-236.eu-central-1.compute.amazonaws.com machine_name=production-machine internal_ip=10.0.2.186
+
+[central-office-server]
+ec2-54-93-244-84.eu-central-1.compute.amazonaws.com machine_name=central-office-server internal_ip=10.0.2.165
+
+[packaging-machine]
+ec2-54-93-208-194.eu-central-1.compute.amazonaws.com machine_name=packaging-machine internal_ip=10.0.2.20
+
+[cloud]
+ec2-18-185-49-96.eu-central-1.compute.amazonaws.com machine_name=cloud internal_ip=10.0.2.233
+
+[wireless-gateway]
+ec2-18-194-137-118.eu-central-1.compute.amazonaws.com machine_name=wireless-gateway internal_ip=10.0.2.204
+
+# ---------------------------------------
+# Hosts by container_names
+# ---------------------------------------
+
+[container:children]
+camera
+check-for-defects
+production-control
+temperature-sensor
+adapt-packaging
+packaging-control
+predict-pickup
+logistics-prognosis
+aggregate
+generate-dashboard
+central-office-dashboard
+
+[camera]
+ec2-35-156-189-236.eu-central-1.compute.amazonaws.com machine_name=production-machine internal_ip=10.0.2.186
+
+[check-for-defects]
+ec2-35-156-189-236.eu-central-1.compute.amazonaws.com machine_name=production-machine internal_ip=10.0.2.186
+
+[production-control]
+ec2-35-156-189-236.eu-central-1.compute.amazonaws.com machine_name=production-machine internal_ip=10.0.2.186
+
+[temperature-sensor]
+ec2-54-93-208-194.eu-central-1.compute.amazonaws.com machine_name=packaging-machine internal_ip=10.0.2.20
+
+[adapt-packaging]
+ec2-18-194-137-118.eu-central-1.compute.amazonaws.com machine_name=wireless-gateway internal_ip=10.0.2.204
+
+[packaging-control]
+ec2-54-93-208-194.eu-central-1.compute.amazonaws.com machine_name=packaging-machine internal_ip=10.0.2.20
+
+[predict-pickup]
+ec2-3-126-253-143.eu-central-1.compute.amazonaws.com machine_name=factory-server internal_ip=10.0.2.195
+
+[logistics-prognosis]
+ec2-3-126-253-143.eu-central-1.compute.amazonaws.com machine_name=factory-server internal_ip=10.0.2.195
+
+[aggregate]
+ec2-3-126-253-143.eu-central-1.compute.amazonaws.com machine_name=factory-server internal_ip=10.0.2.195
+
+[generate-dashboard]
+ec2-18-185-49-96.eu-central-1.compute.amazonaws.com machine_name=cloud internal_ip=10.0.2.233
+
+[central-office-dashboard]
+ec2-54-93-244-84.eu-central-1.compute.amazonaws.com machine_name=central-office-server internal_ip=10.0.2.165
+

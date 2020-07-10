@@ -1,19 +1,20 @@
 ---
 
-- name: Start Containers on Machines
+- name: Start Container on Machines
   hosts: all # this can be overwritten with the --limit option when starting the playbook
   tasks:
-    - name: Remove old Docker Logs
-      shell:
-        cmd: truncate -s 0 /var/lib/docker/containers/*/*-json.log
-        removes: /var/lib/docker/containers/*/*-json.log
-    - name: Start Containers
+    - name: Remove Existing Container
+      docker_container:
+        name: "{{ container_name }}"
+        image: "{{ docker_image }}"
+        state: absent
+    - name: Start Container
       docker_container:
         name: "{{ container_name }}"
         image: "{{ docker_image }}"
         state: started
         network_mode: host
-        auto_remove: yes
+        restart_policy: on-failure
         log_driver: journald
         env_file: "{{ container_dirname }}/env_file.env"
         volumes:

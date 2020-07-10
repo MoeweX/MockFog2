@@ -26,8 +26,18 @@ const nmPort = 3512
 const nmAddressObj = {nmAddress: "notSetYet"}
 setNMAddress(nmAddressObj, nmPort) // we need to pass in an object, as it is passed by reference
 
+async function awaitNMAddress() {
+    while (nmAddressObj.nmAddress === "notSetYet") {
+        await function sleep(ms) {
+            return new Promise((resolve) => {
+                setTimeout(resolve, ms);
+            })
+        }(10)  
+    }
+}
+
 const runDir = path.normalize(__dirname + "/../run/")
-const runExampleDir = path.normalize(__dirname + "/../run-example/")
+const runExampleDir = path.normalize(__dirname + "/../run-example-crexplorer/")
 const runConfigDir = path.normalize(runDir + "config/")
 const runExampleConfigDir = path.normalize(runExampleDir + "config/")
 const runLogDir = path.normalize(runDir + "logs/")
@@ -62,6 +72,7 @@ module.exports = {
     apiVersion: apiVersion,
     nmPort: nmPort,
     getNMaddress: function() { return nmAddressObj.nmAddress },
+    awaitNMAddress: awaitNMAddress,
     runDir: runDir,
     runConfigDir: runConfigDir,
     runLogDir: runLogDir,

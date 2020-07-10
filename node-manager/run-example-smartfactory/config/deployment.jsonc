@@ -1,0 +1,58 @@
+// defines on which machines of infrastructure.jsonc the containers of container.jsonc will be deployed
+[
+    {
+        "container_name": "camera",
+        "machine_names": ["production-machine"], // the same machine can only be once in each list
+        "machine_resource_percentage": 50 // how much of the cpu/memory limit the container gets; 100 = same as defined in infrastructure.jsonc/maximum of resource if nothing defined
+    },
+    {
+        "container_name": "check-for-defects",
+        "machine_names": ["production-machine"],
+        "machine_resource_percentage": 50
+    },
+    {
+        "container_name": "production-control",
+        "machine_names": ["production-machine"],
+        "machine_resource_percentage": 50
+    },
+    {
+        "container_name": "temperature-sensor",
+        "machine_names": ["packaging-machine"],
+        "machine_resource_percentage": 100
+    },
+    {
+        "container_name": "adapt-packaging",
+        "machine_names": ["wireless-gateway"],
+        "machine_resource_percentage": 100
+    },
+    {
+        "container_name": "packaging-control",
+        "machine_names": ["packaging-machine"],
+        "machine_resource_percentage": 100
+    },
+    {
+        "container_name": "predict-pickup",
+        "machine_names": ["factory-server"],
+        "machine_resource_percentage": 20
+    },
+    {
+        "container_name": "logistics-prognosis",
+        "machine_names": ["factory-server"],
+        "machine_resource_percentage": 20
+    },
+    {
+        "container_name": "aggregate",
+        "machine_names": ["factory-server"],
+        "machine_resource_percentage": 60
+    },
+    {
+        "container_name": "generate-dashboard",
+        "machine_names": ["cloud"],
+        "machine_resource_percentage": 100
+    },
+    {
+        "container_name": "central-office-dashboard",
+        "machine_names": ["central-office-server"],
+        "machine_resource_percentage": 100
+    }
+]

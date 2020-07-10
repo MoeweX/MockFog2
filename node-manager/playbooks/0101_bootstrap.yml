@@ -60,13 +60,9 @@
             cidr_ip: 0.0.0.0/0
             rule_desc: Allow agent traffic
           - proto: tcp
-            ports: "{{ application_instruction_ports }} "
+            ports: "{{ application_instruction_and_states_ports }} "
             cidr_ip: 0.0.0.0/0
-            rule_desc: Allow application instruction traffic
-          - proto: tcp
-            ports: "{{ state_notification_ports }} "
-            cidr_ip: 0.0.0.0/0
-            rule_desc: Allow state notification traffic
+            rule_desc: Allow application instruction and state notification traffic
       register: public_security_group
 
     - name: Create Security Group for Testbed-internal Connections (no restrictions)
@@ -178,6 +174,6 @@
     - name: Write Machine Facts to File
       local_action:
         module: copy
-        dest: "{{ playbook_dir }}/../run/machine_meta.jsonc"
+        dest: "{{ playbook_dir }}/../run/machines/machine_meta.jsonc"
         content: "{{ ec2 }}"
         mode: "400"

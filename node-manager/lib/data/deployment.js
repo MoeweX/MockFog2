@@ -21,6 +21,29 @@ function getMachineNames(deployments, container_name) {
     return []
 }
 
+/**
+ * Returns an array that comprises all container_names for the given machine_name in the given deployments object, and the amount of resources
+ * this container should get from max_resources.
+ * 
+ * @param {Object} deployments the deployments json object
+ * @param {String} container_name - the container name
+ * @return {Array} of objects: { container_name: xx, machine_resource_percentage: xx }
+ */
+function getContainerAndResourcePairs(deployments, machine_name) {
+    let results = []
+
+    for (const depl of deployments) {
+        if (depl.machine_names.includes(machine_name)) {
+            const pair = {
+                container_name: depl.container_name,
+                machine_resource_percentage: depl.machine_resource_percentage
+            }
+            results.push(pair)
+        }
+    }
+    return results
+}
+
 module.exports = function(fileLocation) {
     if (!fileLocation) {
         fileLocation = conf.runConfigDir + "deployment.jsonc"
@@ -33,6 +56,9 @@ module.exports = function(fileLocation) {
         deployments: deployments,
         getMachineNames: function(container_name) {
             return getMachineNames(deployments, container_name)
+        },
+        getContainerAndResourcePairs: function(machine_name) {
+            return getContainerAndResourcePairs(deployments, machine_name)
         }
     }
 }

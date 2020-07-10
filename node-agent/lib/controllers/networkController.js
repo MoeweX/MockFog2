@@ -1,15 +1,17 @@
 const bodyParser = require("body-parser")
-const jsonParser = bodyParser.json();
+const jsonParser = bodyParser.json()
 const networkService = require("../services/networkService.js")
 const pingService = require("../services/pingService.js")
 const logger = require("../services/logService.js")("networkController")
+
+const config = require("../config.js")
 
 module.exports = function(app) {
 
     /**
      * Expects a tcconfig JSON as produced by the tcshow command.
      */
-    app.put("/v3/network/tcconfig", jsonParser, function(req, res) {
+    app.put(`/${config.apiVersion}/network/tcconfig`, jsonParser, function(req, res) {
         
         networkService.updateTCConfig(req.body)
             .then(result => {
@@ -40,7 +42,7 @@ module.exports = function(app) {
     /**
      * Replies with a tcconfig JSON as produced by the tcshow command, or an empty object if none was set yet.
      */
-    app.get("/v3/network/tcconfig", function(req, res) {
+    app.get(`/${config.apiVersion}/network/tcconfig`, function(req, res) {
         res.status(200).send(networkService.tcconfig())
     });
 

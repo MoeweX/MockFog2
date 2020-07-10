@@ -33,7 +33,7 @@ class Child extends Phase {
 
     async runPrePlaybookTasks() {
         // write var file
-        await fsp.writeFile(this.varPath, this.infra.awsYML + this.orchestration.applicationInstructionsPortsYml + this.orchestration.stateNotificationsPortsYml +  this.infra.machinesYML)
+        await fsp.writeFile(this.varPath, this.infra.awsYML + this.orchestration.applicationInstructionsAndStatesPortsYml + this.infra.machinesYML)
         this.logger.info("Bootstrap playbook vars written to " + this.varPath)
 
         // create playbook object

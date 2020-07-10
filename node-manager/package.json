@@ -18,6 +18,7 @@
   "homepage": "https://github.com/MoeweX/MockFog2#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "got": "^11.5.0",
     "node-dijkstra": "^2.5.0",
     "ping": "^0.2.3",
     "rimraf": "^3.0.2",

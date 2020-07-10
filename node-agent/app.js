@@ -3,14 +3,17 @@ var path = require('path')
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('./swagger.json')
 
+const config = require("./lib/config.js")
 const logger = require("./lib/services/logService.js")("main")
 const networkService = require("./lib/services/networkService.js")
 
 const networkController = require("./lib/controllers/networkController.js")
 const pingController = require("./lib/controllers/pingController.js")
+const statusController = require("./lib/controllers/statusController.js")
+const dockerController = require("./lib/controllers/dockerController.js")
 
 const app = express()
-const port = process.env.AGENT_PORT || 3000
+const port = config.port
 
 // intercept all requests for logging
 app.use(function (req, res, next) {
@@ -39,6 +42,8 @@ app.get("/", function (req, res) {
 // setup controllers
 networkController(app)
 pingController(app)
+statusController(app)
+dockerController(app)
 
-logger.info("Agent started, listening on port " + port)
+logger.info("Node Agent started, listening on port " + port)
 app.listen(port)

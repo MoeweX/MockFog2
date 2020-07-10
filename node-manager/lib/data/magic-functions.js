@@ -43,7 +43,7 @@ function internal_ip_container(container_name) {
     if (machineNames.length === 0 ) {
         logger.error(`Container ${container_name} is not deployed on any container`)
     } else if (machineNames.length === 1) {
-        logger.debug(`Container ${container_name} is deployed on machine ${machineNames[0]}`)
+        logger.verbose(`Container ${container_name} is deployed on machine ${machineNames[0]}`)
         machine_name = machineNames[0]
     } else {
         logger.warn(`Container ${container_name} is deployed on multiple machines ${machineNames}, returning the internal ip of the first one`)

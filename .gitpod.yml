@@ -7,3 +7,5 @@ image:
 ports:
   - port: 3512
     onOpen: ignore
+  - port: 3000
+    onOpen: ignore

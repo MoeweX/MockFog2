@@ -90,7 +90,7 @@ Start this phase by running `node app.js stop`, this:
 
 Start this phase by running `node app.js collect`, this:
 - Creates a general var file for the collect playbook, stores at `run/vars/`
-- Retrieves all container log files and stores them in the corresponding local directories
+- Retrieves all container log files and application data and stores them in the corresponding local directories
 
 ## Actions per Phase
 

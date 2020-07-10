@@ -3,10 +3,10 @@ const fsp = fs.promises
 
 const infrastructure = require("../../data/infrastructure.js")
 const machineMeta = require("../../data/machine-meta.js")
-const multiFileFunctions = require("../../data/multi-file.js")
 
 const Phase = require("../phase.js")
 const naService = require("../../services/nodeAgentService.js")
+const manipulationService = require("../../services/manipulationService.js")
 
 const conf = require("../../config.js")
 
@@ -17,12 +17,15 @@ class Child extends Phase {
     }
 
     async parseInput() {
+        manipulationService.fetch()
         this.infra = infrastructure()
         this.machineMeta = machineMeta()
-        this.tcconfigs = multiFileFunctions.getTCConfigs(this.infra, this.machineMeta)
+        // TODO wait for connection delay update
     }
 
     async runPrePlaybookTasks() {
+        this.tcconfigs = manipulationService.getTCConfigs(this.infra, this.machineMeta)
+
         // write tcconfig file for each machine
         for (const machine_name in this.tcconfigs) {
             const tcconfig = JSON.stringify(this.tcconfigs[machine_name], null, "\t")

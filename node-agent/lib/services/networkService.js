@@ -1,6 +1,6 @@
 const fs = require("fs").promises;
 const spawn = require('await-spawn')
-const logger = require("./logService.js")("networkService")
+const logger = require("./logService.js")("Network Service")
 
 let currentConfigJson = "{}"
 let _process
