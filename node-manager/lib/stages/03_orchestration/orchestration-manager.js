@@ -28,7 +28,7 @@ class Manager {
         manipulationService.fetch()
 
         if (this.status !== "idle") {
-            logger.warn("Cannot start manager is " + this.status)
+            logger.warn("Cannot start manager as its status is " + this.status)
             return
         }
         this.status = "executing"
@@ -49,7 +49,7 @@ class Manager {
     }
 
     async doTransition(state) {
-        logger.info("Starting transition to state " + state.state_name)
+        logger.info("\n\n\nStarting transition to state " + state.state_name)
         // connection_manipulation_instructions
         if (state.connection_manipulation_instructions === "reset") {
             logger.info("Resetting connection manipulations")
@@ -91,7 +91,7 @@ class Manager {
     }
 
     async doState(state) {
-        logger.info("Doing state " + state.state_name)
+        logger.info("\n\n\nDoing state " + state.state_name)
 
         if (!this.debug) {
             const mm = machineMeta()
@@ -114,7 +114,7 @@ class Manager {
                         time: true
                     }
 
-                    logger.info(`Sending state notification to ${ip}:${port}`)
+                    logger.verbose(`Sending state notification to ${ip}:${port}`)
 
                     timestamps[options.host] = process.hrtime()
                     http.request(options, (res) => {
@@ -126,7 +126,7 @@ class Manager {
         }
 
         if (state.transition_conditions.length === 0) {
-            logger.info("All states completed")
+            logger.info("All states completed\n\n\n")
             this.status = "done"
             return
         }
@@ -300,7 +300,7 @@ if (require.main === module) {
         }, 5000)
 
         manager.execute_schedule().then(_ => {
-            logger.info("Schedlue executed")
+            logger.info("Schedule executed")
             clearInterval(interval)
             server.close()
         })

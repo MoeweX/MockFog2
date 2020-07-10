@@ -1,0 +1,18 @@
+---
+ec2_region: eu-central-1
+ssh_key_name: ec2-mockfog2-ssh-key
+agent_port: 3100
+
+application_instruction_and_states_ports:
+- 8080
+
+machines:
+- machine_name: server1
+  type: t3.nano
+  image: ami-0aa9794817db273c1
+- machine_name: server2
+  type: t3.nano
+  image: ami-0aa9794817db273c1
+- machine_name: server3
+  type: t3.nano
+  image: ami-0aa9794817db273c1

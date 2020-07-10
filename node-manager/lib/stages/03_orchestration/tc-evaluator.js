@@ -70,7 +70,7 @@ class TCEvaluator {
                 mbc.threshold--
 
                 // if threshold now 0 -> remove and check
-                logger.debug(`New threshold for ${mbc.event_name} is ${mbc.threshold}`)
+                logger.verbose(`New threshold for ${mbc.event_name} is ${mbc.threshold}`)
                 if (mbc.threshold === 0) {
                     this._removeCondition(mbc)
                     if (this._activeConditions[mbc.next_state].length === 0) {
@@ -93,7 +93,7 @@ class TCEvaluator {
         if (!this.active) {
             logger.warn("TCEvaluator is not active")
         } else {
-            logger.info("All conditions for " + targetState + " are fulfilled.")
+            logger.info("All conditions for " + targetState + " are fulfilled")
             // clear all timers (some might still be running)
             for (const timer of this._timer) {
                 clearTimeout(timer)

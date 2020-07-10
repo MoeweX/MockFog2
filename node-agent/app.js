@@ -45,5 +45,5 @@ pingController(app)
 statusController(app)
 dockerController(app)
 
-logger.info("Agent started, listening on port " + port)
+logger.info("Node Agent started, listening on port " + port)
 app.listen(port)

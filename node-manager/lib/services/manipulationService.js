@@ -107,13 +107,14 @@ function getMCRLists(infrastructureO, deploymentO) {
         logger.verbose(`Machine ${machine.machine_name} has a CPU limit of ${machine_cpu} and a memory limit of ${machine_memory}m`)
 
         for (const pair of deploymentO.getContainerAndResourcePairs(machine.machine_name)) {
-            logger.verbose("Container pair: " + JSON.stringify(pair))
+            logger.debug("Container pair: " + JSON.stringify(pair))
 
             const mcrConfig = {
                 "container_name": pair.container_name,
                 "cpu": machine_cpu * pair.machine_resource_percentage / 100.0,
                 "memory": (machine_memory * pair.machine_resource_percentage / 100.0) + "m"
             }
+            logger.verbose("MCRConfig is " + JSON.stringify(mcrConfig))
 
             mcrList.push(mcrConfig)
         }
@@ -135,19 +136,21 @@ function updateMachineAndConnectionData(machineList) {
             logger.verbose("Connection delays have not been fetched yet, doing it now")
             connectionDelays = _fetchConnectionDelays(machineList)
         } else {
+            logger.verbose("Loading connection delays from file")
             connectionDelays = JSON.parse(data)
-            logger.verbose("Loaded connection delays from file.")
+            logger.info("Connection delays are " + JSON.stringify(connectionDelays))
         }
     })
 
     // read in existing machineResources or fetch if they do not exist
     fs.readFile(config.runMachinesDir + "machine_container_resources.jsonc", "utf8", function (err, data) {
         if (err) {
-            logger.verbose("Machine resources have not been fetched yet, doing it now")
+            logger.verbose("Maximum machine resources have not been fetched yet, doing it now")
             machineResources = _fetchMachineResources(machineList)
         } else {
+            logger.verbose("Loading maximum machine resources from file")
             machineResources = JSON.parse(stripJson(data))
-            logger.verbose("Loaded machine resources from file.")
+            logger.info("Maximum machine resources are " + JSON.stringify(machineResources))
         }
     })
 
@@ -162,6 +165,7 @@ function updateMachineAndConnectionData(machineList) {
 function _fetchConnectionDelays(machineList) {
     // TODO
     logger.warn("Fetch connection delays not yet implemented")
+    logger.info("Connection delays are " + JSON.stringify(connectionDelays))
     // TODO write to file
 }
 
@@ -194,6 +198,7 @@ function _fetchMachineResources(machineList) {
             }
         }
         machineResources = result
+        logger.info("Maximum machine resources are " + JSON.stringify(machineResources))
 
         // write to file
         fs.writeFile(config.runMachinesDir + "machine_container_resources.jsonc", JSON.stringify(result, null, "\t"), function (err) {

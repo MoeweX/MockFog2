@@ -1,0 +1,5 @@
+---
+ec2_region: eu-central-1
+ssh_key_name: ec2-mockfog2-ssh-key
+agent_port: 3100
+

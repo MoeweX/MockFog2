@@ -37,7 +37,7 @@ async function awaitNMAddress() {
 }
 
 const runDir = path.normalize(__dirname + "/../run/")
-const runExampleDir = path.normalize(__dirname + "/../run-example/")
+const runExampleDir = path.normalize(__dirname + "/../run-example-crexplorer/")
 const runConfigDir = path.normalize(runDir + "config/")
 const runExampleConfigDir = path.normalize(runExampleDir + "config/")
 const runLogDir = path.normalize(runDir + "logs/")

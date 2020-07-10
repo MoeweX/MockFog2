@@ -1,0 +1,17 @@
+{
+	"server1": {
+		"machine_name": "server1",
+		"max_memory": 459,
+		"max_cpu": 2
+	},
+	"server2": {
+		"machine_name": "server2",
+		"max_memory": 459,
+		"max_cpu": 2
+	},
+	"server3": {
+		"machine_name": "server3",
+		"max_memory": 459,
+		"max_cpu": 2
+	}
+}

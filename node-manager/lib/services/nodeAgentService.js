@@ -28,10 +28,13 @@ async function distributeTCConfigs(machineMeta, tcconfigs) {
             }
 
             const req = http.request(options, (res) => {
-                logger.info(`Sent tcconfig to ${ip}, status code is ${res.statusCode}`)
+                logger.verbose(`Sent tcconfig to ${ip}, status code is ${res.statusCode}`)
+                if (res.statusCode !== 200) {
+                    logger.warn(`Tcconfig was not updated on ${ip}, status code is ${res.statusCode}`)
+                }
                 replyCount++
                 if (replyCount === Object.keys(tcconfigs).length) {
-                    logger.info("Updated tcconfig on all agents")
+                    logger.info("All node agents received tcconfig update")
                     resolve()
                 }
             })
@@ -69,7 +72,10 @@ async function distributeMCRLists(machineMeta, mcrLists) {
             }
 
             const req = http.request(options, (res) => {
-                logger.info(`Sent mcrList to ${ip}, status code is ${res.statusCode}`)
+                logger.verbose(`Sent mcrList to ${ip}, status code is ${res.statusCode}`)
+                if (res.statusCode !== 200) {
+                    logger.warn(`mcrList was not updated on ${ip}, status code is ${res.statusCode}`)
+                }
                 replyCount++
                 if (replyCount === Object.keys(mcrLists).length) {
                     logger.info("Updated mcrLists on all agents")
