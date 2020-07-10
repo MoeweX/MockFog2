@@ -9,3 +9,4 @@ USER gitpod
 #
 # More information: https://www.gitpod.io/docs/config-docker/
 RUN sudo apt-get install -y rsync
+RUN sudo apt-get install -y ripgrep
