@@ -20,7 +20,7 @@ class Child extends Phase {
         manipulationService.fetch()
         this.infra = infrastructure()
         this.machineMeta = machineMeta()
-        // TODO wait for connection delay update
+        await manipulationService.awaitConnectionDelays()
     }
 
     async runPrePlaybookTasks() {
