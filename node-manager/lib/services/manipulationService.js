@@ -54,7 +54,7 @@ function getTCConfigs(infrastructure, machineMeta) {
 
             // variable names are also the key names for tcconfig if not specified otherwise
             let delay = 0
-            const includingExisting = route.cost - existingDelayToTarget
+            const includingExisting = route.cost - (existingDelayToTarget / 2)
             if (includingExisting > 0) {
                 delay = includingExisting
             }

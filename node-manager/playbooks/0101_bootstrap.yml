@@ -42,10 +42,10 @@
         state: present
       register: igw
 
-    - name: Create Security Group for Public Connections (ssh-only)
+    - name: Create Security Group for Public Connections
       ec2_group:
         name: ec2:mockfog2:public-security-group
-        description: Incoming SSH only
+        description: Public Connections
         vpc_id: "{{ network.vpc.id }}"
         region: "{{ ec2_region }}"
         rules:
@@ -63,6 +63,11 @@
             ports: "{{ application_instruction_and_states_ports }} "
             cidr_ip: 0.0.0.0/0
             rule_desc: Allow application instruction and state notification traffic
+          - proto: icmp
+            cidr_ip: 0.0.0.0/0
+            from_port: -1
+            to_port:  -1
+            rule_desc: Allow ping
       register: public_security_group
 
     - name: Create Security Group for Testbed-internal Connections (no restrictions)
