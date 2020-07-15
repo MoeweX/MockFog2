@@ -47,6 +47,20 @@ function getPublicIP(machine_name, instances) {
     return instance.public_dns_name
 }
 
+/**
+ * Returns the the machine name of the machine with the given public_ip.
+ * 
+ * @param {String} public_ip
+ * @param {Object} instances the machine meta json instances object
+ */
+function getMachineNameFromPublicIp(public_ip, instances) {
+    for (const instance of instances) {
+        if (instance.public_dns_name === public_ip) {
+            return instance.tags.Name
+        }
+    }
+}
+
 //*************************************
 // Hosts file helper
 //*************************************
@@ -80,6 +94,9 @@ module.exports = function(fileLocation) {
         },
         getPublicIP: function(machine_name) {
             return getPublicIP(machine_name, machineMeta.instances)
+        },
+        getMachineNameFromPublicIp: function(public_ip) {
+            return getMachineNameFromPublicIp(public_ip, machineMeta.instances)
         },
         hostsDataObject: getHostsDataObject(machineMeta)
     }

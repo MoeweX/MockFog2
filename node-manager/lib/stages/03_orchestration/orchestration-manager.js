@@ -26,6 +26,7 @@ class Manager {
 
     async execute_schedule() {
         manipulationService.fetch()
+        await manipulationService.awaitConnectionDelays()
 
         if (this.status !== "idle") {
             logger.warn("Cannot start manager as its status is " + this.status)

@@ -165,6 +165,43 @@
         }
       }
     },
+    "/ping/target": {
+      "post": {
+        "tags": [
+          "ping"
+        ],
+        "summary": "Get pings to the given target hosts",
+        "operationId": "getPingToTargets",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "An array of target host ip addresses to ping",
+            "schema": {
+              "$ref": "#/definitions/ip_list"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pings to the given target hosts",
+            "schema": {
+              "$ref": "#/definitions/ping_single"
+            }
+          },
+          "400": {
+            "description": "The given target hosts were not properly formatted"
+          }
+        }
+      }
+    },
     "/docker/stats": {
       "get": {
         "tags": [
@@ -294,6 +331,13 @@
             }
           }
         }
+      }
+    },
+    "ip_list": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "example": "8.8.8.8"
       }
     },
     "ping_history": {

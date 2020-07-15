@@ -42,15 +42,23 @@ function getTCConfigs(infrastructure, machineMeta) {
     machines.forEach(start => {
         let fillerId = 800
         const outgoing = {}
+        const existingDelays = connectionDelays[start.machine_name]
 
         for (const target of machines) {
             if (start.machine_name === target.machine_name) continue
+
+            const existingDelayToTarget = existingDelays.filter(obj => obj.target_host === target.machine_name)[0].ping
 
             const route = graph.path(start.machine_name, target.machine_name, { cost: true })
             const path = route.path
 
             // variable names are also the key names for tcconfig if not specified otherwise
-            const delay = route.cost // TODO consider already existing delay between machines https://github.com/MoeweX/MockFog2/issues/36
+            let delay = 0
+            const includingExisting = route.cost - (existingDelayToTarget / 2)
+            if (includingExisting > 0) {
+                delay = includingExisting
+            }
+            delay = parseInt(delay * 1000) + "us"
             const rate = infrastructure.calculatePathRate(path, true)
             const delayDistro = infrastructure.calculatePathDelayDistro(path) // keyname must be delay-distro
             const duplicate = infrastructure.calculatePathDuplicate(path)
@@ -160,13 +168,49 @@ function updateMachineAndConnectionData(machineList) {
  * Fetches the current connection delays from all node agent endpoints and writes results to file.
  * 
  * @param {Array} machineList - comprises { machine_name: xx, public_ip: xx } objects
- * @return {Object} that comprises connection delays: machine_name -> { machine_name: xx, delay: xx }
+ * @return {Object} that comprises connection delays: machine_name -> [ { private_ip: xx, delay: xx } ]
  */
 function _fetchConnectionDelays(machineList) {
-    // TODO
-    logger.warn("Fetch connection delays not yet implemented")
-    logger.info("Connection delays are " + JSON.stringify(connectionDelays))
-    // TODO write to file
+    let machineNames = []
+    let promises = []
+    const mmO = machineMetaF()
+    const targetHosts = machineList.map(tuple => tuple.public_ip)
+
+    for (const m of machineList) {
+        promises.push(got.post(`http://${m.public_ip}:3100/${config.apiVersion}/ping/target`, { json: targetHosts }))
+        machineNames.push(m.machine_name)
+    }
+
+    Promise.all(promises).then(v => {
+        let result = {}
+
+        for (i in machineNames) {
+            const machine_name = machineNames[i]
+            const pings = JSON.parse(v[i].body)
+            
+            pingArray = []
+
+            for (ping of pings) {
+                pingArray.push({
+                    "target_host": mmO.getMachineNameFromPublicIp(ping.host),
+                    "public_ip": ping.host,
+                    "ping": parseFloat(ping.ping)
+                })
+            }
+
+            result[machine_name] = pingArray
+        }
+        connectionDelays = result
+        logger.info("Connection delays are " + JSON.stringify(connectionDelays))
+
+        // write to file
+        fs.writeFile(config.runMachinesDir + "connection_delays.jsonc", JSON.stringify(result, null, "\t"), function (err) {
+            if (err) { throw err }
+            logger.verbose("Connection delays written to file")
+        })
+    }).catch(error => {
+        logger.error(`Error while retrieving connection delays: ${JSON.stringify(error)}`);
+    })
 }
 
 /**
@@ -229,11 +273,22 @@ async function awaitMachineResources() {
     }
 }
 
+async function awaitConnectionDelays() {
+    while (connectionDelays === undefined || !Object.keys(connectionDelays).length) {
+        await function sleep(ms) {
+            return new Promise((resolve) => {
+                setTimeout(resolve, ms);
+            })
+        }(10)
+    }
+}
+
 module.exports = {
     fetch: function () {
         updateMachineAndConnectionData(multiFile.getMachineList(infrastructureF(), machineMetaF()))
     },
     awaitMachineResources: awaitMachineResources,
+    awaitConnectionDelays: awaitConnectionDelays,
     getTCConfigs: getTCConfigs,
     getMCRLists: getMCRLists
 }

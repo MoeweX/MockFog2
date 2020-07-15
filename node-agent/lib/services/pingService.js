@@ -1,4 +1,5 @@
 var ping = require('ping')
+
 const logger = require("./logService.js")("Ping Service")
 
 let timer
@@ -51,5 +52,6 @@ async function pingHosts(hosts) {
 
 module.exports = {
     startPinging: startPinging,
+    pingHosts: pingHosts,
     ping_history: ping_history
 }
