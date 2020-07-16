@@ -95,3 +95,7 @@ Requires:
 # Command targets the collection of results from the camera container (can be controlled through --limit option)
 ansible-playbook --ssh-common-args="-o StrictHostKeyChecking=no" playbooks/0204_collect.yml -i "run/hosts" --key-file="run/ec2:mockfog2:ssh-key.pem" --extra-vars="@run/vars/0204_collect.yml" --extra-vars="@run/vars/container/camera.yml" --limit="camera"
 ```
+
+### Stage 3 - Experiment Orchestration
+
+Stage three does not have any playbooks.

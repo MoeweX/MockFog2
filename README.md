@@ -42,11 +42,12 @@ MockFog2 has two major components. At the moment (Version 2), they are capable o
 #### [Node Manager](node-manager/README.md)
 The Node Manager is responsible for setting up the for the infrastructure emulation required virtual machines in the Cloud and installing the node agent.
 It is also capable of managing the application lifecycle and the collection of experiment results.
+Furthermore, in the third stage, it communicates with the node agents and optionally also the application for the sake of experiment orchestration.
 The Node Manager is controlled through a node.js CLI application.
 
 #### [Node Agent](node-agent/README.md)
-The Node Agent is capable of manipulating the network properties of its machine at runtime.
-For this purpose, it offers a REST interface; this interface is fully documented with swagger.
+The Node Agent is capable of manipulating the network properties of its machine at runtime and set resource limits on docker containers.
+It offers a REST interface; this interface is fully documented with swagger and provides additional endpoints, e.g., to measure pings to other machine or retrieve the maximum resources of the machine it is running on.
 
 ## Quickstart using Gitpod
 - Open the repository or an individual issue/PR in [Gitpod](https://gitpod.io/#https://github.com/MoeweX/MockFog2)
@@ -63,15 +64,15 @@ For more information on the roadmap and related issues, see the [project overvie
 #### Version 1
 Supports the management of the infrastructure (all functionality of stage 1). Code is properly documented and node agent offers basic functionalities. The node manager can be controlled via cli.
 
-#### Version 2  (current version)
+#### Version 2
 Supports the management of the application (all functionality of stage 2). This includes application roll-out, startup, shutdown, and the collection of results.
 
-#### Version 3
-Supports the orchestration of the infrastructure (all functionality of stage 3). For that, the node manager runs through pre-defined network manipulations and distributes them to the affected node agents at the appropriate time.
-The node manager is also capable of orchestrating a set of load generators.
+#### Version 3 (current version)
+Supports the orchestration of the infrastructure (all functionality of stage 3). For that, the node manager runs through pre-defined machine and network manipulations and distributes them to the affected node agents at the appropriate time.
+The node manager is also capable of orchestrating application components that generate load.
 
 #### Version 4
-Supports advanced functionality to improve the user experience and infrastructure manipulation capabilities (e.g., more network manipuations or the manipulation of machine characteristics such as to applications available memory).
+Supports advanced functionality to improve the user experience.
 
 ## Key Differences to MockFog(Light)
 - Definition solely based on config files, no source code changes necessary to start an application

@@ -1,16 +1,17 @@
 # MockFog2 Node Manager
 
-The Node Manager is configured by the three configuration files found in the config directory:
-- [infrastructure.jsonc](./run-example/config/infrastructure.jsonc): defines machines and dependencies
-- [containers.jsonc](./run-example/config/containers.jsonc): defines docker containers + application specific configurations
-- [deployment.jsonc](./run-example/config/deployment.jsonc) defines how containers are deployed on the infrastructure
+The Node Manager is configured by four configuration files that should be placed in `run/config`:
+- `infrastructure.jsonc`:  defines machines and how they are interconnected
+- `container.jsonc`: defines docker containers + application specific configurations such as ENV variables
+- `deployment.jsonc`: defines how containers are deployed on the infrastructure
+- `orchestration.jsonc`: defines the orchestration schedule
 
-The linked [example configurations](./run-example/config) will result in the deployment of the three application components of the path A1 from the [Zero2Fog](https://github.com/pfandzelter/zero2fog) example application.
-To remove comments from the JSON files, use https://www.npmjs.com/package/strip-json-comments.
+You can find documentation on how to structure these configuration files and available capabilities in the two provided examples.
+The [CRExplorer example](./run-example-crexplorer) will result in the deployment of the [CRExplorer](https://github.com/MoeweX/crexplorer) container on two machines out of three emulated servers. The orchestration schedule lets CRExplorer explore available resources and network characteristics.
+The [Smart Factory example](./run-example-smartfactory) will result in the deployment of a [Smart Factory Application](https://github.com/MoeweX/smart-factory-fog-example) on multiple machines. The orchestration schedule comprises infrastructure and workload generation changes.
 
 Before you begin using the node manager, you have to create/update configurations in `run/config` directory, json comments will be automatically removed with [strip-json-comments](https://www.npmjs.com/package/strip-json-comments).
-A good starting point is to copy the configuration files from `run-example/config`.
-The node manager uses ansible playbooks under the hood for all infrastructure/provisioning related tasks. It is possible to run these [playbooks](./playbooks/) standalone.
+A good starting point is to copy the configuration files from `run-example-crexplorer/config`.
 
 ## Stages and Phases
 
@@ -20,6 +21,7 @@ Depending on the current stage, MockFog2 makes it possible to emulate a fog comp
 
 Each stage comprises multiple phases that should, in general, be run consecutively.
 At the moment, the easiest way of running a phase is through the command line.
+However, as the node manager uses ansible playbooks under the hood, one can also run these [playbooks](./playbooks/) directly when necessary files are created manually.
 
 ### Stage 1 - Infrastructure Emulation
 
@@ -33,7 +35,7 @@ Start this phase by running `node app.js bootstrap`, this:
     - Setup an internal subnet (access to all other machines, all traffic) -> mapped to eth1
     - Start EC2 instances that are part of this VPC
 - Pulls ssh key and writes it to `run/<configured name>.pem`.
-- Pulls machine facts and writes them to `run/machine_meta.jsonc`
+- Pulls machine facts and writes them to `run/machines/machine_meta.jsonc`
 - Uses the configurations and machine facts data to prepare the ansible inventory that makes machines accessible by their machine_name and by container_name and writes it to `run/hosts`
 
 ![](../misc/Stage1-02_Agent.png)
@@ -43,12 +45,13 @@ Start this phase by running `node app.js agent`, this:
 - Installs pre-requisits on EC2 instances
 - Copies the node agent to each remote and starts it
 
-The node agent offers a REST-API that can be used to apply subsequent changes to the network.
+The node agent offers a REST-API that can be used to apply subsequent changes to network and machine characteristics.
 
 ![](../misc/Stage1-03_Manipulate.png)
 
 Start this phase by running `node app.js manipulate`, this:
-- Generates one tcconfig file per machine and stores them at `run/<machine_name>/tcconfig.json`
+- Retrieves maximum resources per machine and existing connection delays between machines.
+- Generates one tcconfig file per machine and stores them at `run/<machine_name>/tcconfig.json`; considers existing delays between machines.
 - Uses HTTP Put request to supply the corresponding tcconfig to each agent
 
 ![](../misc/Stage1-04_Destroy.png)
@@ -77,8 +80,8 @@ Start this phase by running `node app.js prepare`, this:
 Start this phase by running `node app.js start`, this:
 - Creates a general var file for the start playbook, stores at `run/vars/`
 - On the remotes of each container:
-    - Removes old docker logs
     - Starts the application container using the container specific var and environment files
+    - Set defined resource limits
 
 ![](../misc/Stage2-03_Stop.png)
 
@@ -90,7 +93,13 @@ Start this phase by running `node app.js stop`, this:
 
 Start this phase by running `node app.js collect`, this:
 - Creates a general var file for the collect playbook, stores at `run/vars/`
-- Retrieves all container log files and application data and stores them in the corresponding local directories
+- Retrieves all container log files and application data and stores them in the corresponding local directory + machine name (e.g., `run/vars/appdata/camera-production-machine/`)
+
+### Stage 3 - Experiment Orchestration
+
+Start this phase by running `node app.js orchestrate`, this:
+- Uses `run/orchestration.jsonc` to distribute machine manipulations, infrastructure manipulations, application instructions, and state notifications for each state.
+- Transitions between stages based on time-based conditions and message-based conditions.
 
 ## Actions per Phase
 
@@ -136,11 +145,11 @@ Prerequisites: "command" list in container.jsonc contains the command line argum
 
 Reason: Notify application container about the successful transition to a particular state.
 
-Prerequisites: "state_notifications" object in container.jsonc contains informaotin on the HTTP endpoint.
+Prerequisites: "state_notifications" object in container.jsonc contains information on the HTTP endpoint.
 
 #### Application Instructions
 
-Reason: Change the behavior of the application at runtime.
+Reason: Change the behavior of the application at runtime, e.g., to update a workload generating component.
 
 Prerequisites: "application_instructions" list in container.jsonc contains application instruction information.
 
