@@ -37,7 +37,7 @@ Depending on the current **stage** (1, 2, or 3), MockFog2 makes it possible to e
 
 ![](misc/Stages.png)
 
-MockFog2 has two major components. At the moment (Version 2), they are capable of the following:
+MockFog2 has two major components. At the moment (Version 3), they are capable of the following:
 
 #### [Node Manager](node-manager/README.md)
 The Node Manager is responsible for setting up the for the infrastructure emulation required virtual machines in the Cloud and installing the node agent.
