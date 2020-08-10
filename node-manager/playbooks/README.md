@@ -22,11 +22,11 @@ ansible-playbook --ssh-common-args="-o StrictHostKeyChecking=no" playbooks/0101_
 
 Requires:
 - [./run/vars/0102_agent.yml](../run-example/vars/0102_agent.yml)
-- `./run/ec2:mockfog2:ssh-key.pem` (key name depends on configuration)
+- `./run/ec2-mockfog2-ssh-key.pem` (key name depends on configuration)
 - [./run/hosts](../run-example/hosts)
 
 ```bash
-ansible-playbook --ssh-common-args="-o StrictHostKeyChecking=no" playbooks/0102_agent.yml -i "run/hosts" --key-file="run/ec2:mockfog2:ssh-key.pem" --extra-vars="@run/vars/0102_agent.yml"
+ansible-playbook --ssh-common-args="-o StrictHostKeyChecking=no" playbooks/0102_agent.yml -i "run/hosts" --key-file="run/ec2-mockfog2-ssh-key.pem" --extra-vars="@run/vars/0102_agent.yml"
 ```
 
 ![](../../misc/Stage1-03_Manipulate.png)
@@ -48,52 +48,52 @@ ansible-playbook --ssh-common-args="-o StrictHostKeyChecking=no" playbooks/0104_
 
 Requires:
 - [./run/vars/0201_prepare.yml](../run-example/vars/0201_prepare.yml)
-- `./run/ec2:mockfog2:ssh-key.pem` (key name depends on configuration)
+- `./run/ec2-mockfog2-ssh-key.pem` (key name depends on configuration)
 - [./run/hosts](../run-example/hosts)
 - container specific vars, e.g., [./run/vars/container/camera.yml](../run-example/vars/container/camera.yml)
 - container specific environment file, e.g., [./run/appdata/camera/env_file.env](./run-example/appdata/camera/env_file.env) (storage location depends on configuration)
 
 ```bash
 # Command targets the preparation of the camera container (can be controlled through --limit option)
-ansible-playbook --ssh-common-args="-o StrictHostKeyChecking=no" playbooks/0201_prepare.yml -i "run/hosts" --key-file="run/ec2:mockfog2:ssh-key.pem" --extra-vars="@run/vars/0201_prepare.yml" --extra-vars="@run/vars/container/camera.yml" --limit="camera"
+ansible-playbook --ssh-common-args="-o StrictHostKeyChecking=no" playbooks/0201_prepare.yml -i "run/hosts" --key-file="run/ec2-mockfog2-ssh-key.pem" --extra-vars="@run/vars/0201_prepare.yml" --extra-vars="@run/vars/container/camera.yml" --limit="camera"
 ```
 
 ![](../../misc/Stage2-02_Start.png)
 
 Requires:
 - [./run/vars/0202_start.yml](../run-example/vars/0202_start.yml)
-- `./run/ec2:mockfog2:ssh-key.pem` (key name depends on configuration)
+- `./run/ec2-mockfog2-ssh-key.pem` (key name depends on configuration)
 - [./run/hosts](../run-example/hosts)
 - container specific vars, e.g., [./run/vars/container/camera.yml](../run-example/vars/container/camera.yml)
 
 ```bash
 # Command targets the start of the camera container (can be controlled through --limit option)
-ansible-playbook --ssh-common-args="-o StrictHostKeyChecking=no" playbooks/0202_start.yml -i "run/hosts" --key-file="run/ec2:mockfog2:ssh-key.pem" --extra-vars="@run/vars/0202_start.yml" --extra-vars="@run/vars/container/camera.yml" --limit="camera"
+ansible-playbook --ssh-common-args="-o StrictHostKeyChecking=no" playbooks/0202_start.yml -i "run/hosts" --key-file="run/ec2-mockfog2-ssh-key.pem" --extra-vars="@run/vars/0202_start.yml" --extra-vars="@run/vars/container/camera.yml" --limit="camera"
 ```
 
 ![](../../misc/Stage2-03_Stop.png)
 
 Requires:
 - [./run/vars/0203_stop.yml](../run-example/vars/0203_stop.yml)
-- `./run/ec2:mockfog2:ssh-key.pem` (key name depends on configuration)
+- `./run/ec2-mockfog2-ssh-key.pem` (key name depends on configuration)
 - [./run/hosts](../run-example/config/hosts)
 
 ```bash
-ansible-playbook --ssh-common-args="-o StrictHostKeyChecking=no" playbooks/0203_stop.yml -i "run/hosts" --key-file="run/ec2:mockfog2:ssh-key.pem" --extra-vars="@run/vars/0203_stop.yml"
+ansible-playbook --ssh-common-args="-o StrictHostKeyChecking=no" playbooks/0203_stop.yml -i "run/hosts" --key-file="run/ec2-mockfog2-ssh-key.pem" --extra-vars="@run/vars/0203_stop.yml"
 ```
 
 ![](../../misc/Stage2-04_Collect.png)
 
 Requires:
 - [./run/vars/0204_collect.yml](../run-example/vars/0204_collect.yml)
-- `./run/ec2:mockfog2:ssh-key.pem` (key name depends on configuration)
+- `./run/ec2-mockfog2-ssh-key.pem` (key name depends on configuration)
 - [./run/hosts](../run-example/hosts)
 - container specific vars, e.g., [./run/vars/container/camera.yml](../run-example/vars/container/camera.yml)
 - folder to store results, e.g., `./run/appdata/camera/` (storage location depends on configuration)
 
 ```bash
 # Command targets the collection of results from the camera container (can be controlled through --limit option)
-ansible-playbook --ssh-common-args="-o StrictHostKeyChecking=no" playbooks/0204_collect.yml -i "run/hosts" --key-file="run/ec2:mockfog2:ssh-key.pem" --extra-vars="@run/vars/0204_collect.yml" --extra-vars="@run/vars/container/camera.yml" --limit="camera"
+ansible-playbook --ssh-common-args="-o StrictHostKeyChecking=no" playbooks/0204_collect.yml -i "run/hosts" --key-file="run/ec2-mockfog2-ssh-key.pem" --extra-vars="@run/vars/0204_collect.yml" --extra-vars="@run/vars/container/camera.yml" --limit="camera"
 ```
 
 ### Stage 3 - Experiment Orchestration

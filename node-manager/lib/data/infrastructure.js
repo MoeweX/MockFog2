@@ -248,7 +248,14 @@ module.exports = function(fileLocation) {
     }
 
     const infraJson = fs.readFileSync(fileLocation, "utf-8")
-    const infra = JSON.parse(stripJson(infraJson))
+    const stripped = stripJson(infraJson)
+    try {
+        var infra = JSON.parse(stripped)
+    } catch (error) {
+        logger.error(error)
+        logger.error(stripped)
+        process.exit(1)
+    }
 
     return {
         infra: infra,
