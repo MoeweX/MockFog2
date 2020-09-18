@@ -54,7 +54,7 @@ if (myArgs[0] in phases) {
         logger.info("Listening for message-based transition events on port " + conf.nmPort)
 
         manager.execute_schedule().then(_ => {
-            logger.info("Orchestration schedlue executed")
+            logger.info("Orchestration schedule executed")
             server.close()
         })
     } else {
