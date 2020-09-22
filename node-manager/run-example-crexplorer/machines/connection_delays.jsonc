@@ -1,0 +1,53 @@
+{
+	"server1": [
+		{
+			"target_host": "server1",
+			"public_ip": "ec2-3-124-6-164.eu-central-1.compute.amazonaws.com",
+			"ping": 0.036
+		},
+		{
+			"target_host": "server2",
+			"public_ip": "ec2-35-158-220-215.eu-central-1.compute.amazonaws.com",
+			"ping": 0.162
+		},
+		{
+			"target_host": "server3",
+			"public_ip": "ec2-3-122-118-233.eu-central-1.compute.amazonaws.com",
+			"ping": 0.171
+		}
+	],
+	"server2": [
+		{
+			"target_host": "server1",
+			"public_ip": "ec2-3-124-6-164.eu-central-1.compute.amazonaws.com",
+			"ping": 0.226
+		},
+		{
+			"target_host": "server2",
+			"public_ip": "ec2-35-158-220-215.eu-central-1.compute.amazonaws.com",
+			"ping": 0.034
+		},
+		{
+			"target_host": "server3",
+			"public_ip": "ec2-3-122-118-233.eu-central-1.compute.amazonaws.com",
+			"ping": 0.145
+		}
+	],
+	"server3": [
+		{
+			"target_host": "server1",
+			"public_ip": "ec2-3-124-6-164.eu-central-1.compute.amazonaws.com",
+			"ping": 0.214
+		},
+		{
+			"target_host": "server2",
+			"public_ip": "ec2-35-158-220-215.eu-central-1.compute.amazonaws.com",
+			"ping": 0.191
+		},
+		{
+			"target_host": "server3",
+			"public_ip": "ec2-3-122-118-233.eu-central-1.compute.amazonaws.com",
+			"ping": 0.023
+		}
+	]
+}

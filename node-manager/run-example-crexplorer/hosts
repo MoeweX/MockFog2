@@ -7,18 +7,18 @@ ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 # ---------------------------------------
 
 [machines:children]
+server1
 server3
 server2
-server1
-
-[server3]
-ec2-18-156-135-81.eu-central-1.compute.amazonaws.com machine_name=server3 internal_ip=10.0.2.216
-
-[server2]
-ec2-52-57-112-42.eu-central-1.compute.amazonaws.com machine_name=server2 internal_ip=10.0.2.208
 
 [server1]
-ec2-18-197-116-39.eu-central-1.compute.amazonaws.com machine_name=server1 internal_ip=10.0.2.143
+ec2-3-124-6-164.eu-central-1.compute.amazonaws.com machine_name=server1 internal_ip=10.0.2.124
+
+[server3]
+ec2-3-122-118-233.eu-central-1.compute.amazonaws.com machine_name=server3 internal_ip=10.0.2.249
+
+[server2]
+ec2-35-158-220-215.eu-central-1.compute.amazonaws.com machine_name=server2 internal_ip=10.0.2.82
 
 # ---------------------------------------
 # Hosts by container_names
@@ -28,6 +28,6 @@ ec2-18-197-116-39.eu-central-1.compute.amazonaws.com machine_name=server1 intern
 crexplorer
 
 [crexplorer]
-ec2-18-197-116-39.eu-central-1.compute.amazonaws.com machine_name=server1 internal_ip=10.0.2.143
-ec2-52-57-112-42.eu-central-1.compute.amazonaws.com machine_name=server2 internal_ip=10.0.2.208
+ec2-3-124-6-164.eu-central-1.compute.amazonaws.com machine_name=server1 internal_ip=10.0.2.124
+ec2-35-158-220-215.eu-central-1.compute.amazonaws.com machine_name=server2 internal_ip=10.0.2.82
 
