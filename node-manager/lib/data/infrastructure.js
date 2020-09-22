@@ -33,6 +33,20 @@ function avg(arr) {
 }
 
 /**
+ * Aggregate multiple probabilites.
+ * Formula: p = 1 - product(1 - p_i)
+ * 
+ * @param {Array} arr - array of probabilities
+ */
+function aggProbs(arr) {
+    product = 1.0
+    for (p of arr) {
+        product = product * (1.0 - p)
+    }
+    return 1 - product
+}
+
+/**
  * Returns the connection object with the given to and from field.
  * Also checks reverse paths as connections are bidirectional.
  * 
@@ -185,7 +199,7 @@ function calculatePathDuplicate(infra, path) {
         const duplicate = connection["duplicate"] || DEFAULTS["duplicate"]
         values.push(duplicate)
     }
-    return avg(values)
+    return aggProbs(values)
 }
 
 /**
@@ -203,7 +217,7 @@ function calculatePathLoss(infra, path) {
         const loss = connection["loss"] || DEFAULTS["loss"]
         values.push(loss)
     }
-    return avg(values)
+    return aggProbs(values)
 }
 
 /**
@@ -221,7 +235,7 @@ function calculatePathCorrupt(infra, path) {
         const corrupt = connection["corrupt"] || DEFAULTS["corrupt"]
         values.push(corrupt)
     }
-    return avg(values)
+    return aggProbs(values)
 }
 
 /**
@@ -239,7 +253,7 @@ function calculatePathReordering(infra, path) {
         const reordering = connection["reordering"] || DEFAULTS["reordering"]
         values.push(reordering)
     }
-    return avg(values)
+    return aggProbs(values)
 }
 
 module.exports = function(fileLocation) {
