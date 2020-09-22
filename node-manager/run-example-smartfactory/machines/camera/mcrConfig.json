@@ -1,0 +1,7 @@
+[
+	{
+		"container_name": "camera",
+		"cpu": 1,
+		"memory": "957m"
+	}
+]

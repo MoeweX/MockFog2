@@ -1,0 +1,338 @@
+{
+	"cloud": [
+		{
+			"target_host": "cloud",
+			"public_ip": "ec2-18-184-219-223.eu-central-1.compute.amazonaws.com",
+			"ping": 0.026
+		},
+		{
+			"target_host": "central-office-server",
+			"public_ip": "ec2-3-123-17-213.eu-central-1.compute.amazonaws.com",
+			"ping": 0.187
+		},
+		{
+			"target_host": "factory-server",
+			"public_ip": "ec2-35-156-1-132.eu-central-1.compute.amazonaws.com",
+			"ping": 0.141
+		},
+		{
+			"target_host": "gateway",
+			"public_ip": "ec2-52-59-14-49.eu-central-1.compute.amazonaws.com",
+			"ping": 0.168
+		},
+		{
+			"target_host": "packaging-machine",
+			"public_ip": "ec2-3-125-4-162.eu-central-1.compute.amazonaws.com",
+			"ping": 0.143
+		},
+		{
+			"target_host": "production-machine",
+			"public_ip": "ec2-18-159-208-190.eu-central-1.compute.amazonaws.com",
+			"ping": 0.169
+		},
+		{
+			"target_host": "camera",
+			"public_ip": "ec2-18-194-82-126.eu-central-1.compute.amazonaws.com",
+			"ping": 0.33
+		},
+		{
+			"target_host": "temperature-sensor",
+			"public_ip": "ec2-3-122-205-41.eu-central-1.compute.amazonaws.com",
+			"ping": 0.314
+		}
+	],
+	"central-office-server": [
+		{
+			"target_host": "cloud",
+			"public_ip": "ec2-18-184-219-223.eu-central-1.compute.amazonaws.com",
+			"ping": 0.384
+		},
+		{
+			"target_host": "central-office-server",
+			"public_ip": "ec2-3-123-17-213.eu-central-1.compute.amazonaws.com",
+			"ping": 0.015
+		},
+		{
+			"target_host": "factory-server",
+			"public_ip": "ec2-35-156-1-132.eu-central-1.compute.amazonaws.com",
+			"ping": 0.322
+		},
+		{
+			"target_host": "gateway",
+			"public_ip": "ec2-52-59-14-49.eu-central-1.compute.amazonaws.com",
+			"ping": 0.333
+		},
+		{
+			"target_host": "packaging-machine",
+			"public_ip": "ec2-3-125-4-162.eu-central-1.compute.amazonaws.com",
+			"ping": 0.883
+		},
+		{
+			"target_host": "production-machine",
+			"public_ip": "ec2-18-159-208-190.eu-central-1.compute.amazonaws.com",
+			"ping": 0.176
+		},
+		{
+			"target_host": "camera",
+			"public_ip": "ec2-18-194-82-126.eu-central-1.compute.amazonaws.com",
+			"ping": 0.257
+		},
+		{
+			"target_host": "temperature-sensor",
+			"public_ip": "ec2-3-122-205-41.eu-central-1.compute.amazonaws.com",
+			"ping": 0.192
+		}
+	],
+	"factory-server": [
+		{
+			"target_host": "cloud",
+			"public_ip": "ec2-18-184-219-223.eu-central-1.compute.amazonaws.com",
+			"ping": 0.341
+		},
+		{
+			"target_host": "central-office-server",
+			"public_ip": "ec2-3-123-17-213.eu-central-1.compute.amazonaws.com",
+			"ping": 0.23
+		},
+		{
+			"target_host": "factory-server",
+			"public_ip": "ec2-35-156-1-132.eu-central-1.compute.amazonaws.com",
+			"ping": 0.027
+		},
+		{
+			"target_host": "gateway",
+			"public_ip": "ec2-52-59-14-49.eu-central-1.compute.amazonaws.com",
+			"ping": 0.16
+		},
+		{
+			"target_host": "packaging-machine",
+			"public_ip": "ec2-3-125-4-162.eu-central-1.compute.amazonaws.com",
+			"ping": 0.439
+		},
+		{
+			"target_host": "production-machine",
+			"public_ip": "ec2-18-159-208-190.eu-central-1.compute.amazonaws.com",
+			"ping": 0.231
+		},
+		{
+			"target_host": "camera",
+			"public_ip": "ec2-18-194-82-126.eu-central-1.compute.amazonaws.com",
+			"ping": 0.211
+		},
+		{
+			"target_host": "temperature-sensor",
+			"public_ip": "ec2-3-122-205-41.eu-central-1.compute.amazonaws.com",
+			"ping": 0.248
+		}
+	],
+	"gateway": [
+		{
+			"target_host": "cloud",
+			"public_ip": "ec2-18-184-219-223.eu-central-1.compute.amazonaws.com",
+			"ping": 0.196
+		},
+		{
+			"target_host": "central-office-server",
+			"public_ip": "ec2-3-123-17-213.eu-central-1.compute.amazonaws.com",
+			"ping": 0.175
+		},
+		{
+			"target_host": "factory-server",
+			"public_ip": "ec2-35-156-1-132.eu-central-1.compute.amazonaws.com",
+			"ping": 0.191
+		},
+		{
+			"target_host": "gateway",
+			"public_ip": "ec2-52-59-14-49.eu-central-1.compute.amazonaws.com",
+			"ping": 0.036
+		},
+		{
+			"target_host": "packaging-machine",
+			"public_ip": "ec2-3-125-4-162.eu-central-1.compute.amazonaws.com",
+			"ping": 0.475
+		},
+		{
+			"target_host": "production-machine",
+			"public_ip": "ec2-18-159-208-190.eu-central-1.compute.amazonaws.com",
+			"ping": 0.154
+		},
+		{
+			"target_host": "camera",
+			"public_ip": "ec2-18-194-82-126.eu-central-1.compute.amazonaws.com",
+			"ping": 0.21
+		},
+		{
+			"target_host": "temperature-sensor",
+			"public_ip": "ec2-3-122-205-41.eu-central-1.compute.amazonaws.com",
+			"ping": 0.143
+		}
+	],
+	"packaging-machine": [
+		{
+			"target_host": "cloud",
+			"public_ip": "ec2-18-184-219-223.eu-central-1.compute.amazonaws.com",
+			"ping": 0.579
+		},
+		{
+			"target_host": "central-office-server",
+			"public_ip": "ec2-3-123-17-213.eu-central-1.compute.amazonaws.com",
+			"ping": 0.201
+		},
+		{
+			"target_host": "factory-server",
+			"public_ip": "ec2-35-156-1-132.eu-central-1.compute.amazonaws.com",
+			"ping": 0.566
+		},
+		{
+			"target_host": "gateway",
+			"public_ip": "ec2-52-59-14-49.eu-central-1.compute.amazonaws.com",
+			"ping": 0.143
+		},
+		{
+			"target_host": "packaging-machine",
+			"public_ip": "ec2-3-125-4-162.eu-central-1.compute.amazonaws.com",
+			"ping": 0.023
+		},
+		{
+			"target_host": "production-machine",
+			"public_ip": "ec2-18-159-208-190.eu-central-1.compute.amazonaws.com",
+			"ping": 0.185
+		},
+		{
+			"target_host": "camera",
+			"public_ip": "ec2-18-194-82-126.eu-central-1.compute.amazonaws.com",
+			"ping": 0.173
+		},
+		{
+			"target_host": "temperature-sensor",
+			"public_ip": "ec2-3-122-205-41.eu-central-1.compute.amazonaws.com",
+			"ping": 0.176
+		}
+	],
+	"production-machine": [
+		{
+			"target_host": "cloud",
+			"public_ip": "ec2-18-184-219-223.eu-central-1.compute.amazonaws.com",
+			"ping": 0.175
+		},
+		{
+			"target_host": "central-office-server",
+			"public_ip": "ec2-3-123-17-213.eu-central-1.compute.amazonaws.com",
+			"ping": 0.169
+		},
+		{
+			"target_host": "factory-server",
+			"public_ip": "ec2-35-156-1-132.eu-central-1.compute.amazonaws.com",
+			"ping": 0.289
+		},
+		{
+			"target_host": "gateway",
+			"public_ip": "ec2-52-59-14-49.eu-central-1.compute.amazonaws.com",
+			"ping": 0.196
+		},
+		{
+			"target_host": "packaging-machine",
+			"public_ip": "ec2-3-125-4-162.eu-central-1.compute.amazonaws.com",
+			"ping": 0.164
+		},
+		{
+			"target_host": "production-machine",
+			"public_ip": "ec2-18-159-208-190.eu-central-1.compute.amazonaws.com",
+			"ping": 0.02
+		},
+		{
+			"target_host": "camera",
+			"public_ip": "ec2-18-194-82-126.eu-central-1.compute.amazonaws.com",
+			"ping": 0.167
+		},
+		{
+			"target_host": "temperature-sensor",
+			"public_ip": "ec2-3-122-205-41.eu-central-1.compute.amazonaws.com",
+			"ping": 0.144
+		}
+	],
+	"camera": [
+		{
+			"target_host": "cloud",
+			"public_ip": "ec2-18-184-219-223.eu-central-1.compute.amazonaws.com",
+			"ping": 0.272
+		},
+		{
+			"target_host": "central-office-server",
+			"public_ip": "ec2-3-123-17-213.eu-central-1.compute.amazonaws.com",
+			"ping": 0.203
+		},
+		{
+			"target_host": "factory-server",
+			"public_ip": "ec2-35-156-1-132.eu-central-1.compute.amazonaws.com",
+			"ping": 0.296
+		},
+		{
+			"target_host": "gateway",
+			"public_ip": "ec2-52-59-14-49.eu-central-1.compute.amazonaws.com",
+			"ping": 0.188
+		},
+		{
+			"target_host": "packaging-machine",
+			"public_ip": "ec2-3-125-4-162.eu-central-1.compute.amazonaws.com",
+			"ping": 0.286
+		},
+		{
+			"target_host": "production-machine",
+			"public_ip": "ec2-18-159-208-190.eu-central-1.compute.amazonaws.com",
+			"ping": 0.175
+		},
+		{
+			"target_host": "camera",
+			"public_ip": "ec2-18-194-82-126.eu-central-1.compute.amazonaws.com",
+			"ping": 0.017
+		},
+		{
+			"target_host": "temperature-sensor",
+			"public_ip": "ec2-3-122-205-41.eu-central-1.compute.amazonaws.com",
+			"ping": 0.143
+		}
+	],
+	"temperature-sensor": [
+		{
+			"target_host": "cloud",
+			"public_ip": "ec2-18-184-219-223.eu-central-1.compute.amazonaws.com",
+			"ping": 0.219
+		},
+		{
+			"target_host": "central-office-server",
+			"public_ip": "ec2-3-123-17-213.eu-central-1.compute.amazonaws.com",
+			"ping": 0.163
+		},
+		{
+			"target_host": "factory-server",
+			"public_ip": "ec2-35-156-1-132.eu-central-1.compute.amazonaws.com",
+			"ping": 0.618
+		},
+		{
+			"target_host": "gateway",
+			"public_ip": "ec2-52-59-14-49.eu-central-1.compute.amazonaws.com",
+			"ping": 0.482
+		},
+		{
+			"target_host": "packaging-machine",
+			"public_ip": "ec2-3-125-4-162.eu-central-1.compute.amazonaws.com",
+			"ping": 0.142
+		},
+		{
+			"target_host": "production-machine",
+			"public_ip": "ec2-18-159-208-190.eu-central-1.compute.amazonaws.com",
+			"ping": 0.156
+		},
+		{
+			"target_host": "camera",
+			"public_ip": "ec2-18-194-82-126.eu-central-1.compute.amazonaws.com",
+			"ping": 0.111
+		},
+		{
+			"target_host": "temperature-sensor",
+			"public_ip": "ec2-3-122-205-41.eu-central-1.compute.amazonaws.com",
+			"ping": 0.024
+		}
+	]
+}

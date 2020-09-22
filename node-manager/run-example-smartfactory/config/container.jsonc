@@ -3,15 +3,16 @@
     {
         "container_name": "camera",
         "docker_image": "hasenburg/camera", // passed to "image" of ansible docker_container module
-        "container_dirname": "/camera",
+        "container_dirname": "/cameraD",
         "local_dirname": "appdata/camera", // all files in this directory are synced with container_dirname, placed in run folder
         "env": {
-            "CFD_IP": "{{ internal_ip('production-machine') }}", // internal_ip(machine_name) is a magic function -> returns ip of the corresponding machine
+            "CAMERA_PORT": 8011,
+            "CFD_IP": "{{ internal_ip('gateway') }}", // internal_ip(machine_name) is a magic function -> returns ip of the corresponding machine
             "CFD_PORT": 8008
         },
         "command": [ // passed to "command" of ansible docker_container module
             // when the image has an entrypoint, these will be appended, e.g., to supply flags:
-            //"--output", "/camera/results"
+            //"--output", "/camera/recording.mp4"
         ]
     },
     {
@@ -44,6 +45,7 @@
         "container_dirname": "/temperature-sensor",
         "local_dirname": "appdata/temperature-sensor",
         "env": {
+            "SENSOR_PORT": 8012,
             "ADAPT_IP": "{{ internal_ip_container('adapt-packaging') }}",
             "ADAPT_PORT": 8009
         },
@@ -100,7 +102,7 @@
     {
         "container_name": "aggregate",
         "docker_image": "hasenburg/aggregate",
-        "container_dirname": "/aggregate",
+        "container_dirname": "/aggregateD",
         "local_dirname": "appdata/aggregate",
         "env": {
             "AGGREGATE_PORT": 8007,

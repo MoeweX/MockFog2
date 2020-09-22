@@ -1,6 +1,6 @@
 ---
 container_name: aggregate
 docker_image: hasenburg/aggregate
-container_dirname: /aggregate
+container_dirname: /aggregateD
 local_dirname: appdata/aggregate
 

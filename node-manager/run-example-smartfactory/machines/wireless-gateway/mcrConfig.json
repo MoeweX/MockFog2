@@ -1,7 +1,0 @@
-[
-	{
-		"container_name": "adapt-packaging",
-		"cpu": 1,
-		"memory": "400m"
-	}
-]

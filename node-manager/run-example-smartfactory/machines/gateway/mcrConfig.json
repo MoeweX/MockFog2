@@ -1,0 +1,12 @@
+[
+	{
+		"container_name": "check-for-defects",
+		"cpu": 0.5,
+		"memory": "143m"
+	},
+	{
+		"container_name": "adapt-packaging",
+		"cpu": 0.5,
+		"memory": "143m"
+	}
+]

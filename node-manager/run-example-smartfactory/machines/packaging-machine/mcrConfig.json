@@ -1,10 +1,5 @@
 [
 	{
-		"container_name": "temperature-sensor",
-		"cpu": 1,
-		"memory": "459m"
-	},
-	{
 		"container_name": "packaging-control",
 		"cpu": 1,
 		"memory": "459m"

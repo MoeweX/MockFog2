@@ -1,4 +1,3 @@
-// TODO split resource manipulation instructions to machine and connection based
 // defines the orchestration schedule and meta data
 {
     "maximum_state_change_delay": 5, // in ms; if the Node Manager detects a larger delay, the orchestration schedule exeuction is invalid
@@ -9,25 +8,189 @@
             "connection_manipulation_instructions": "reset", // this re-applies all connection manipulations from infrastructure.jsonc
             "machine_manipulation_instructions": "reset", // this re-applies all machine manipulations from infrastructure.jsonc
             "application_instructions": [],
-            "state_notifications": [],
+            // the node manager can notify containers about the successful transition to a new state via HTTP GET, containers have to acknowledge the notifications (HTTP 200)
+            "state_notifications": [
+                {
+                    "target_container": "camera", // will be sent to the public ip and port of each machine that this container is deployed on
+                    "path": "/state/notifications", // target url path for the notification request
+                    "port": 8011 // the port at which the application waits for notifications
+                },
+                {
+                    "target_container": "temperature-sensor",
+                    "path": "/state/notifications",
+                    "port": 8012
+                }
+            ],
             // when all conditions for the transition to any stage are met, a transition to this state begins
             "transition_conditions": [
                 {
                     "type": "time-based", // the type can be time or event
-                    "active-for": 10000, // how long to stay in this state if type = time
-                    "next_state": "s1"
-                },
-                {
-                    "type": "message-based",
-                    "event_name": "abort",
-                    "threshold": 1, // how often the defined event_name must be sent to the node manager transition endpoint
-                    "next_state": "final"
+                    "active-for": 60000, // how long to stay in this state if type = time
+                    "next_state": "baseline"
                 }
             ]
         },
         {
-            "state_name": "s1",
+            "state_name": "baseline",
+            "connection_manipulation_instructions": [],
+            "machine_manipulation_instructions": [],      
+            "application_instructions": [],
+            "state_notifications": [
+                 {
+                    "target_container": "camera",
+                    "path": "/state/notifications",
+                    "port": 8011
+                },
+                {
+                    "target_container": "temperature-sensor",
+                    "path": "/state/notifications",
+                    "port": 8012
+                }   
+            ],
+            "transition_conditions": [
+                // only when both conditions are met, transition to slow-down-factory-server
+                {
+                    "type": "time-based",
+                    "active-for": 300000,
+                    "next_state": "slow-down-factory-server"
+                },
+                {
+                    "type": "message-based",
+                    "event_name": "dashboard-generated",
+                    "threshold": 295, // how often the defined event_name must be sent to the node manager transition endpoint
+                    "next_state": "slow-down-factory-server"
+                },
+                {
+                    "type": "time-based",
+                    "active-for": 305000,
+                    "next_state": "failed"
+                }
+            ]
+        },
+        {
+            "state_name": "slow-down-factory-server",
+            "connection_manipulation_instructions": [],
+            // machine updates overwrite the connection properties of the initial state (defined in infrastructure.jsonc) and prior state updates
+            "machine_manipulation_instructions": [
+                {
+                    "machine_name": "factory-server",
+                    "cpu": "1.0"
+                }
+            ],      
+            "application_instructions": [],
+            "state_notifications": [
+                 {
+                    "target_container": "camera",
+                    "path": "/state/notifications",
+                    "port": 8011
+                },
+                {
+                    "target_container": "temperature-sensor",
+                    "path": "/state/notifications",
+                    "port": 8012
+                }   
+            ],
+            "transition_conditions": [
+                {
+                    "type": "time-based",
+                    "active-for": 300000,
+                    "next_state": "gateway-factory-troubles"
+                },
+                {
+                    "type": "message-based",
+                    "event_name": "dashboard-generated",
+                    "threshold": 295,
+                    "next_state": "gateway-factory-troubles"
+                },
+                {
+                    "type": "time-based",
+                    "active-for": 305000,
+                    "next_state": "failed"
+                }
+            ]
+        },
+        {
+            "state_name": "gateway-factory-troubles",
             // connection updates overwrite the connection properties of the initial state (defined in infrastructure.jsonc) and prior state updates
+            "connection_manipulation_instructions": [
+                {
+                    "from": "gateway",
+                    "to": "factory-server",
+                    "loss": 20,
+                    "corrupt": 20
+                }
+            ],
+            "machine_manipulation_instructions": [], // keep factory-server cpu limitation in place     
+            "application_instructions": [],
+            "state_notifications": [
+                 {
+                    "target_container": "camera",
+                    "path": "/state/notifications",
+                    "port": 8011
+                },
+                {
+                    "target_container": "temperature-sensor",
+                    "path": "/state/notifications",
+                    "port": 8012
+                }   
+            ],
+            "transition_conditions": [
+                {
+                    "type": "time-based",
+                    "active-for": 300000,
+                    "next_state": "recover"
+                },
+                {
+                    "type": "message-based",
+                    "event_name": "dashboard-generated",
+                    "threshold": 295,
+                    "next_state": "recover"
+                },
+                {
+                    "type": "time-based",
+                    "active-for": 305000,
+                    "next_state": "failed"
+                }
+            ]
+        },
+        {
+            "state_name": "recover",
+            "connection_manipulation_instructions": "reset",
+            "machine_manipulation_instructions": "reset",      
+            "application_instructions": [],
+            "state_notifications": [
+                 {
+                    "target_container": "camera",
+                    "path": "/state/notifications",
+                    "port": 8011
+                },
+                {
+                    "target_container": "temperature-sensor",
+                    "path": "/state/notifications",
+                    "port": 8012
+                }   
+            ],
+            "transition_conditions": [
+                {
+                    "type": "time-based",
+                    "active-for": 300000,
+                    "next_state": "factory-cloud-trouble"
+                },
+                {
+                    "type": "message-based",
+                    "event_name": "dashboard-generated",
+                    "threshold": 295,
+                    "next_state": "factory-cloud-trouble"
+                },
+                {
+                    "type": "time-based",
+                    "active-for": 305000,
+                    "next_state": "failed"
+                }
+            ]
+        },
+        {
+            "state_name": "factory-cloud-trouble",
             "connection_manipulation_instructions": [
                 {
                     "from": "cloud",
@@ -36,37 +199,104 @@
                 }
             ],
             "machine_manipulation_instructions": [],      
-            // application instructions will be sent via HTTP GET during a transition to a state to all machines on which a target_container is deployed
-            "application_instructions": [
-                {
-                    "target_container": "aggregate", // will be sent to the public ip and port of each machine that this container is deployed on
-                    "path": "/interval", // target url path for the instruction request
-                    "port": 8007, // the port at which the application waits for instructions
-                    // these key-value pairs depend on the application running in the container => not interpreted by MockFog
-                    "query_strings": {
-                        "interval": 5000
-                    }
-                }
-            ],
-            // the node manager can notify containers about the successful transition to a new state via HTTP GET, containers have to acknowledge the notifications (HTTP 200)
+            "application_instructions": [],
             "state_notifications": [
+                 {
+                    "target_container": "camera",
+                    "path": "/state/notifications",
+                    "port": 8011
+                },
                 {
-                    "target_container": "generate-dashboard", // will be sent to the public ip and port of each machine that this container is deployed on
-                    "path": "/state/notifications", // target url path for the notification request
-                    "port": 8006 // the port at which the application waits for notifications
+                    "target_container": "temperature-sensor",
+                    "path": "/state/notifications",
+                    "port": 8012
                 }   
             ],
             "transition_conditions": [
-                // only when both conditions are met, transition to final begins
                 {
                     "type": "time-based",
-                    "active-for": 10000,
+                    "active-for": 300000,
+                    "next_state": "hot-temperature"
+                },
+                {
+                    "type": "message-based",
+                    "event_name": "dashboard-generated",
+                    "threshold": 295,
+                    "next_state": "hot-temperature"
+                },
+                {
+                    "type": "time-based",
+                    "active-for": 305000,
+                    "next_state": "failed"
+                }
+            ]
+        },
+        {
+            "state_name": "hot-temperature",
+            "connection_manipulation_instructions": "reset",
+            "machine_manipulation_instructions": [],      
+            "application_instructions": [
+                {
+                    "target_container": "temperature-sensor",
+                    "path": "/config",
+                    "port": 8012,
+                    "query_strings": {
+                        "min_temp": 110 // as the default max temp is 150, the average temperature is now 130
+                    }
+                }
+            ],
+            "state_notifications": [
+                 {
+                    "target_container": "camera",
+                    "path": "/state/notifications",
+                    "port": 8011
+                },
+                {
+                    "target_container": "temperature-sensor",
+                    "path": "/state/notifications",
+                    "port": 8012
+                }   
+            ],
+            "transition_conditions": [
+                {
+                    "type": "time-based",
+                    "active-for": 300000,
                     "next_state": "final"
                 },
                 {
                     "type": "message-based",
                     "event_name": "dashboard-generated",
-                    "threshold": 5, // how often the defined event_name must be sent to the node manager transition endpoint
+                    "threshold": 295,
+                    "next_state": "final"
+                },
+                {
+                    "type": "time-based",
+                    "active-for": 305000,
+                    "next_state": "failed"
+                }
+            ]
+        },
+        {
+            "state_name": "failed",
+            "connection_manipulation_instructions": [],
+            "machine_manipulation_instructions": [],
+            "application_instructions": [],
+            "state_notifications": [
+                {
+                    "target_container": "camera",
+                    "path": "/state/notifications",
+                    "port": 8011
+                },
+                {
+                    "target_container": "temperature-sensor",
+                    "path": "/state/notifications",
+                    "port": 8012
+                }
+            ],
+            "transition_conditions": [
+                {
+                    "type": "time-based",
+                    "active-for": 60000,
                     "next_state": "final"
                 }
             ]
@@ -77,16 +307,27 @@
             "machine_manipulation_instructions": "reset",
             "application_instructions": [
                 {
-                    "target_container": "aggregate",
-                    "path": "/interval",
-                    "port": 8007,
+                    "target_container": "temperature-sensor",
+                    "path": "/config",
+                    "port": 8012,
                     "query_strings": {
-                        "interval": "reset"
+                        "min_temp": 50 // revert back to default
                     }
                 }
             ],
-            "state_notifications": [],
-            "transition_conditions": [] // the final event has no transition condition
+            "state_notifications": [
+                {
+                    "target_container": "camera",
+                    "path": "/state/notifications",
+                    "port": 8011
+                },
+                {
+                    "target_container": "temperature-sensor",
+                    "path": "/state/notifications",
+                    "port": 8012
+                }
+            ],
+            "transition_conditions": [] // the final state has no transition condition
         }
     ]
 }

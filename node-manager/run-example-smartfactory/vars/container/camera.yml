@@ -1,6 +1,6 @@
 ---
 container_name: camera
 docker_image: hasenburg/camera
-container_dirname: /camera
+container_dirname: /cameraD
 local_dirname: appdata/camera
 

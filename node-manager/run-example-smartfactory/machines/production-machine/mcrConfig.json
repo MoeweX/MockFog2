@@ -1,17 +1,7 @@
 [
 	{
-		"container_name": "camera",
-		"cpu": 0.5,
-		"memory": "229.5m"
-	},
-	{
-		"container_name": "check-for-defects",
-		"cpu": 0.5,
-		"memory": "229.5m"
-	},
-	{
 		"container_name": "production-control",
-		"cpu": 0.5,
-		"memory": "229.5m"
+		"cpu": 1,
+		"memory": "459m"
 	}
 ]

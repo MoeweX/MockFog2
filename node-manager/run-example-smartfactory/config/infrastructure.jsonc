@@ -9,25 +9,26 @@
     "machines": [
         {
             "machine_name": "cloud", // machine_name is also used to set the "Name" tag on EC2
-            "type": "t3.small",
-            "image": "ami-0aa9794817db273c1"
-        },
-        {
-            "machine_name": "central-office-server",
-            "type": "t3.micro",
-            "image": "ami-0aa9794817db273c1"
-        },
-        {
-            "machine_name": "factory-server",
             "type": "t3.medium",
             "image": "ami-0aa9794817db273c1"
         },
         {
-            "machine_name": "wireless-gateway",
+            "machine_name": "central-office-server",
+            "type": "t3.small",
+            "image": "ami-0aa9794817db273c1",
+            "cpu": 1.0 // optionally limit number of useables cpus for containers
+        },
+        {
+            "machine_name": "factory-server",
+            "type": "t3.small",
+            "image": "ami-0aa9794817db273c1"
+        },
+        {
+            "machine_name": "gateway",
             "type": "t3.nano",
             "image": "ami-0aa9794817db273c1",
-            "memory": "400m", // optionally limit the max memory for containers (units: b, k, m, g; indicate bytes, kibibyte, mebibyte, and gibibyte)
-            "cpu": 1.0 // optionally limit number of useables cpus for containers
+            "memory": "286m", // optionally limit the max memory for containers (units: b, k, m, g; indicate bytes, kibibyte, mebibyte, and gibibyte)
+            "cpu": 1.0 
         },
         {
             "machine_name": "packaging-machine",
@@ -40,6 +41,18 @@
             "type": "t3.nano",
             "image": "ami-0aa9794817db273c1",
             "cpu": 1.0
+        },
+        {
+            "machine_name": "camera",
+            "type": "t3.micro",
+            "image": "ami-0aa9794817db273c1",
+            "cpu": 1.0
+        },
+        {
+            "machine_name": "temperature-sensor",
+            "type": "t3.nano",
+            "image": "ami-0aa9794817db273c1",
+            "memory": "93m"
         }
     ],
     /*
@@ -56,10 +69,10 @@
             "from": "cloud",
             "to": "central-office-server",
             "delay": 10, // connection latency/delay in ms, set on each machine so roundtrip will be 20ms
-            "rate": "2gbps", // available connection bandwidth rate (units: bps, kbps, mbps, gbps)
+            "rate": "1gbps", // available connection bandwidth rate (units: bps, kbps, mbps, gbps)
             "delay-distro": 0, // connection delay distribution in ms
             "duplicate": 0, // connection duplicate probablity in %
-            "loss": 20, // connection loss probability in %
+            "loss": 0, // connection loss probability in %
             "corrupt": 0, // connection corrupt probality in %
             "reordering": 0 // connection reordering probability in %
         },
@@ -74,19 +87,29 @@
             "delay": 8
         },
         {
-            "from": "wireless-gateway",
+            "from": "gateway",
             "to": "factory-server",
+            "delay": 3
+        },
+        {
+            "from": "gateway",
+            "to": "packaging-machine",
             "delay": 1
         },
         {
-            "from": "wireless-gateway",
-            "to": "packaging-machine",
-            "delay": 2
+            "from": "gateway",
+            "to": "camera",
+            "delay": 1
         },
         {
-            "from": "wireless-gateway",
+            "from": "gateway",
             "to": "production-machine",
-            "delay": 2
+            "delay": 1
+        },
+        {
+            "from": "gateway",
+            "to": "temperature-sensor",
+            "delay": 1
         }
     ]
 }

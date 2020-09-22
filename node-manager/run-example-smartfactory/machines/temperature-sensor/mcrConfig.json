@@ -1,0 +1,7 @@
+[
+	{
+		"container_name": "temperature-sensor",
+		"cpu": 2,
+		"memory": "93m"
+	}
+]
