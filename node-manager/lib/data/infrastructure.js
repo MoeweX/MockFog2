@@ -118,9 +118,9 @@ function getOneHopEdges(machine_name, connections) {
     connections.forEach(connection => {
         // could be encoded in either direction (bidirectional)
         if (machine_name === connection.from) {
-            result[connection.to] = connection.delay
+            result[connection.to] = connection.delay == 0 ? 1e-10 : connection.delay
         } else if (machine_name === connection.to) {
-            result[connection.from] = connection.delay
+            result[connection.from] = connection.delay == 0 ? 1e-10 : connection.delay
         }
     })
     return result
