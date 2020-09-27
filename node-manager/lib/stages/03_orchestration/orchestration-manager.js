@@ -173,7 +173,19 @@ function applyConnectionUpdates(infrastructure, connection_updates) {
     for (const connection of connection_updates) {
         // find connection
         let toUpdate = infra.connections.filter(con => con.from === connection.from).filter(con => con.to === connection.to)
-        if (toUpdate.length !== 1) {
+        if (toUpdate.length === 0) {
+            toUpdate = infra.connections.filter(con => con.to === connection.from).filter(con => con.from === connection.to);
+            toUpdate.forEach(element => {
+                const tmp = element.to;
+                element.to = element.from;
+                element.from = tmp;
+            });
+        }
+        if (toUpdate.length === 0) {
+            logger.error(`No connection found which should be updated with ${JSON.stringify(connection)} => skipping`)
+            // TODO add new connection if not found
+            continue
+        } else if (toUpdate.length !== 1) {
             logger.error(`${JSON.stringify(toUpdate)} should be updated with ${JSON.stringify(connection)}, but it is not a single element => skipping`)
             // TODO add new connection if not found
             continue
