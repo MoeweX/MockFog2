@@ -175,11 +175,6 @@ function applyConnectionUpdates(infrastructure, connection_updates) {
         let toUpdate = infra.connections.filter(con => con.from === connection.from && con.to === connection.to)
         if (toUpdate.length === 0) {
             toUpdate = infra.connections.filter(con => con.to === connection.from && con.from === connection.to);
-            toUpdate.forEach(element => {
-                const tmp = element.to;
-                element.to = element.from;
-                element.from = tmp;
-            });
         }
         if (toUpdate.length === 0) {
             logger.error(`No connection found which should be updated with ${JSON.stringify(connection)} => skipping`)
