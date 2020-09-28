@@ -121,14 +121,14 @@ class TCEvaluator {
     }
 
     _getTBC() {
-        const merged = [].concat.apply(Object.values(this._activeConditions)).flat()
+        const merged = [].concat.apply([], Object.values(this._activeConditions))
         return merged.filter((condition) => {
             return condition.type === "time-based"
         })
     }
 
     _getMBC() {
-        const merged = [].concat.apply(Object.values(this._activeConditions)).flat()
+        const merged = [].concat.apply([], Object.values(this._activeConditions))
         return merged.filter((condition) => {
             return condition.type === "message-based"
         })
