@@ -172,9 +172,9 @@ function applyConnectionUpdates(infrastructure, connection_updates) {
 
     for (const connection of connection_updates) {
         // find connection
-        let toUpdate = infra.connections.filter(con => con.from === connection.from).filter(con => con.to === connection.to)
+        let toUpdate = infra.connections.filter(con => con.from === connection.from && con.to === connection.to)
         if (toUpdate.length === 0) {
-            toUpdate = infra.connections.filter(con => con.to === connection.from).filter(con => con.from === connection.to);
+            toUpdate = infra.connections.filter(con => con.to === connection.from && con.from === connection.to);
             toUpdate.forEach(element => {
                 const tmp = element.to;
                 element.to = element.from;
