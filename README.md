@@ -4,7 +4,7 @@
 # MockFog2
 
 This project is part of [MockFog](https://moewex.github.io/publication/2019-mockfog/2019-mockfog.pdf) which includes the following subprojects:
-* [MockFog2](https://github.com/MoeweX/MockFog2/) New and more powerful version of MockFog (under active development)
+* [MockFog2](https://github.com/OpenFogStack/MockFog2) New and more powerful version of MockFog (under active development)
 * [MockFog-Meta (archived)](https://github.com/OpenFogStack/MockFog-Meta) Meta repository of the original MockFog prototype
 * [MockFogLight (archived)](https://github.com/OpenFogStack/MockFogLight) A lightweight version of MockFog without a visual interface
 
