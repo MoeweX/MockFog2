@@ -4,19 +4,19 @@
   hosts: machines
 
   tasks:
-    - name: Install Yum Packages
-      yum:
+    - name: Install Packages
+      apt:
         name: "{{ packages }}"
         state: present
+        update_cache: yes
       become: yes
       vars:
         packages:
-          - iproute-tc
+          - iproute2
           - python3
           - python3-pip
-          - python-pip
           - rsync
-          - docker
+          - chrony
 
       # to allow non-root usage to use tcconfig for easier manual debugging
     - name: Allow TC Usage
@@ -25,12 +25,13 @@
 
     - name: Install Node
       script: scripts/install_node.sh
-      args:
-        creates: ~/.nvm/nvm.sh
 
     - name: Install TCConfig
       shell: pip3 install "tcconfig==0.25.2"
       become: yes
+
+    - name: Install Docker
+      script: scripts/install_docker.sh
 
     - name: Install Docker SDK
       pip:
@@ -49,21 +50,19 @@
       ignore_errors: yes
 
     - name: Add User to Docker Group
-      shell: usermod -aG docker $USER
-      become: yes
-
-    - name: Reload Group
-      shell: newgrp docker
+      user:
+        name: ubuntu
+        group: docker
       become: yes
 
     - name: Copy Agent
       synchronize:
         src: "{{ playbook_dir }}/../../node-agent"
-        dest: "/home/ec2-user/"
+        dest: "~/"
 
     - name: Install Agent
       npm:
-        path: "/home/ec2-user/node-agent"
+        path: "~/node-agent"
         state: present
 
     - name: Allow Hard Time Sync

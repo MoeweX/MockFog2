@@ -80,4 +80,3 @@ Supports advanced functionality to improve the user experience.
 - Does not use ec2 inventory
 - Uses node and npm to manage phases
 - Network characteristics can be changed at runtime and on a per-container level
-- No prerequisites for ami, just needs to be Amazon Linux 2

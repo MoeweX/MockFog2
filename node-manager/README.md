@@ -7,6 +7,7 @@ The Node Manager is configured by four configuration files that should be placed
 - `orchestration.jsonc`: defines the orchestration schedule
 
 You can find documentation on how to structure these configuration files and available capabilities in the two provided examples.
+Note that MockFog has only been tested with AMIs based on Ubuntu 20.04; also, there needs to be an ubuntu user.
 The [CRExplorer example](./run-example-crexplorer) will result in the deployment of the [CRExplorer](https://github.com/MoeweX/crexplorer) container on two machines out of three emulated servers. The orchestration schedule lets CRExplorer explore available resources and network characteristics.
 The [Smart Factory example](./run-example-smartfactory) will result in the deployment of a [Smart Factory Application](https://github.com/MoeweX/smart-factory-fog-example) on multiple machines. The orchestration schedule comprises infrastructure and workload generation changes.
 

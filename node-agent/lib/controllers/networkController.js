@@ -32,7 +32,7 @@ module.exports = function(app) {
                         res.status(500).send({"message": "Could not update network as tcconfig is not installed", "error": result})
                     } else {
                         logger.error("Unexpected error:")
-                        logger.error(error)
+                        logger.error(result)
                         res.status(500).send({"message": "Could not update network, there was an unexpected error", "error": result.stack})
                     }
                 }

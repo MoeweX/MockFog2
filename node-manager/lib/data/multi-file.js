@@ -66,7 +66,7 @@ function getHosts(machineMeta, container, deployment) {
     const hostsDataObject = machineMeta.hostsDataObject
 
     return `[all:vars]
-ansible_ssh_user=ec2-user
+ansible_ssh_user=ubuntu
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 # ---------------------------------------
