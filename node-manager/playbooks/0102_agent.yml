@@ -14,7 +14,9 @@
           - iproute-tc
           - python3
           - python3-pip
+          - python-pip
           - rsync
+          - docker
 
       # to allow non-root usage to use tcconfig for easier manual debugging
     - name: Allow TC Usage
@@ -39,6 +41,19 @@
       service:
         name: docker
         state: started
+      become: yes
+
+    - name: Create Docker Group for non Sudo Access
+      shell: groupadd docker
+      become: yes
+      ignore_errors: yes
+
+    - name: Add User to Docker Group
+      shell: usermod -aG docker $USER
+      become: yes
+
+    - name: Reload Group
+      shell: newgrp docker
       become: yes
 
     - name: Copy Agent
