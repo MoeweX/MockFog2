@@ -48,7 +48,7 @@ function getPublicIP(machine_name, instances) {
 }
 
 /**
- * Returns the the machine name of the machine with the given public_ip.
+ * Returns the machine name of the machine with the given public_ip.
  * 
  * @param {String} public_ip
  * @param {Object} instances the machine meta json instances object
@@ -59,6 +59,47 @@ function getMachineNameFromPublicIp(public_ip, instances) {
             return instance.tags.Name
         }
     }
+}
+
+/**
+ * Returns the netplan string
+ * @param {String} machine_name
+ * @param {Object} instances the machine meta json instances object
+ */
+
+function getNetplanString(machine_name, instances) {
+    const network_interfaces = getInstance(machine_name, instances).network_interfaces
+
+    // mac addresses
+    const addresses = {}
+
+    for (const network_interface of network_interfaces) {
+        const ip = network_interface.private_ip_address
+        if (ip.startsWith("10.0.2.")) {
+            addresses["internal"] = network_interface.mac_address
+        } else if (ip.startsWith("10.0.1.")) {
+            addresses["management"] = network_interface.mac_address
+        }
+    }
+
+    return `network:
+    ethernets:
+        ens5:
+            dhcp4: true
+            dhcp6: false
+            match:
+                macaddress: ${addresses["management"]}
+            set-name: ens5
+        ens6:
+            dhcp4: true
+            dhcp6: false
+            match:
+                macaddress: ${addresses["internal"]}
+            set-name: ens6
+    version: 2
+`
+
+
 }
 
 //*************************************
@@ -97,6 +138,9 @@ module.exports = function(fileLocation) {
         },
         getMachineNameFromPublicIp: function(public_ip) {
             return getMachineNameFromPublicIp(public_ip, machineMeta.instances)
+        },
+        getNetplanString: function(machine_name) {
+            return getNetplanString(machine_name, machineMeta.instances)
         },
         hostsDataObject: getHostsDataObject(machineMeta)
     }

@@ -1,0 +1,22 @@
+[
+    {
+        "container_name": "crexplorer",
+        "docker_image": "hasenburg/crexplorer",
+        "container_dirname": "/crexplorer",
+        "local_dirname": "appdata/crexplorer",
+        "env": {
+            "PORT": 8080,
+            "LOGFILE": "/crexplorer/log.txt",
+            "PING": "{{ internal_ip('server3') }}",
+            "EVENT_ENDPOINT": "{{ nm_event_endpoint() }}"
+        },
+        "command": []
+    },
+    {
+        "container_name": "node-exporter",
+        "docker_image": "prom/node-exporter",
+        "container_dirname": "/node-exporter",
+        "local_dirname": "appdata/node-exporter",
+        "command": []
+    }
+]

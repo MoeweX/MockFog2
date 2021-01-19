@@ -4,31 +4,54 @@
   hosts: machines
 
   tasks:
-    - name: Install Yum Packages
-      yum:
+    - name: Print Network Interfaces
+      debug:
+        msg: "{{ hostvars[inventory_hostname]['ansible_%s' | format(item)] }}"
+      with_items: "{{ ansible_interfaces }}"
+
+    - name: Install Packages
+      apt:
         name: "{{ packages }}"
         state: present
+        update_cache: yes
       become: yes
       vars:
         packages:
-          - iproute-tc
+          - iproute2
           - python3
           - python3-pip
           - rsync
+          - chrony
 
-      # to allow non-root usage to use tcconfig for easier manual debugging
+    # to allow non-root usage to use tcconfig for easier manual debugging
     - name: Allow TC Usage
       shell: setcap cap_net_admin+ep /usr/sbin/tc
       become: yes
 
+    - name: Copy Netplan Configuration
+      copy:
+        src: "{{ playbook_dir }}/../run/machines/{{ hostvars[inventory_hostname].machine_name }}/netplan.yml"
+        dest: "/etc/netplan/50-cloud-init.yaml"
+      become: yes
+      register: copy_code
+
+    - name: Apply Netplan Configuration
+      shell: netplan --debug apply
+      become: yes
+      when: copy_code.changed
+
     - name: Install Node
       script: scripts/install_node.sh
-      args:
-        creates: ~/.nvm/nvm.sh
+      when: copy_code.changed
 
     - name: Install TCConfig
       shell: pip3 install "tcconfig==0.25.2"
       become: yes
+      when: copy_code.changed
+
+    - name: Install Docker
+      script: scripts/install_docker.sh
+      when: copy_code.changed
 
     - name: Install Docker SDK
       pip:
@@ -41,14 +64,28 @@
         state: started
       become: yes
 
+    - name: Create Docker Group for non Sudo Access
+      shell: groupadd docker
+      become: yes
+      ignore_errors: yes
+
+    - name: Add User to Docker Group
+      user:
+        name: ubuntu
+        group: docker
+      become: yes
+
+    - name: Reset SSH Connection
+      meta: reset_connection
+
     - name: Copy Agent
       synchronize:
         src: "{{ playbook_dir }}/../../node-agent"
-        dest: "/home/ec2-user/"
+        dest: "~/"
 
     - name: Install Agent
       npm:
-        path: "/home/ec2-user/node-agent"
+        path: "~/node-agent"
         state: present
 
     - name: Allow Hard Time Sync

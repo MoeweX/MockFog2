@@ -1,0 +1,6 @@
+---
+container_name: crexplorer
+docker_image: hasenburg/crexplorer
+container_dirname: /crexplorer
+local_dirname: appdata/crexplorer
+

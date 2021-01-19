@@ -1,0 +1,15 @@
+network:
+    ethernets:
+        ens5:
+            dhcp4: true
+            dhcp6: false
+            match:
+                macaddress: 06:9f:6e:16:b5:7e
+            set-name: ens5
+        ens6:
+            dhcp4: true
+            dhcp6: false
+            match:
+                macaddress: 06:6c:4f:53:38:2a
+            set-name: ens6
+    version: 2

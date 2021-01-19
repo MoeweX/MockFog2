@@ -1,0 +1,12 @@
+[
+	{
+		"container_name": "crexplorer",
+		"cpu": 1.8,
+		"memory": "360m"
+	},
+	{
+		"container_name": "node-exporter",
+		"cpu": 2,
+		"memory": "400m"
+	}
+]

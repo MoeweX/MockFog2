@@ -58,7 +58,7 @@ function getOtherHostIPs(json) {
     ips = []
 
     try {
-        for (host in config["eth1"]["outgoing"]) {
+        for (host in config["ens6"]["outgoing"]) {
             ips.push(host.toString().replace("dst-network=", "").split("/")[0])
         }
     } catch(error) {

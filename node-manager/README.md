@@ -7,6 +7,7 @@ The Node Manager is configured by four configuration files that should be placed
 - `orchestration.jsonc`: defines the orchestration schedule
 
 You can find documentation on how to structure these configuration files and available capabilities in the two provided examples.
+Note that MockFog has only been tested with AMIs based on Ubuntu 20.04; also, there needs to be an ubuntu user.
 The [CRExplorer example](./run-example-crexplorer) will result in the deployment of the [CRExplorer](https://github.com/MoeweX/crexplorer) container on two machines out of three emulated servers. The orchestration schedule lets CRExplorer explore available resources and network characteristics.
 The [Smart Factory example](./run-example-smartfactory) will result in the deployment of a [Smart Factory Application](https://github.com/MoeweX/smart-factory-fog-example) on multiple machines. The orchestration schedule comprises infrastructure and workload generation changes.
 
@@ -31,8 +32,8 @@ Start this phase by running `node app.js bootstrap`, this:
 - Creates a var file for the bootstrap playbook at `run/vars/`
 - Bootstraps the infrastructure on AWS based on `run/infrastructure.jsonc`
     - Setup a VPC
-    - Setup a management subnet (access to internet, only ssh and node agent) -> mapped to eth0
-    - Setup an internal subnet (access to all other machines, all traffic) -> mapped to eth1
+    - Setup a management subnet (access to internet, only ssh and node agent) -> assumed to be mapped to ens5
+    - Setup an internal subnet (access to all other machines, all traffic) -> assumed to be mapped to ens6
     - Start EC2 instances that are part of this VPC
 - Pulls ssh key and writes it to `run/<configured name>.pem`.
 - Pulls machine facts and writes them to `run/machines/machine_meta.jsonc`

@@ -1,0 +1,6 @@
+---
+container_name: node-exporter
+docker_image: prom/node-exporter
+container_dirname: /node-exporter
+local_dirname: appdata/node-exporter
+

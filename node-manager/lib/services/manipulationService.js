@@ -82,11 +82,11 @@ function getTCConfigs(infrastructure, machineMeta) {
         }
 
         tcConfig[start.machine_name] = {
-            "eth0": {
+            "ens5": {
                 "outgoing": {},
                 "incoming": {}
             },
-            "eth1": {
+            "ens6": {
                 "outgoing": outgoing,
                 "incoming": {}
             }

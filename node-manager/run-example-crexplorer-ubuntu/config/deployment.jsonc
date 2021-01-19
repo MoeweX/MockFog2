@@ -1,0 +1,12 @@
+[
+    {
+        "container_name": "crexplorer",
+        "machine_names": ["server1", "server2"],
+        "machine_resource_percentage": 90 // how much of the cpu/memory limit the container gets; 100 = same as defined in infrastructure.jsonc
+    },
+    {
+        "container_name": "node-exporter",
+        "machine_names": ["server1", "server2"],
+        "machine_resource_percentage": 100 // how much of the cpu/memory limit the container gets; 100 = same as defined in infrastructure.jsonc
+    }
+]
