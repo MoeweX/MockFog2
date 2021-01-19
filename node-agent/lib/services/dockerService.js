@@ -41,6 +41,7 @@ async function updateMCRConfigs(newList) {
         currentMCRList = newList
     } catch (error) {
         logger.error("Could not update machine container resource configurations")
+        logger.error(JSON.stringify(error))
         throw error
     }
 }

@@ -298,7 +298,7 @@
     "tcconfig": {
       "type": "object",
       "properties": {
-        "eth0": {
+        "ens5": {
           "type": "object",
           "properties": {
             "outgoing": {
@@ -309,7 +309,7 @@
             }
           }
         },
-        "eth1": {
+        "ens6": {
           "type": "object",
           "properties": {
             "outgoing": {

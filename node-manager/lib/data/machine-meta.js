@@ -84,18 +84,18 @@ function getNetplanString(machine_name, instances) {
 
     return `network:
     ethernets:
-        eth0:
+        ens5:
             dhcp4: true
             dhcp6: false
             match:
                 macaddress: ${addresses["management"]}
-            set-name: eth0
-        eth1:
+            set-name: ens5
+        ens6:
             dhcp4: true
             dhcp6: false
             match:
                 macaddress: ${addresses["internal"]}
-            set-name: eth1
+            set-name: ens6
     version: 2
 `
 

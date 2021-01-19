@@ -32,8 +32,8 @@ Start this phase by running `node app.js bootstrap`, this:
 - Creates a var file for the bootstrap playbook at `run/vars/`
 - Bootstraps the infrastructure on AWS based on `run/infrastructure.jsonc`
     - Setup a VPC
-    - Setup a management subnet (access to internet, only ssh and node agent) -> mapped to eth0
-    - Setup an internal subnet (access to all other machines, all traffic) -> mapped to eth1
+    - Setup a management subnet (access to internet, only ssh and node agent) -> assumed to be mapped to ens5
+    - Setup an internal subnet (access to all other machines, all traffic) -> assumed to be mapped to ens6
     - Start EC2 instances that are part of this VPC
 - Pulls ssh key and writes it to `run/<configured name>.pem`.
 - Pulls machine facts and writes them to `run/machines/machine_meta.jsonc`

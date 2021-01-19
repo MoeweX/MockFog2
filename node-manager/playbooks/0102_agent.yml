@@ -23,10 +23,12 @@
         src: "{{ playbook_dir }}/../run/machines/{{ hostvars[inventory_hostname].machine_name }}/netplan.yml"
         dest: "/etc/netplan/50-cloud-init.yaml"
       become: yes
+      register: copy_code
 
-    # - name: Apply Netplan Configuration
-    #   shell: netplan --debug apply
-    #   become: yes
+    - name: Apply Netplan Configuration
+      shell: netplan --debug apply
+      become: yes
+      when: copy_code.changed
 
       # to allow non-root usage to use tcconfig for easier manual debugging
     - name: Allow TC Usage
