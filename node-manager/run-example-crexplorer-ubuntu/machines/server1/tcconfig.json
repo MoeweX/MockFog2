@@ -1,0 +1,33 @@
+{
+	"ens5": {
+		"outgoing": {},
+		"incoming": {}
+	},
+	"ens6": {
+		"outgoing": {
+			"dst-network=10.0.2.165/32, protocol=ip": {
+				"machine_name": "server2",
+				"filler_id": "800:800",
+				"delay": "9896us",
+				"rate": "1000000000bps",
+				"delay-distro": 0,
+				"duplicate": 0,
+				"loss": 0,
+				"corrupt": 0,
+				"reordering": 0
+			},
+			"dst-network=10.0.2.57/32, protocol=ip": {
+				"machine_name": "server3",
+				"filler_id": "800:801",
+				"delay": "14897us",
+				"rate": "1000000000bps",
+				"delay-distro": 0,
+				"duplicate": 0,
+				"loss": 0,
+				"corrupt": 0,
+				"reordering": 0
+			}
+		},
+		"incoming": {}
+	}
+}

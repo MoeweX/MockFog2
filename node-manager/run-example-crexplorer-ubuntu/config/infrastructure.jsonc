@@ -1,0 +1,39 @@
+{
+    "aws": {
+        "ec2_region": "eu-central-1",
+        "ssh_key_name": "ec2-mockfog2-ssh-key",
+        "agent_port": 3100
+    },
+    "machines": [
+        {
+            "machine_name": "server1",
+            "type": "t3.micro",
+            "image": "ami-0502e817a62226e03",
+            "memory": "400m" // optionally limit the max memory for containers (units: b, k, m, g; indicate bytes, kibibyte, mebibyte, and gibibyte)
+        },
+        {
+            "machine_name": "server2",
+            "type": "t3.micro",
+            "image": "ami-0502e817a62226e03",
+            "memory": "400m",
+            "cpu": 2.0 // optionally limit number of useables cpus for containers
+        },
+        {
+            "machine_name": "server3",
+            "type": "t3.micro",
+            "image": "ami-0502e817a62226e03"
+        }
+    ],
+    "connections": [
+        {
+            "from": "server1",
+            "to": "server2",
+            "delay": 10
+        },
+        {
+            "from": "server2",
+            "to": "server3",
+            "delay": 5
+        }
+    ]
+}
