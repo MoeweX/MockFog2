@@ -4,6 +4,11 @@
   hosts: machines
 
   tasks:
+    - name: Print Network Interfaces
+      debug:
+        msg: "{{ hostvars[inventory_hostname]['ansible_%s' | format(item)] }}"
+      with_items: "{{ ansible_interfaces }}"
+
     - name: Install Packages
       apt:
         name: "{{ packages }}"
@@ -18,6 +23,11 @@
           - rsync
           - chrony
 
+    # to allow non-root usage to use tcconfig for easier manual debugging
+    - name: Allow TC Usage
+      shell: setcap cap_net_admin+ep /usr/sbin/tc
+      become: yes
+
     - name: Copy Netplan Configuration
       copy:
         src: "{{ playbook_dir }}/../run/machines/{{ hostvars[inventory_hostname].machine_name }}/netplan.yml"
@@ -30,20 +40,18 @@
       become: yes
       when: copy_code.changed
 
-      # to allow non-root usage to use tcconfig for easier manual debugging
-    - name: Allow TC Usage
-      shell: setcap cap_net_admin+ep /usr/sbin/tc
-      become: yes
-
     - name: Install Node
       script: scripts/install_node.sh
+      when: copy_code.changed
 
     - name: Install TCConfig
       shell: pip3 install "tcconfig==0.25.2"
       become: yes
+      when: copy_code.changed
 
     - name: Install Docker
       script: scripts/install_docker.sh
+      when: copy_code.changed
 
     - name: Install Docker SDK
       pip:
@@ -66,6 +74,9 @@
         name: ubuntu
         group: docker
       become: yes
+
+    - name: Reset SSH Connection
+      meta: reset_connection
 
     - name: Copy Agent
       synchronize:
