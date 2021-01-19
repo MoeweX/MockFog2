@@ -18,6 +18,16 @@
           - rsync
           - chrony
 
+    - name: Copy Netplan Configuration
+      copy:
+        src: "{{ playbook_dir }}/../run/machines/{{ hostvars[inventory_hostname].machine_name }}/netplan.yml"
+        dest: "/etc/netplan/50-cloud-init.yaml"
+      become: yes
+
+    # - name: Apply Netplan Configuration
+    #   shell: netplan --debug apply
+    #   become: yes
+
       # to allow non-root usage to use tcconfig for easier manual debugging
     - name: Allow TC Usage
       shell: setcap cap_net_admin+ep /usr/sbin/tc
