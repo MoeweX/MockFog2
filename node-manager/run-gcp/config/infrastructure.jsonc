@@ -1,0 +1,39 @@
+{
+    "gcp": {
+        "project": "mockfog2",
+        "region": "europe-west1",
+        "zone": "europe-west1-c",
+        "gcp_cred_file": "/workspace/MockFog2/gcp_account.json", // absolute path to gcp service account file
+        "image": "projects/ubuntu-os-cloud/global/images/family/ubuntu-2004-lts", // image to boot from
+        "agent_port": 3100
+    },
+    "machines": [
+        {
+            "machine_name": "server1",
+            "type": "n1-standard-1",
+            "memory": "400m" // optionally limit the max memory for containers (units: b, k, m, g; indicate bytes, kibibyte, mebibyte, and gibibyte)
+        },
+        {
+            "machine_name": "server2",
+            "type": "n1-standard-1",
+            "memory": "400m",
+            "cpu": 1.0 // optionally limit number of useables cpus for containers
+        },
+        {
+            "machine_name": "server3",
+            "type": "n1-standard-1"
+        }
+    ],
+    "connections": [
+        {
+            "from": "server1",
+            "to": "server2",
+            "delay": 10
+        },
+        {
+            "from": "server2",
+            "to": "server3",
+            "delay": 5
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+---
+project: mockfog2
+region: europe-west1
+zone: europe-west1-c
+agent_port: 3100
+gcp_cred_file: /workspace/MockFog2/gcp_account.json
+image: projects/debian-cloud/global/images/family/debian-9
+
+application_instruction_and_states_ports:
+- 8080
+
+machines:
+- machine_name: server1
+  type: n1-standard-1
+- machine_name: server2
+  type: n1-standard-1
+- machine_name: server3
+  type: n1-standard-1

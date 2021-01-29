@@ -1,0 +1,108 @@
+---
+
+- name: Boostrap MockFog2 Infrastructure on GCP
+  hosts: localhost
+
+  tasks:
+    - name: Create Management Network
+      google.cloud.gcp_compute_network:
+        name: mf2-network-management
+        auto_create_subnetworks: 'false'
+        project: "{{ project }}"
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+      register: mf2-network-management
+
+    - name: Create Management Subnet
+      google.cloud.gcp_compute_subnetwork:
+        name: mf2-subnet-management
+        region: "{{ region }}"
+        network: "{{ mf2-network-management }}"
+        ip_cidr_range: 10.0.1.0/24
+        project: "{{ project }}"
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+      register: mf2-subnet-management
+
+    - name: Create Management Firewall
+      google.cloud.gcp_compute_firewall:
+        name: mf2-firewall-management
+        allowed:
+        - ip_protocol: tcp
+          ports:
+          - 22
+          - "{{ agent_port }}"
+          - "{{ application_instruction_and_states_ports }} "
+        - ip_protocol: icmp
+        source_ranges:
+          - 0.0.0.0/0
+        project: "{{ project }}"
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+
+    - name: Create Internal Network
+      google.cloud.gcp_compute_network:
+        name: mf2-network-internal
+        auto_create_subnetworks: 'false'
+        project: "{{ project }}"
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+      register: mf2-network-internal
+
+    - name: Create Internal Subnet
+      google.cloud.gcp_compute_subnetwork:
+        name: mf2-subnet-internal
+        region: "{{ region }}"
+        network: "{{ mf2-network-internal }}"
+        ip_cidr_range: 10.0.2.0/24
+        project: "{{ project }}"
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+      register: mf2-subnet-internal
+
+    - name: Create Internal Firewall
+      google.cloud.gcp_compute_firewall:
+        name: mf2-firewall-management
+        allowed:
+        - ip_protocol: tcp
+        - ip_protocol: icmp
+        source_ranges:
+          - 10.0.2.0/24
+        project: "{{ project }}"
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+
+    - name: Create VM Instances
+      google.cloud.gcp_compute_instance:
+        name: "{{ item.machine_name }}"
+        machine_type: "{{ item.type }}"
+        disks:
+        - auto_delete: 'true'
+          boot: 'true'
+          initialize_params:
+            source_image: "{{ image }}"
+        labels:
+          environment: mf2
+        network_interfaces:
+        - network: "{{ mf2-network-management }}"
+          access_configs:
+          - name: External NAT
+            type: ONE_TO_ONE_NAT
+          subnetwork: "{{ mf2-subnet-management }}"
+        - network: "{{ mf2-network-internal }}"
+          access_configs:
+          - name: External NAT
+            type: ONE_TO_ONE_NAT
+          subnetwork: "{{ mf2-subnet-internal }}"
+        zone: "{{ zone }}"
+        project: "{{ project }}"
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+      with_items: "{{ machines }}"

@@ -1,0 +1,15 @@
+[
+    {
+        "container_name": "crexplorer",
+        "docker_image": "hasenburg/crexplorer",
+        "container_dirname": "/crexplorer",
+        "local_dirname": "appdata/crexplorer",
+        "env": {
+            "PORT": 8080,
+            "LOGFILE": "/crexplorer/log.txt",
+            "PING": "{{ internal_ip('server3') }}",
+            "EVENT_ENDPOINT": "{{ nm_event_endpoint() }}"
+        },
+        "command": []
+    }
+]

@@ -1,3 +1,5 @@
 ansible==2.10.5
 boto3==1.16.56
 boto==2.49.0
+requests==2.25.1
+google-auth==1.24.0
