@@ -5,10 +5,10 @@
 	},
 	"eth1": {
 		"outgoing": {
-			"dst-network=10.0.2.82/32, protocol=ip": {
+			"dst-network=10.0.2.8/32, protocol=ip": {
 				"machine_name": "server2",
 				"filler_id": "800:800",
-				"delay": "9919us",
+				"delay": "9931us",
 				"rate": "1000000000bps",
 				"delay-distro": 0,
 				"duplicate": 0,
@@ -16,10 +16,10 @@
 				"corrupt": 0,
 				"reordering": 0
 			},
-			"dst-network=10.0.2.249/32, protocol=ip": {
+			"dst-network=10.0.2.238/32, protocol=ip": {
 				"machine_name": "server3",
 				"filler_id": "800:801",
-				"delay": "14914us",
+				"delay": "14904us",
 				"rate": "1000000000bps",
 				"delay-distro": 0,
 				"duplicate": 0,

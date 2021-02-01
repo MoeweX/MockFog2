@@ -12,6 +12,7 @@ The [Smart Factory example](./run-example-smartfactory) will result in the deplo
 
 Before you begin using the node manager, you have to create/update configurations in `run/config` directory, json comments will be automatically removed with [strip-json-comments](https://www.npmjs.com/package/strip-json-comments).
 A good starting point is to copy the configuration files from `run-example-crexplorer/config`.
+This prototype assumes Amazon Linux 2 (e.g., ami-0a6dc7529cd559185 on eu-central-1).
 
 ## Stages and Phases
 

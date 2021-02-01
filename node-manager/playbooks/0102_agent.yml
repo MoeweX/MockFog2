@@ -12,9 +12,11 @@
       vars:
         packages:
           - iproute-tc
+          - python-pip
           - python3
           - python3-pip
           - rsync
+          - docker
 
       # to allow non-root usage to use tcconfig for easier manual debugging
     - name: Allow TC Usage
@@ -40,6 +42,20 @@
         name: docker
         state: started
       become: yes
+
+    - name: Create Docker Group for non Sudo Access
+      shell: groupadd docker
+      become: yes
+      ignore_errors: yes
+
+    - name: Add User to Docker Group
+      user:
+        name: ec2-user
+        group: docker
+      become: yes
+
+    - name: Reset SSH Connection
+      meta: reset_connection
 
     - name: Copy Agent
       synchronize:
@@ -71,6 +87,10 @@
     - name: Wipe Dead Screen Sessions
       shell: screen -wipe
       ignore_errors: yes
+
+    - name: Pause for 5 Seconds
+      pause:
+        seconds: 5
 
     - name: Start Agent Screen
       shell: screen -d -m -L -S agent node app.js
