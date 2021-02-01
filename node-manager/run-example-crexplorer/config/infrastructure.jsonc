@@ -8,20 +8,20 @@
         {
             "machine_name": "server1",
             "type": "t3.nano",
-            "image": "ami-0aa9794817db273c1",
+            "image": "ami-0a6dc7529cd559185",
             "memory": "400m" // optionally limit the max memory for containers (units: b, k, m, g; indicate bytes, kibibyte, mebibyte, and gibibyte)
         },
         {
             "machine_name": "server2",
             "type": "t3.nano",
-            "image": "ami-0aa9794817db273c1",
+            "image": "ami-0a6dc7529cd559185",
             "memory": "400m",
             "cpu": 2.0 // optionally limit number of useables cpus for containers
         },
         {
             "machine_name": "server3",
             "type": "t3.nano",
-            "image": "ami-0aa9794817db273c1"
+            "image": "ami-0a6dc7529cd559185"
         }
     ],
     "connections": [

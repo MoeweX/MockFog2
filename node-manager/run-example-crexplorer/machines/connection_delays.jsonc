@@ -2,52 +2,52 @@
 	"server1": [
 		{
 			"target_host": "server1",
-			"public_ip": "ec2-3-124-6-164.eu-central-1.compute.amazonaws.com",
-			"ping": 0.036
+			"public_ip": "ec2-18-159-149-208.eu-central-1.compute.amazonaws.com",
+			"ping": 0.021
 		},
 		{
 			"target_host": "server2",
-			"public_ip": "ec2-35-158-220-215.eu-central-1.compute.amazonaws.com",
-			"ping": 0.162
+			"public_ip": "ec2-18-185-29-229.eu-central-1.compute.amazonaws.com",
+			"ping": 0.137
 		},
 		{
 			"target_host": "server3",
-			"public_ip": "ec2-3-122-118-233.eu-central-1.compute.amazonaws.com",
-			"ping": 0.171
+			"public_ip": "ec2-3-123-16-148.eu-central-1.compute.amazonaws.com",
+			"ping": 0.191
 		}
 	],
 	"server2": [
 		{
 			"target_host": "server1",
-			"public_ip": "ec2-3-124-6-164.eu-central-1.compute.amazonaws.com",
-			"ping": 0.226
+			"public_ip": "ec2-18-159-149-208.eu-central-1.compute.amazonaws.com",
+			"ping": 0.191
 		},
 		{
 			"target_host": "server2",
-			"public_ip": "ec2-35-158-220-215.eu-central-1.compute.amazonaws.com",
-			"ping": 0.034
+			"public_ip": "ec2-18-185-29-229.eu-central-1.compute.amazonaws.com",
+			"ping": 0.032
 		},
 		{
 			"target_host": "server3",
-			"public_ip": "ec2-3-122-118-233.eu-central-1.compute.amazonaws.com",
-			"ping": 0.145
+			"public_ip": "ec2-3-123-16-148.eu-central-1.compute.amazonaws.com",
+			"ping": 0.19
 		}
 	],
 	"server3": [
 		{
 			"target_host": "server1",
-			"public_ip": "ec2-3-124-6-164.eu-central-1.compute.amazonaws.com",
-			"ping": 0.214
+			"public_ip": "ec2-18-159-149-208.eu-central-1.compute.amazonaws.com",
+			"ping": 0.189
 		},
 		{
 			"target_host": "server2",
-			"public_ip": "ec2-35-158-220-215.eu-central-1.compute.amazonaws.com",
-			"ping": 0.191
+			"public_ip": "ec2-18-185-29-229.eu-central-1.compute.amazonaws.com",
+			"ping": 0.173
 		},
 		{
 			"target_host": "server3",
-			"public_ip": "ec2-3-122-118-233.eu-central-1.compute.amazonaws.com",
-			"ping": 0.023
+			"public_ip": "ec2-3-123-16-148.eu-central-1.compute.amazonaws.com",
+			"ping": 0.027
 		}
 	]
 }
