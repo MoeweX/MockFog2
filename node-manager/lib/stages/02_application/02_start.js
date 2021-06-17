@@ -92,7 +92,10 @@ class Child extends Phase {
         for (const containerVarPath of containerVarPaths) {
             const split = containerVarPath.split("/")
             const limit = split[split.length - 1].replace(".yml", "")
-            playbooks.push(new common.Playbook(this.playbookPath, this.varPath, ["-i", `${conf.runDir}hosts`, `--key-file=${conf.runDir}${this.infrastructureO.infra.aws.ssh_key_name}.pem`, `--extra-vars=@${containerVarPath}`, `--limit=${limit}`]))
+            playbooks.push(new common.Playbook(this.playbookPath, this.varPath, [
+                "-i", `${conf.runDir}hosts`, `--key-file=${conf.runDir}${this.infrastructureO.infra.aws.ssh_key_name}.pem`, 
+                `--extra-vars=@${containerVarPath}`, `--limit=${limit}`,
+                "--extra-vars", "ansible_python_interpreter=/usr/bin/python3"]))
         }
         return playbooks
     }

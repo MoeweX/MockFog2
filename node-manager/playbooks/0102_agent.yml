@@ -33,8 +33,7 @@
       become: yes
 
     - name: Install Docker SDK
-      pip:
-        name: docker
+      shell: pip3 install "docker==5.0.0"
       become: yes
 
     - name: Start Docker Service
