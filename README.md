@@ -15,10 +15,20 @@ MockFog2 is a tool that can be used to emulate such infrastructures in the cloud
 If you use this software in a publication, please cite it as:
 
 ### Text
+Jonathan Hasenburg, Martin Grambow, David Bermbach. MockFog 2.0: Automated Execution of Fog Application Experiments in the Cloud. In: IEEE Transactions on Cloud Computing. IEEE 2021.
+
 Jonathan Hasenburg, Martin Grambow, Elias Grünewald, Sascha Huk, David Bermbach. **MockFog: Emulating Fog Computing Infrastructure in the Cloud**. In: Proceedings of the First IEEE International Conference on Fog Computing 2019 (ICFC 2019). IEEE 2019.
 
 ### BibTeX
 ```
+@article{hasenburg_mockfog_2021,
+	title = {{MockFog} 2.0: Automated Execution of Fog Application Experiments in the Cloud},
+	journal = {{IEEE} Transactions on Cloud Computing},
+	volume = {Early Access},
+	author = {Hasenburg, Jonathan and Grambow, Martin and Bermbach, David},
+	year = {2021}
+}
+
 @inproceedings{hasenburg_mockfog:_2019,
 	title = {{MockFog}: {Emulating} {Fog} {Computing} {Infrastructure} in the {Cloud}},
 	booktitle = {Proceedings of the First {IEEE} {International} {Conference} on {Fog} {Computing} 2019 (ICFC 2019)},
@@ -28,7 +38,7 @@ Jonathan Hasenburg, Martin Grambow, Elias Grünewald, Sascha Huk, David Bermbach
 }
 ```
 
-A full list of our [publications](https://www.mcc.tu-berlin.de/menue/forschung/publikationen/parameter/en/) and [prototypes](https://www.mcc.tu-berlin.de/menue/forschung/prototypes/parameter/en/) is available on our group website.
+A full list of our publications and prototypes is available on our [group website](https://www.tu.berlin/en/mcc/).
 
 ## Project Overview
 
